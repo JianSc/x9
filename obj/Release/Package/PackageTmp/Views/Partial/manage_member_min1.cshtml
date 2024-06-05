@@ -1,0 +1,73 @@
+﻿@model IEnumerable<x9web.Models.xusers>
+
+<script>
+    $(function () {
+        $("input[name='state_switch']").bootstrapSwitch({
+            onText: "ON",
+            offText: "OFF",
+            onColor: "success",
+            offColor: "danger",
+            onSwitchChange: function (event, state) {
+                var xbool = $(this).is(":checked");
+                var id = 6007;
+                var dom = $(this);
+                var xid = $(this).val();
+                $.ajax({
+                    url: "/handle/manage_pankou",
+                    type: "POST",
+                    async: false,
+                    data: { id: id, xbool: xbool, qisu: xid },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                $(dom).bootstrapSwitch('state', false);
+                                return;
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>
+<ul class="m title">
+    <li class="A">帐号</li>
+    <li class="B">姓名</li>
+    <li class="D">联系电话</li>
+    <li class="E">信用额度</li>
+    <li class="F">加入时间</li>
+    <li class="G">上级</li>
+    <li class="H">下线</li>
+    <li class="J">状态</li>
+    <li class="I">操作</li>
+</ul>
+@{
+    foreach (var m in Model)
+    {
+        <ul class="m">
+            <li class="A">@m.name</li>
+            <li class="B">@m.xinmin</li>
+            <li class="D">@m.tel</li>
+            <li class="E">@m.m1</li>
+            <li class="F">@DateTime.Parse(m.date.ToString()).ToString("yyyy/MM/dd")</li>
+            <li class="G">@x9web.Api.WebClass.f_shangji_name((int)m.pid)</li>
+            <li class="H">@x9web.Api.WebClass.f_xuser_xiaxian(m.id)</li>
+            <li class="J">
+                @{
+        var check = "";
+        if ((bool)m.state)
+        {
+            check = "checked";
+        }
+                }
+                <input type="checkbox" name="state_switch" value="@m.id" @check />
+            </li>
+            <li class="I">
+                <ul class="II">
+                    <li><a style="display:block" onclick="edit_user(this,'@m.id')"><i class="fa fa-edit"></i> 资料修改</a></li>
+                    <li><a style="display:block" onclick="del_user(this,'@m.id','@m.name')"><i class="fa fa-trash-o"></i> 删除会员</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}

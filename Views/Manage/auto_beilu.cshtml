@@ -1,0 +1,203 @@
+﻿@model IEnumerable<x9web.Models.xauto_beilu>
+
+@{
+    ViewBag.Title = "自动降赔设置";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-control {
+            border-radius: 0;
+            height: 26px;
+        }
+
+        .box li {
+            float: left;
+        }
+
+        .box,
+        .mm,
+        .mm ul {
+            overflow: hidden;
+        }
+
+        .mm {
+            width: 50%;
+            border: 1px solid #0094ff;
+            float: left;
+            padding-bottom: 5px;
+        }
+
+        .A {
+            width: 15%;
+        }
+
+        .B {
+            width: 30%;
+            text-align: center;
+        }
+
+        .D {
+            width: 30%;
+            text-align: center;
+        }
+
+        .E {
+            width: 25%;
+            text-align: center;
+        }
+
+        .mm li {
+            padding: 3px 3px;
+        }
+
+        .title {
+            background: #c3e4fc;
+            border-bottom: 1px solid #6fc2ff;
+            margin-bottom: 5px;
+        }
+
+            .title li {
+                padding: 8px 10px;
+            }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .box {
+            margin-bottom: 10px;
+        }
+
+        .btnbox {
+            padding: 5px;
+            border: 1px solid #7ec9ff;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            border-radius: 0;
+            padding: 5px 8px;
+        }
+
+        .help {
+            padding: 10px;
+            border: 1px solid #7ec9ff;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".box input[name='state']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function () {
+                    var xbool = $(this).is(":checked");
+                    var id = 6008;
+                    var dom = $(this);
+                    var xid = $(this).val();
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: xid },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $(".btnbox #set").click(function () {
+                var index = layer.load(1, { shade: [0.3] });
+                var f = $("#form1");
+                f.ajaxSubmit({
+                    url: "/handle/edit_auto_beilu",
+                    type: "POST",
+                    success: function (data) {
+                        layer.close(index);
+                        layer.alert(data.msg);
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li class="active">自动降赔</li>
+    </ol>
+</div>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1", name = "form1" }))
+{
+    <div class="box">
+        <div class="mm">
+            <ul class="title">
+                <li class="A">名称</li>
+                <li class="B">最大金额</li>
+                <li class="D">降赔</li>
+                <li class="E">启用</li>
+            </ul>
+            @{
+    var i = 1;
+    foreach (var m in Model)
+    {
+        <ul class="m">
+            <li class="A" style="padding-left:8px;padding-top:7px">@m.name.Trim()</li>
+            <li class="B">
+                <input type="hidden" name="id" value="@m.id" />
+                <input type="text" name="max_money" class="form-control" value="@m.max_money" />
+            </li>
+            <li class="D">
+                <input type="text" name="auto_beilu" class="form-control" value="@m.auto_beilu" />
+            </li>
+            <li class="E">
+                @{
+        var check = "";
+        if ((bool)m.state)
+        {
+            check = "checked";
+        }
+                }
+                <input type="checkbox" name="state" value="@m.id" @check />
+            </li>
+        </ul>
+        if (i % 8 == 0 && i < 16)
+        {
+            @Html.Raw("</div>")
+                @Html.Raw("<div class='mm' style='border-left:0'>")
+                <ul class="title">
+                    <li class="A">名称</li>
+                    <li class="B">最大金额</li>
+                    <li class="D">降赔</li>
+                    <li class="E">启用</li>
+                </ul>
+        }
+        i++;
+    }
+            }
+        </div>
+    </div>
+}
+<div class="btnbox">
+    <button type="button" class="btn btn-success" name="set" id="set">提交修改</button>
+</div>
+<div class="alert alert-info">
+    <span>帮助：开关项目启用状态无需提交修改！</span>
+</div>

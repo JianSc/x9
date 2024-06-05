@@ -1,0 +1,168 @@
+﻿@model IEnumerable<x9web.Models.xqisu>
+
+@{
+    ViewBag.Title = "开奖统计";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        .menu {
+            padding: 5px;
+            overflow: hidden;
+            border: 1px solid #1198b6;
+            background: #d8f6ff;
+            margin-bottom: 10px;
+        }
+
+            .menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .menu li {
+                float: left;
+            }
+
+            .menu .btn {
+                border-radius: 0;
+            }
+
+            .menu .form-control {
+                border-radius: 0;
+            }
+
+        .view ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .view li {
+            float: left;
+        }
+
+        .view .top {
+            padding: 8px;
+            border-bottom: 1px solid #1198b6;
+        }
+
+        .view .main {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+            .view .main .title {
+                font-weight: bold;
+            }
+
+            .view .main ul {
+                overflow: hidden;
+            }
+
+            .view .main li {
+                padding: 8px 8px;
+                width: 60px;
+                border: 1px solid #ff6a00;
+                border-left: none;
+                text-align: center;
+            }
+
+            .view .main .A {
+                width: 120px;
+                border: 1px solid #ff6a00;
+                background: #ffdcc4;
+                text-align: center;
+                font-weight: bold;
+            }
+
+        .view .active {
+            border-radius: 50px;
+            background: #05f;
+            color: #fff !important;
+            padding: 0 !important;
+            width: 20px !important;
+            height: 20px !important;
+            margin-left: 10px;
+            border: 0 !important;
+        }
+    </style>
+}
+@section scripts{
+}
+
+<div class="menu">
+    <ul>
+        @Html.Action("manage_look_menu", "partial")
+        @*<li style="float:right">
+                <ul class="select_time">
+                    <li style="padding:6px 0">时间段：</li>
+                    <li style="width:230px">
+                        <input name="select_time" class="form-control" value="" lay-key="1" type="text">
+                    </li>
+                    <li style="margin-left:10px">
+                        <button type="button" name="select_time" id="select_time" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </li>
+                </ul>
+            </li>*@
+    </ul>
+</div>
+
+<div class="view">
+    <div class="top">
+        大小统计：
+    </div>
+    <div class="main">
+        <ul class="title">
+            <li class="A">期数</li>
+            <li class="B">0尾</li>
+            <li class="C">1尾</li>
+            <li class="D">2尾</li>
+            <li class="E">3尾</li>
+            <li class="F">4尾</li>
+            <li class="G">5尾</li>
+            <li class="H">6尾</li>
+            <li class="I">7尾</li>
+            <li class="J">8尾</li>
+            <li class="K">9尾</li>
+            <li class="L">尾数量</li>
+        </ul>
+        @foreach (var m in Model)
+        {
+            var code = m.ball.Trim().Split(',');
+            var c = code.Select(o => o.Substring(1, 1)).GroupBy(o => o).Count();
+            <ul>
+                <li class="A" style="border-top:none">@m.name</li>
+                @for (var i = 0; i < 10; i++)
+                {
+                    var x = code.Select(o => o.Substring(1, 1)).Where(o => o == i.ToString()).Count();
+                    <li style="border-top:none">
+                        @if (x > 0)
+                        {
+                            string style = null;
+                            if (code[6].Substring(1, 1) == i.ToString())
+                            {
+                                style = " style='background:#cf0000 !important'";
+                            }
+                            <ul>
+                                <li class="active" @Html.Raw(style)></li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
+                    </li>
+                }
+                <li style="border-top:none; font-weight:bold; color:#017792">@c</li>
+            </ul>
+
+
+        }
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+<ul class="title">
+    <li class="A">序号</li>
+    <li class="B">下注时间</li>
+    <li class="C">期数</li>
+    <li class="D">会员帐号</li>
+    <li class="E">下注金额</li>
+    <li class="F">赔率</li>
+    <li class="K">退水率</li>
+    <li class="G">类别</li>
+    <li class="H">球号</li>
+    <li class="I">佣金</li>
+    <li class="J">盈亏</li>
+</ul>
+@{
+    int id = 1;
+    foreach (var m in Model)
+    {
+        var color = "";
+        if (m.z == true)
+        {
+            color = "r";
+        }
+        <ul class="m @color">
+            <li class="A">@id</li>
+            <li class="B">@DateTime.Parse(m.timer.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+            <li class="C">
+                <span>@m.qisu</span>
+                <input type="hidden" name="qisu" value="@m.qisu" />
+            </li>
+            <li class="D">@m.pname.Trim()</li>
+            <li class="E">@decimal.Parse(m.money.ToString()).ToString("0.###")</li>
+            <li class="F">@m.beilu.Trim()</li>
+            <li class="K">@decimal.Parse(m.yongjin.ToString()).ToString("0.###")</li>
+            <li class="G">
+                <span style="color:#ff0000">@m.t1.Trim()</span><span>:</span><span>@m.t2.Trim()</span><span>@m.other.Trim()</span>
+            </li>
+            <li class="H">
+                @{
+        string sss = "";
+        string ssd = "一肖,一肖不中,特肖";
+        if (ssd.IndexOf(m.t2.Trim()) > -1)
+        {
+            sss = "<span style='color:#ff0000'>[" + m.name.Trim() + "]</span>";
+        }
+        ssd = "尾数,尾数不中";
+        if (ssd.IndexOf(m.t2.Trim()) > -1)
+        {
+            sss = "<span style='color:#ff0000'>[" + m.name.Trim() + "尾]</span>";
+        }
+                }
+                <span>@m.ball.Trim()</span>
+                @Html.Raw(sss)
+            </li>
+            <li class="I">
+                @{
+        decimal yongjine = 0;
+        if (m.yongjine != null)
+        {
+            yongjine = (decimal)m.yongjine;
+        }
+                }
+                @yongjine
+            </li>
+            <li class="J">
+                @{
+        decimal moneye = 0;
+        if (m.moneye != null)
+        {
+            moneye = (decimal)m.moneye;
+        }
+                }
+                @moneye
+            </li>
+        </ul>
+        id++;
+    }
+}

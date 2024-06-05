@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "欢迎光临！";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        .form {
+            border: 1px solid #9c9c9c;
+            width: 420px;
+            margin-top: 250px;
+        }
+
+        .form-box {
+            width: 350px;
+            margin-top: 10px;
+        }
+
+        .form-top {
+            border-bottom: 1px solid #9c9c9c;
+            padding-bottom: 5px;
+        }
+
+        .input-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btns {
+            margin-top: 15px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius:0;
+        }
+
+        .form ul {
+            margin: 0;
+            padding: 0;
+        }
+        #home-code{
+            cursor:pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("#home-code").click(function () {
+                var url = "/content/code.aspx?" + Math.random();
+                $(this).attr("src", url);
+            })
+            $("#form1 #submit").click(function () {
+                var name = $("#form1 input[name='name']").val();
+                var pwd = $("#form1 input[name='pwd']").val();
+                var code = $("#form1 input[name='code']").val();
+                var url = "/content/code.aspx?" + Math.random();
+                if (name == "" || name == null) {
+                    layer.msg("帐号没有输入！");
+                    return;
+                }
+                if (pwd == "" || pwd == null) {
+                    layer.msg("密码没有输入！");
+                    return;
+                }
+                if (code == "" || code == null) {
+                    layer.msg("验证码没有输入！");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/manage/index",
+                    type: "POST",
+                    async: false,
+                    data: { name: name, pwd: pwd, code: code },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.msg(data.msg);
+                                $("#form1 input").each(function () {
+                                    $(this).val('');
+                                })
+                                $("#form1 input[name='name']").focus();
+                                $("#home-code").attr("src", url);
+                                return;
+                            case "suc":
+                                window.location.href = "/manage/main";
+                                break;
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div class="container form">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1", name = "form1" }))
+    {
+        <div class="container form-box">
+            <ul class="row">
+                <li class="form-top h4">管理登陆</li>
+                <li class="input-group col-lg-12">
+                    <label>登陆名：</label>
+                    <input name="name" type="text" class="form-control" placeholder="登陆名称" />
+                </li>
+                <li class="input-group col-lg-12">
+                    <label>登陆密码：</label>
+                    <input name="pwd" type="password" class="form-control" placeholder="登陆密码" />
+                </li>
+                <li class="input-group col-lg-12" style="margin-top:20px">
+                    <ul class="row">
+                        <li class="col-lg-8" style="text-align:left;padding-left:0">
+                            <input name="code" type="text" class="form-control" placeholder="验证码" />
+                        </li>
+                        <li class="col-lg-4" style="min-height:34px">
+                            <img id="home-code" src="/Content/code.aspx" style="margin-top:3px" onclick="codenew(this)" />
+                        </li>
+                    </ul>
+                </li>
+                <li class="input-group col-lg-12">
+                    <button id="submit" name="submit" type="button" class="btn btn-primary btns">登 陆</button>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+<div class="container-fluid adm-bm">
+    <div class="container" style="width:970px;">
+        <ul class="row">
+            <li style="text-align:center;margin-top:10px;">
+
+            </li>
+        </ul>
+    </div>
+</div>

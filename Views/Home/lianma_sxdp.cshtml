@@ -1,0 +1,494 @@
+﻿@model IEnumerable<x9web.Models.xball>
+@{
+    ViewBag.Title = "香港六合彩";
+    Layout = "~/Views/Pages/Home.cshtml";
+    var script_id = ViewBag.script_id;
+    var page_name = ViewBag.page_name;
+    var page_menu_active = ViewBag.page_menu_active;
+    var page_menu = ViewBag.page_menu;
+    var page_menu_url = ViewBag.page_menu_url;
+    var btn_kuaisu = ViewBag.btn_kuaisu;
+    var page_menu_active2 = ViewBag.page_menu_active2;
+    var page_menu2 = ViewBag.page_menu2;
+    var page_menu2_url = ViewBag.page_menu2_url;
+    List<x9web.Models.xball> xball = x9web.Api.WebClass.auto_beilu(page_name, Model.ToList());
+}
+@section styles{
+    <style>
+        .tma-menu {
+            overflow: hidden;
+            margin: 5px 0 10px 0;
+        }
+
+            .tma-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu li {
+                list-style: none;
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu a {
+                display: block;
+                padding: 5px 5px;
+                text-decoration: none;
+            }
+
+                .tma-menu a:hover,
+                .tma-menu a:focus {
+                    background: #a3d2e9;
+                }
+
+            .tma-menu .active {
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+            }
+
+                .tma-menu .active a,
+                .tma-menu .active a:hover,
+                .tma-menu .active a:focus {
+                    background: #31708F;
+                    color: #fff;
+                }
+
+        .tb-m input {
+            width: 55px;
+            margin: 0;
+            margin-left: 5px;
+        }
+
+        .tma-menu-r {
+            float: right;
+        }
+
+            .tma-menu-r li {
+                padding: 5px 10px;
+                border: #3c763d;
+                color: #3c763d;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                margin: 0;
+                margin-left: 5px;
+            }
+
+        .tma-but {
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            padding-right: 5px;
+        }
+
+            .tma-but .btn {
+                margin: 5px 10px 5px 0;
+                width: 100px;
+                border-radius: 0;
+            }
+
+        .tma-box .tb-mA {
+            background: url(/Content/image/check.png) no-repeat center;
+        }
+
+        .tma-box .tb-mAA {
+            background: url(/Content/image/check2.png) no-repeat center;
+        }
+
+
+        .tma-but ul {
+            margin: 0;
+            margin-left: 260px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .tma-but li {
+            list-style: none;
+            float: left;
+        }
+
+        .input-group-addon {
+            font-size: 12px;
+            color: #fff;
+            background-color: #31708F;
+            border: 1px solid #133f55;
+            /*border-radius: 0;*/
+        }
+
+        .form-control {
+            /*border-radius: 0;*/
+            color: #000;
+            border: 1px solid #133f55;
+        }
+
+        #form2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tma-menu2 {
+            overflow: hidden;
+            border-bottom: 1px solid #3c763d;
+            margin-bottom: 10px;
+        }
+
+            .tma-menu2 ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu2 li {
+                list-style: none;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu2 .active a,
+            .tma-menu2 .active a:hover,
+            .tma-menu2 .active a:focus {
+                color: #fff;
+                background: #3c763d;
+                border-radius: 5px 5px 0 0;
+            }
+
+            .tma-menu2 li > a {
+                padding: 5px 10px;
+                color: #3c763d;
+                display: block;
+                text-decoration: none;
+            }
+
+                .tma-menu2 li > a:hover,
+                .tma-menu2 li > a:focus {
+                    background: #c7f3c8;
+                }
+
+        .tma-box {
+            overflow: hidden;
+            float: left;
+            margin-bottom: 10px;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            width: 100%;
+        }
+
+            .tma-box ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-box li {
+                list-style: none;
+            }
+
+            .tma-box .title {
+                overflow: hidden;
+                width: 100%;
+                background: #8bcaf7;
+            }
+
+            .tma-box .s1,
+            .tma-box .s2 {
+                width: 50%;
+                float: left;
+            }
+
+            .tma-box .s1 {
+                border: #31708F;
+                border-style: none solid none none;
+                border-width: 1px;
+            }
+
+            .tma-box .title li {
+                list-style: none;
+                padding: 5px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .tma-box .m {
+                text-align: center;
+                font-weight: bold;
+                width: 30%;
+                float: left;
+                padding: 5px 5px;
+                background: #b9dcf5;
+                border-right: #8bcaf7 1px solid;
+            }
+
+            .tma-box .s {
+                text-align: center;
+                font-weight: bold;
+                width: 70%;
+                float: left;
+                padding: 5px 5px;
+            }
+
+            .tma-box .box {
+                border: #8bcaf7;
+                border-style: solid none none none;
+                border-width: 1px;
+                overflow: hidden;
+                cursor: pointer;
+            }
+
+            .tma-box .check .s {
+                background: url(/Content/image/check.png) no-repeat right;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".tma-box .box").click(function () {
+                if (!$(this).hasClass("check")) {
+                    if ($("#form1 .check").length >= 2) {
+                        layer.alert("最多只能勾选两组球号！");
+                        return;
+                    } else {
+                        $(this).addClass("check");
+                    }
+                } else {
+                    $(this).removeClass("check");
+                }
+            })
+
+            $("#form1 #reset").click(function () {
+                $("#form1 .check").each(function () {
+                    $(this).removeClass("check");
+                    $("#form2").html('');
+                })
+            })
+
+            $("#form1 #submit").click(function () {
+                var f1 = $("#form1");
+                var f = $("#form2");
+                var check = $(f1).find(".check");
+                var money = $(f1).find("input[name='moneys']");
+                if (check.length < 2) {
+                    layer.alert("请勾选球号！");
+                    return;
+                }
+                if ($(money).val() == '' || $(money).val() == '0') {
+                    layer.alert("请输入下注金额！");
+                    return;
+                }
+                money = parseInt($(money).val());
+                if (isNaN(money)) {
+                    layer.alert("金额只能输入数字！");
+                    return;
+                }
+                var dom = $("#form1").find(".check");
+                var c1 = $(dom[0]).find("input[name='ball']").val();
+                var c2 = $(dom[1]).find("input[name='ball']").val();
+                c1 = c1.split(',');
+                c2 = c2.split(',');
+                var b = $(dom[0]).find("input[name='beilu']").val();
+                var index = layer.load(1, { shade: [0.3] });
+
+                for (var i = 0; i < c1.length; i++) {
+                    for (var j = 0; j < c2.length; j++) {
+                        var dom1 = $("<input type=\"hidden\" name=\"ball\" value=" + c1[i] + "," + c2[j] + " />");
+                        var dom2 = $("<input type=\"hidden\" name=\"beilu\" value=" + b + " />");
+                        var dom3 = $("<input type=\"hidden\" name=\"money\" value=" + money + " />");
+                        $(f).append($(dom1)).append($(dom2)).append($(dom3));
+                    }
+                }
+
+                f.ajaxSubmit({
+                    url: "/handle/xiazu_view2/@script_id",
+                    type: "POST",
+                    success: function (data) {
+                        layer.closeAll();
+                        layer.open({
+                            type: 1,
+                            title: "<i class='fa fa-sign-in'></i> 下注池",
+                            resize: false,
+                            area: ["600px", "400px"],
+                            content: data
+                        })
+                        $(f).html('');
+                    }
+                })
+            })
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-inline", name = "form1", id = "form1" }))
+{
+    <div class="tma-menu2">
+        <input type="hidden" name="script_id" value="@script_id" />
+        <ul>
+            @{
+    string[] menu2 = page_menu2.Split(',');
+    string[] menu2_url = page_menu2_url.Split(',');
+    for (int k = 0; k < menu2.Length; k++)
+    {
+        if (menu2[k] == page_menu_active2)
+        {
+            <li class="active"><a href="@menu2_url[k]">@menu2[k]</a></li>
+        }
+        else
+        {
+            <li><a href="@menu2_url[k]">@menu2[k]</a></li>
+        }
+    }
+            }
+        </ul>
+
+    </div>
+    <div class="tma-menu">
+        <ul style="overflow:hidden;float:left">
+            @{
+    var page_menu_arr = page_menu.Split(',');
+    var page_menu_url_arr = page_menu_url.Split(',');
+    for (int j = 0; j < page_menu_arr.Length; j++)
+    {
+        if (page_menu_arr[j] == page_menu_active)
+        {
+            <li class="active"><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+        else
+        {
+            <li><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+    }
+            }
+        </ul>
+        @{
+    var tea = from q in x9web.Api.WebClass.u_tuisui
+              where q.name.Trim() == page_name
+              select q;
+        }
+        <ul class="tma-menu-r">
+            <li>
+                <span>
+                    @page_name:@tea.First().min_e/@tea.First().danzu_e/@tea.First().max_e
+                </span>
+            </li>
+        </ul>
+        <ul class="tma-menu-r">
+            <li style="margin-left:10px">
+                <span style="color:#ff0000">佣金:</span>
+                <span>
+                    @page_name:@decimal.Parse(tea.First().yongjin.ToString()).ToString("0.###")
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tma-box" style="border-left:1px solid #31708F">
+        <div class="s1">
+            <ul class="title">
+                <li>号码</li>
+            </ul>
+            @{
+    var b = "鼠,牛,虎,兔,龙,蛇";
+    var bb = b.Split(',');
+    var bbb = string.Empty;
+    for (int i = 0; i < bb.Length; i++)
+    {
+        <ul class="box">
+            <li class="m"><span>@bb[i]</span></li>
+            <li class="s">
+                @{
+        var s = string.Empty;
+        var m = from q in xball
+                where (q.shenxiao == Convert.ToChar(bb[i]))
+                select q;
+        foreach (var mm in m)   
+        {
+            s += mm.name.Trim();
+            s += ",";
+            bbb = decimal.Parse(mm.tma.ToString()).ToString("0.###");
+            if (script_id == 8022)
+            {
+                bbb = decimal.Parse(mm.tma.ToString()).ToString("0.###") + "/" + decimal.Parse(mm.tmb.ToString()).ToString("0.###");
+            }
+        }
+        s = s.Substring(0, s.Length - 1);
+        @s;
+                }
+            </li>
+            <li class="c">
+                <input name="ball" type="hidden" value="@s" />
+                <input name="beilu" type="hidden" value="@bbb" />
+            </li>
+        </ul>
+    }
+            }
+        </div>
+        <div class="s2">
+            <ul class="title">
+                <li>号码</li>
+            </ul>
+            @{
+    b = "马,羊,猴,鸡,狗,猪";
+    bb = b.Split(',');
+    for (int i = 0; i < bb.Length; i++)
+    {
+        <ul class="box">
+            <li class="m"><span>@bb[i]</span></li>
+            <li class="s">
+                @{
+        var s = string.Empty;
+        var m = from q in xball
+                where (q.shenxiao == Convert.ToChar(bb[i]))
+                select q;
+        foreach (var mm in m)
+        {
+            s += mm.name.Trim();
+            s += ",";
+            bbb = decimal.Parse(mm.tma.ToString()).ToString("0.###");
+            if (script_id == 8022)
+            {
+                bbb = decimal.Parse(mm.tma.ToString()).ToString("0.###") + "/" + decimal.Parse(mm.tmb.ToString()).ToString("0.###");
+            }
+        }
+        s = s.Substring(0, s.Length - 1);
+        @s;
+                }
+            </li>
+            <li class="c">
+                <input name="ball" type="hidden" value="@s" />
+                <input name="beilu" type="hidden" value="@bbb" />
+            </li>
+        </ul>
+    }
+            }
+        </div>
+    </div>
+    <div class="tma-but">
+        <ul>
+            <li style="padding-top:5px;padding-right:10px">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">下注金额</span>
+                        <input style="width:80px" class="form-control" type="text" name="moneys" onkeyup="value=this.value.replace(/\D+/g,'')" />
+                    </div>
+
+                </div>
+            </li>
+            <li>
+                <input type="text" style="display:none" />
+                <button class="btn btn-primary" type="button" name="submit" id="submit">提交</button>
+            </li>
+            <li>
+                <button class="btn btn-primary" type="button" name="reset" id="reset">清除</button>
+            </li>
+        </ul>
+    </div>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form2", name = "form2" }))
+{
+
+}

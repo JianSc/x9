@@ -1,0 +1,48 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+<ul class="title">
+    <li class="A">序号</li>
+    <li class="B">下注时间</li>
+    <li class="C">流水号</li>
+    <li class="D">会员帐号</li>
+    <li class="E">下注金额</li>
+    <li class="F">赔率</li>
+    <li class="J">佣金</li>
+    <li class="G">类别</li>
+    <li class="H">球号</li>
+    <li class="I">操作</li>
+</ul>
+@{
+    int id = 1;
+    foreach (var m in Model)
+    {
+        <ul class="m">
+            <li class="A">@id</li>
+            <li class="B">@DateTime.Parse(m.timer.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+            <li class="C">@m.xid.Trim()</li>
+            <li class="D">@m.pname.Trim()</li>
+            <li class="E">
+                <input type="text" class="form-control" name="money" value="@decimal.Parse(m.money.ToString()).ToString("0.###")" />
+            </li>
+            <li class="F">
+                <input type="text" class="form-control" name="beilu" value="@m.beilu.Trim()" />
+            </li>
+            <li class="J">
+                <input type="text" class="form-control" name="yongjin" value="@decimal.Parse(m.yongjin.ToString()).ToString("0.###")" />
+            </li>
+            <li class="G">
+                <span style="color:#ff0000">@m.t1.Trim():</span>@m.t2.Trim()
+            </li>
+            <li class="H">
+                <input type="text" class="form-control" name="ball" value="@m.ball.Trim()" />
+            </li>
+            <li class="I">
+                <ul>
+                    <li><a onclick="edit(this,'@m.id')"><i class="fa fa-edit"></i>修改</a></li>
+                    <li><a onclick="del(this,'@m.id')"><i class="fa fa-trash-o"></i>删除</a></li>
+                </ul>
+            </li>
+        </ul>
+        id++;
+    }
+}

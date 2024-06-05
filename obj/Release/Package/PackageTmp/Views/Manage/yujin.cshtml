@@ -1,0 +1,348 @@
+﻿@model IEnumerable<x9web.Models.xqisu>
+
+@{
+    ViewBag.Title = "开奖预警";
+    Layout = "~/Views/Pages/Manage.cshtml";
+    var qisu = x9web.Api.WebClass.xconfig_qisu;
+    int auto_timer = 10;
+}
+
+@section styles{
+    <style>
+        .view * {
+            list-style: none;
+        }
+
+        .view ul {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .view .viewtitle {
+            padding: 10px 5px;
+            background: #fe5757;
+            /*color:#ffffff;*/
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .view .total1 li {
+            padding: 8px 8px;
+            border: 1px solid #fe746a;
+            background: #ffddb7;
+            float: left;
+            min-width: 200px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .view .total2 li {
+            padding: 8px 8px;
+            border: 1px solid #42b4fc;
+            background: #d0f4fe;
+            float: left;
+            min-width: 155px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .view .line {
+            height: 1px;
+            background: #0bb1cc;
+            margin-top: 5px;
+        }
+
+        .view .total4 .titlep {
+            border: 1px solid #ffd800;
+            background: #ffd800;
+            text-align: center;
+        }
+
+        .view .total4 ul {
+            overflow: hidden;
+        }
+
+        .view .total4 li {
+            float: left;
+            padding: 5px 10px;
+        }
+
+        .view .total4 .A {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+        }
+
+        .view .total4 .B {
+            width: 360px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total4 .C {
+            width: 100px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total4 .D {
+            width: 130px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total4 .E {
+            width: 160px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total4 .F {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total4 .G {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #FFd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .titlep {
+            border: 1px solid #ffd800;
+            background: #ffd800;
+            text-align: center;
+        }
+
+        .view .total3 ul {
+            overflow: hidden;
+        }
+
+        .view .total3 li {
+            float: left;
+            padding: 5px 10px;
+        }
+
+        .view .total3 .A {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+        }
+
+        .view .total3 .B {
+            width: 360px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .C {
+            width: 100px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .D {
+            width: 130px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .E {
+            width: 160px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .F {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .G {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #FFd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .view .total3 .H {
+            width: 120px;
+            text-align: center;
+            border: 1px solid #ffd800;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+        }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select * {
+                list-style: none;
+            }
+
+            .select li {
+                float: left;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            timer(@auto_timer);
+        })
+
+        function slide(id) {
+            switch (id) {
+                case 1:
+                    $(".view .total1").slideToggle();
+                    break;
+                case 2:
+                    $(".view .total2").slideToggle();
+                    break;
+                case 3:
+                    $(".view .total3").slideToggle();
+                    break;
+                case 4:
+                    $(".view .total4").slideToggle();
+                    break;
+            }
+        };
+
+        function timer(intDiff) {
+            var set = true;
+            var intsec = intDiff;
+            var index = window.setInterval(function () {
+                var second = intsec;
+                var sw = $(".viewtop input[name='switch']").val();
+                var qisu = $(".select input[name='qisu']").val();
+                if (set) {
+                    if (intsec < 0) {
+                        set = false;
+                        $(".viewtop .text").html("正在更新...");
+                        $(".viewtop .time").html("");
+                        $.ajax({
+                            url: "/partial/yujin",
+                            type: "POST",
+                            data: { q: qisu },
+                            success: function (data) {
+                                if (data != "err") {
+                                    $(".view").html(data);
+                                }
+                                intsec = intDiff;
+                                set = true;
+                            }
+                        })
+                    } else {
+                        if (second <= 9 && second > 0) second = '0' + second;
+                        $(".viewtop .text").html("更新:");
+                        $(".viewtop .time").html(second);
+                        intsec--;
+                    }
+                }
+
+
+            }, 1000);
+        }
+
+        $(".select #select_qisu").click(function () {
+            var qisu = $(".select select[name='select_qisu']").val();
+            $(".select input[name='qisu']").val(qisu);
+
+            $.ajax({
+                url: "/partial/yujin",
+                type: "POST",
+                data: { q: qisu },
+                success: function (data) {
+                    if (data != "err") {
+                        $(".view").html(data);
+                    }
+                    intsec = intDiff;
+                    set = true;
+                }
+            })
+
+        })
+    </script>
+}
+
+<div class="viewtop">
+    <ol class="breadcrumb">
+        <li class="active">开奖预警</li>
+        <li style="display:none"><input name="switch" type="hidden" value="1" /></li>
+        <li style="float:right">
+            <span class="text">更新:</span>
+            <span class="time" style="color:#ff0000;">@auto_timer</span>
+        </li>
+    </ol>
+</div>
+<div class="select" style="margin-top:-10px">
+    <ul>
+        <li style="margin-left:30px; padding:6px 0">
+            期号：
+        </li>
+        <li style="width:130px">
+            <select name="select_qisu" class="form-control">
+                @{
+                    foreach (var m in Model.OrderByDescending(a => a.id).ToList())
+                    {
+                        <option value="@m.name">@m.name</option>
+                    }
+                }
+            </select>
+            <input name="qisu" type="hidden" value="@qisu" />
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="select_qisu" id="select_qisu" class="btn btn-success">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+    </ul>
+</div>
+<div class="view" style="margin-top:10px">
+    @Html.Action("yujin", "partial", new { q = qisu })
+</div>

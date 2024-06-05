@@ -1,0 +1,155 @@
+﻿@model x9web.Models.xqisu
+
+@{
+    ViewBag.Title = "addnew_pankou";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var thistime = DateTime.Now.ToString("yyyy-MM-dd");
+    var t1 = thistime + " 16:00:00";
+    var t2 = thistime + " 21:28:00";
+    var t3 = thistime + " 21:31:00";
+    var t4 = thistime;
+}
+@section styles{
+    <style>
+        .box {
+            padding: 10px;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/apps/laydate.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            laydate.render({
+                elem: '#k_time',
+                type: 'datetime',
+                value: '@t1'
+            });
+            laydate.render({
+                elem: '#z_time',
+                type: 'datetime',
+                value: '@t2'
+            });
+            laydate.render({
+                elem: '#t_time',
+                type: 'datetime',
+                value: '@t3'
+            });
+            laydate.render({
+                elem: '#f_time',
+                type: 'date',
+                value: '@t4'
+            });
+            $("#timeedit").click(function () {
+                var time = $("#form1 input[name='f_time']").val();
+                if (time == '' || time == null) {
+                    layer.alert("时间没有输入！");
+                }
+                var dom1 = $("#form1 input[name='z_time']");
+                var dom2 = $("#form1 input[name='t_time']");
+                var dom3 = $("#form1 input[name='k_time']");
+                var t1 = new Date(dom1.val()).getHours() + ":" + new Date(dom1.val()).getMinutes() + ":" + new Date(dom1.val()).getSeconds();
+                var t2 = new Date(dom2.val()).getHours() + ":" + new Date(dom2.val()).getMinutes() + ":" + new Date(dom2.val()).getSeconds();
+                var t3 = new Date(dom3.val()).getHours() + ":" + new Date(dom3.val()).getMinutes() + ":" + new Date(dom3.val()).getSeconds();
+                dom1.val(time + " " + t1);
+                dom2.val(time + " " + t2);
+                dom3.val(time + " " + t3);
+            })
+            $("#reset").click(function () {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            })
+            $("#add").click(function () {
+                var qisu = $("#form1 input[name='name']").val();
+                var k_time = $("#form1 input[name='k_time']").val();
+                var z_time = $("#form1 input[name='z_time']").val();
+                var t_time = $("#form1 input[name='t_time']").val();
+                var index = parent.layer.getFrameIndex(window.name);
+                if (qisu == '' || qisu == null) {
+                    layer.alert("期数不能为空！");
+                    return;
+                }
+                if (k_time == '' || k_time == null) {
+                    layer.alert("自动开盘时间不能为空！");
+                    return;
+                }
+                if (z_time == '' || z_time == null) {
+                    layer.alert("正码自动封盘时间不能为空！");
+                    return;
+                }
+                if (t_time == '' || t_time == null) {
+                    layer.alert("特码自动封盘时间不能为空！");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/handle/pankou_addnew",
+                    type: "POST",
+                    async: false,
+                    data: { name: qisu, k_time: k_time, z_time: z_time, t_time: t_time },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                return;
+                            case "suc":
+                                alert(data.msg);
+                                window.parent.location.reload();
+                                return;
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1", name = "form1" }))
+{
+    <div class="box">
+        <div class="form-group">
+            <label>期号：</label>
+            @{
+    var qisu = x9web.Api.WebClass.u_qisu;
+            }
+            <input type="text" name="name" class="form-control" value="@qisu" />
+        </div>
+        <div class="form-group">
+            <label>
+                自动开盘时间：
+            </label>
+            <input type="text" name="k_time" id="k_time" class="form-control" value="" />
+        </div>
+        <div class="form-group">
+            <label>正码自动封盘时间：</label>
+            <input type="text" name="z_time" id="z_time" class="form-control" value="" />
+        </div>
+        <div class="form-group">
+            <label>特码自动封盘时间：</label>
+            <input type="text" name="t_time" id="t_time" class="form-control" value="" />
+        </div>
+        <div class="form-group">
+            <label>统一修改时间：</label>
+            <div style="overflow:hidden">
+                <input type="text" name="f_time" id="f_time" class="form-control" value="" style="width:280px;float:left" />
+                <button type="button" class="btn btn-success" id="timeedit" style="float:left;margin-left:10px">推送时间</button>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="add">提交</button>
+            <button type="button" class="btn btn-warning" style="margin-left:10px" id="reset">取消</button>
+        </div>
+    </div>
+}

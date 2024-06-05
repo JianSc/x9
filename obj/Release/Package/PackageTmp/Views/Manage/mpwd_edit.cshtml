@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        .box {
+            padding: 10px;
+            overflow: hidden;
+        }
+
+            .box ul,
+            .box li {
+                list-style: none;
+            }
+
+            .box ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .box li {
+                margin: 5px 0 5px 0;
+            }
+
+        .form-control {
+            border-radius: 0;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            var index = parent.layer.getFrameIndex(window.name);
+
+            $("#form1 #reset").click(function () {
+                parent.layer.close(index);
+            })
+            $("#form1 #submit").click(function () {
+                var p1 = $("#form1 input[name='p1']").val();
+                var p2 = $("#form1 input[name='p2']").val();
+                var p3 = $("#form1 input[name='p3']").val();
+                if (p1 == '' || p2 == '' || p3 == '') {
+                    layer.msg("数据输入不完整！");
+                    return;
+                }
+                if (p2 != p3) {
+                    layer.msg("两次输入的密码不一致！");
+                    return;
+                }
+                $.ajax({
+                    url: "/manage/pwdedit",
+                    type: "POST",
+                    async: false,
+                    data: { p1: p1, p2: p2, p3: p3 },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "suc":
+                                alert(data.msg);
+                                parent.layer.close(index);
+                                //$("#form1 input").each(function () {
+                                //    $(this).val('');
+                                //})
+                                break;
+                            case "err":
+                                layer.alert(data.msg);
+                                break;
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1", name = "form1" }))
+{
+    <div class="box">
+        <ul>
+            <li>
+                <label>原密码:</label>
+                <input class="form-control" name="p1" type="password" />
+            </li>
+            <li>
+                <label>新密码:</label>
+                <input class="form-control" name="p2" type="password" />
+            </li>
+            <li>
+                <label>再次确认新密码:</label>
+                <input class="form-control" name="p3" type="password" />
+            </li>
+            <li style="margin-top:10px">
+                <button name="submit" id="submit" type="button" class="btn btn-primary">确认修改</button>
+                <button name="reset" id="reset" type="button" class="btn btn-warning">取消</button>
+            </li>
+        </ul>
+    </div>
+}

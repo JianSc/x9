@@ -1,0 +1,136 @@
+﻿@model IEnumerable<x9web.Models.xball>
+
+@{
+    var m1 = from q in Model
+             where (q.color != null)
+             select q;
+    if (m1.Count() > 0)
+    {
+        <div class="b1">
+            <div class="b1title"></div>
+            <div class="mm">
+                @{
+        var i = 1;
+        foreach (var m in m1)
+        {
+            var colorname = "ball" + m.color;
+            <ul class="m">
+                <li class="@colorname s1">
+                    <span>@m.name.Trim()</span>
+                    <input type="hidden" name="ball" value="@m.name.Trim()" />
+                </li>
+                <li class="s2">
+                    @*<span>平特</span>*@
+                    <input type="text" name="beilu" class="form-control" value="@m.tma" />
+                </li>
+                <li style="margin:0 3px;"><span>/</span></li>
+                <li class="s2">
+                    @*<span>平平</span>*@
+                    <input type="text" name="beilu2" class="form-control" value="@m.tmb" />
+                </li>
+            </ul>
+            if (i % 10 == 0)
+            {
+                @Html.Raw("</div>");
+                if (i > 39)
+                {
+                    @Html.Raw("<div class='mm' style='border:0'>");
+                }
+                else
+                {
+                    @Html.Raw("<div class='mm'>");
+                }
+            }
+            i++;
+        }
+                }
+            </div>
+        </div>
+        <div class="auto1">
+            <ul class="m">
+                <li class="sx">倍率:</li>
+                <li class="s">
+                    <input type="text" class="form-control" name="auto1" value="" />
+                </li>
+                <li class="s">
+                    <button class="btn btn-primary" id="auto1" type="button">统一推送</button>
+                </li>
+                <li class="sx">倍率2:</li>
+                <li class="s">
+                    <input type="text" class="form-control" name="auto12" value="" />
+                </li>
+                <li class="s">
+                    <button class="btn btn-primary" id="auto12" type="button">统一推送</button>
+                </li>
+                <li style="margin-left:20px">
+                    <span>平特</span>
+                    <span style="margin-left:5px; margin-right:5px">/</span>
+                    <span>平平</span>
+                </li>
+            </ul>
+        </div>
+    }
+    var m2 = from q in Model
+             where (q.color == null)
+             select q;
+    if (m2.Count() > 0)
+    {
+        <div class="b2">
+            <div class="b2title"></div>
+            @{
+        foreach (var m in m2)
+        {
+            <ul class="m">
+                <li class="sx">
+                    @{
+            var xname = m.name.Trim().Replace("尾", "");
+                    }
+                    <span>@m.name.Trim()</span>
+                    <input type="hidden" name="ball" value="@xname" />
+                </li>
+                <li class="s">
+                    <input class="form-control" name="beilu" type="text" value="@m.tma" />
+                </li>
+            </ul>
+        }
+            }
+
+        </div>
+        <div class="auto2">
+            <ul class="m">
+                <li class="sx">倍率:</li>
+                <li class="s">
+                    <input type="text" class="form-control" name="auto2" value="" />
+                </li>
+                <li class="s">
+                    <button class="btn btn-primary" id="auto2" type="button">统一推送</button>
+                </li>
+            </ul>
+        </div>
+    }
+}
+<script>
+    $(function () {
+        $(".auto1 #auto1").click(function () {
+            var beilu = $(".auto1 input[name='auto1']").val();
+            if (beilu == "") {
+                return;
+            }
+            $(".b1 input[name='beilu']").val(beilu);
+        })
+        $(".auto1 #auto12").click(function () {
+            var beilu = $(".auto1 input[name='auto12']").val();
+            if (beilu == "") {
+                return;
+            }
+            $(".b1 input[name='beilu2']").val(beilu);
+        })
+        $(".auto2 #auto2").click(function () {
+            var beilu = $(".auto2 input[name='auto2']").val();
+            if (beilu == "") {
+                return;
+            }
+            $(".b2 input[name='beilu']").val(beilu);
+        })
+    })
+</script>

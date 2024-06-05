@@ -1,0 +1,259 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+<style>
+    .xiazu-view-box {
+        width: 100%;
+        padding: 5px;
+        padding-top: 0;
+        overflow: hidden;
+        font-size: 12px;
+        background: #fff;
+    }
+
+        .xiazu-view-box ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .xiazu-view-box li {
+            list-style: none;
+            float: left;
+            padding: 5px;
+        }
+
+        .xiazu-view-box .A {
+            width: 20%;
+            text-align: left;
+        }
+
+        .xiazu-view-box .B {
+            width: 33%;
+            text-align: center;
+        }
+
+        .xiazu-view-box .C {
+            width: 15%;
+            text-align: right;
+        }
+
+        .xiazu-view-box .D {
+            width: 15%;
+            text-align: right;
+        }
+
+        .xiazu-view-box .E {
+            width: 10%;
+        }
+
+        .xiazu-view-box .F {
+            width: 7%;
+        }
+
+        .xiazu-view-box .title .A {
+            border: 1px solid #808080;
+            text-align: center;
+        }
+
+        .xiazu-view-box .title .B,
+        .xiazu-view-box .title .C,
+        .xiazu-view-box .title .D,
+        .xiazu-view-box .title .E,
+        .xiazu-view-box .title .F {
+            border: #808080;
+            border-style: solid solid solid none;
+            border-width: 1px;
+            text-align: center;
+        }
+
+        .xiazu-view-box .box .D {
+            text-align: center;
+        }
+
+        .xiazu-view-box .box .E {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .xiazu-view-box .box .F {
+            text-align: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .xiazu-view-box .box .A,
+        .xiazu-view-box .box .B,
+        .xiazu-view-box .box .C,
+        .xiazu-view-box .box .D,
+        .xiazu-view-box .box .E,
+        .xiazu-view-box .box .F {
+            border-bottom: 1px solid #808080;
+        }
+
+    .xiazu-btn li {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: right;
+        width: 100%;
+    }
+
+    .xiazu-btn .btn {
+        padding: 6px 30px;
+        margin-right: 5px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight:bold;
+    }
+    .alert{
+        font-size:12px;
+        margin:0 5px 5px 5px;
+        padding:5px;
+    }
+</style>
+<div style="width:100%;padding:5px;background:#fff">
+    <div style="width:100%;overflow:hidden;padding:5px;font-size:12px;border:1px solid #808080">
+        金额显示部分:&nbsp;<span style="color:#069418">绿色</span>&nbsp;【正常】，&nbsp;<span style="color:#9b0808">红色</span>&nbsp;【单注超限】，总金额&nbsp;<span style="color:#9b0808">红色</span>&nbsp;【总注超限】。<br />
+    </div>
+</div>
+<div class="alert alert-danger">
+    <span>点击红色【下注】按钮即表示已确认下注项目，下注后不能更改，如要取消请点击绿色【取消】按钮。</span>
+</div>
+<div class="xiazu-view-box">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "form999", name = "form999" }))
+    {
+        <ul class="title">
+            <li class="A"><span>类别</span></li>
+            <li class="B"><span>项目</span></li>
+            <li class="C"><span>倍率</span></li>
+            <li class="D"><span>佣金</span></li>
+            <li class="E"><span>金额</span></li>
+            <li class="F"><span>操作</span></li>
+        </ul>
+        foreach (var m in Model)
+        {
+            <ul class="box">
+                <li class="A">
+                    <span>@m.t1.Trim():@m.t2.Trim()</span>
+                    <input type="hidden" name="t1" value="@m.t1.Trim()" />
+                    <input type="hidden" name="t2" value="@m.t2.Trim()" />
+                </li>
+                <li class="B">
+                    <span>@m.ball.Trim()</span>
+                    <input type="hidden" name="ball" value="@m.ball.Trim()" />
+                    <input type="hidden" name="name" value="@m.name.Trim()" />
+                </li>
+                <li class="C">
+                    <span>@m.beilu</span>
+                    <input type="hidden" name="beilu" value="@m.beilu" />
+                </li>
+                <li class="D">
+                    @{var yj = m.yongjin * 100;}
+                    <span>
+                        @yj%
+                    </span>
+                    <input type="hidden" name="yongjing" value="@m.yongjin" />
+                </li>
+                <li class="E">
+                    @{
+                    var t1 = string.Empty;
+                    var t2 = string.Empty;
+                    if (x9web.Api.WebClass.f_liubie(ref t1, ref t2, ViewBag.id))
+                    {
+                        if (x9web.Api.WebClass.f_xiazhu_money_d(m.ball.Trim(), t1, t2, (int)m.money))
+                        {
+                            <span style="color:#06b11c">@m.money</span>
+                        }
+                        else
+                        {
+                            <span style="color:#9b0808">@m.money</span>
+                        }
+                    }
+                    }
+
+                    <input type="hidden" name="money" value="@m.money" />
+                </li>
+                <li class="F">
+                    <a class="xiazu-view-del" style="display:block"><i class="fa fa-trash-o"></i></a>
+                </li>
+            </ul>
+        }
+        <ul class="box">
+            <li class="A heji" style="width:100%;text-align:right;font-weight:bold">
+                总:&nbsp;
+                <span id="xiazu-total" style="color:#01227e">@ViewBag.total</span>
+                &nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;
+                合计:&nbsp;
+                @{
+        var hj = Model.Sum(a => a.money);
+        var t11 = string.Empty;
+        var t22 = string.Empty;
+        if (x9web.Api.WebClass.f_liubie(ref t11, ref t22, ViewBag.id))
+        {
+            if (hj <= x9web.Api.WebClass.User_info_m3 && x9web.Api.WebClass.f_xiazhu_money_z(t11, ViewBag.pagename, (decimal)hj))
+            {
+                <span id="xiazu-heji" style="color:#06b11c">@hj</span>
+            }
+            else
+            {
+                <span id="xiazu-heji" style="color:#9b0808">@hj</span>
+            }
+        }
+                }
+
+            </li>
+        </ul>
+        <ul class="xiazu-btn">
+            <li>
+                <button style="padding:6px 80px" type="button" id="send" name="send" class="btn btn-danger">下注</button>
+                <button type="button" id="reset" name="reset" class="btn btn-success">取消</button>
+            </li>
+        </ul>
+    }
+</div>
+<div class="alert alert-danger" style="margin-bottom:20px">
+    <span>点击红色【下注】按钮即表示已确认下注项目，下注后不能更改，如要取消请点击绿色【取消】按钮。</span>
+</div>
+<script>
+    $(function () {
+        $(".xiazu-view-del").click(function (e) {
+            var dom = $(this).parent().parent();
+            $(dom).remove();
+            var money = 0;
+            $("#form999 input[name='money']").each(function () {
+                money += parseInt($(this).val());
+            })
+            $(".box .heji #xiazu-heji").html(money);
+            var total = $("#form999").find("input[name='money']");
+            $(".box .heji #xiazu-total").html(total.length);
+        })
+        $(".xiazu-btn #reset").click(function () {
+            layer.closeAll();
+        })
+        $(".xiazu-btn #send").click(function () {
+            var btn = $(this);
+            var btn_close = $(".xiazu-btn #reset");
+            var f = $("#form999");
+            var index = layer.load(1, { shade: [0.3] });
+            f.ajaxSubmit({
+                url: "/handle/save_new_xiazu",
+                type: "POST",
+                success: function (data) {
+                    layer.close(index);
+                    switch (data.type) {
+                        case "err":
+                            layer.alert(data.msg);
+                            return;
+                        case "suc":
+                            $(btn).remove();
+                            $(btn_close).html("关闭");
+                            //alert(data.msg);
+                            layer.load(1, { shade: [0.3] });
+                            window.parent.location.reload();
+                            return;
+                    }
+                }
+            })
+
+        })
+    })
+</script>

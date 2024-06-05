@@ -1,0 +1,331 @@
+﻿@model x9web.Models.xconfig
+
+@{
+    ViewBag.Title = "系统设置";
+    Layout = "~/Views/Pages/Manage.cshtml";
+    string sx = ViewBag.sx;
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        .box {
+            border: 1px solid #0094ff;
+            overflow: hidden;
+        }
+
+            .box ul {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                border-bottom: 1px solid #86ccff;
+            }
+
+            .box li {
+                float: left;
+            }
+
+            .box .ms {
+                height: 38px;
+                line-height: 38px;
+                margin-left: 10px;
+            }
+
+            .box .s {
+                padding: 3px 0;
+                margin-left: 5px;
+            }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .box .btn {
+            border-radius: 0;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .box2 {
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+            .box2 .b1 {
+                border: 1px solid #0094ff;
+                overflow: hidden;
+            }
+
+            .box2 .b1title {
+                padding: 5px;
+                overflow: hidden;
+                height: 32px;
+                background: #ddd;
+            }
+
+            .box2 .b1 .mm {
+                float: left;
+                border-right: 1px solid #0094ff;
+                overflow: hidden;
+                width: 20%;
+            }
+
+        .b1 .mm ul {
+            padding: 5px;
+        }
+
+        .b1 .mm li {
+            float: left;
+        }
+
+        .b1 .mm .m {
+            overflow: hidden;
+            border-top: 1px solid #6dc2ff;
+            margin-bottom: 0;
+        }
+
+        .b1 .s1 {
+            margin-right: 10px;
+        }
+
+        .box2 .form-control {
+            border-radius: 0;
+            height: 29px;
+            width: 80px;
+        }
+
+        .b1 .m .form-control {
+            width: 70px;
+        }
+
+        .wuxi-btn {
+            border: 1px solid #6dc2ff;
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+            .wuxi-btn #edit-wuxi {
+                border-radius: 0;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("#set").click(function () {
+                var webname = $(".box input[name='webname']").val();
+                var sx = $(".box select[name='sx']").val();
+                var xbool = $(".box input[name='web_switch']").is(":checked");
+                if (webname == '') {
+                    layer.alert("网站名称不能为空！");
+                    return;
+                }
+                $.ajax({
+                    url: "/handle/web_config",
+                    type: "POST",
+                    async: false,
+                    data: { name: webname, sx: sx },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                return;
+                            case "suc":
+                                alert(data.msg);
+                                window.location.reload();
+                                return;
+                        }
+                    }
+                })
+            })
+            $(".wuxi-btn #edit-wuxi").click(function () {
+                var dom1 = $(".box2 input[name='ball']");
+                var dom2 = $(".box2 select[name='wuxi']");
+                var ball = "";
+                var wuxi = "";
+                for (var i = 0; i < dom1.length; i++) {
+                    ball += $(dom1[i]).val();
+                    ball += ",";
+                    wuxi += $(dom2[i]).val();
+                    wuxi += ",";
+                }
+                if (ball.length > 0) {
+                    ball = ball.substring(0, ball.length);
+                }
+                if (wuxi.length > 0) {
+                    wuxi = wuxi.substring(0, wuxi.length);
+                }
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/handle/edit_wuxi",
+                    type: "POST",
+                    data: { ball: ball, wuxi: wuxi },
+                    success: function (data) {
+                        layer.close(index);
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                return;
+                            case "suc":
+                                alert(data.msg);
+                                window.location.reload();
+                                return;
+                        }
+                    }
+                })
+            })
+            $("input[name='web_switch']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var id = 6006;
+                    var dom = $(this);
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: 12345 },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+}
+<div class="m-top">
+    <ol class="breadcrumb">
+        <li class="active">系统设置</li>
+    </ol>
+</div>
+<div class="box">
+    <ul class="m">
+        <li class="ms">网站名称：</li>
+        <li class="s">
+            <input type="text" name="webname" class="form-control" value="@Model.webname.Trim()" />
+        </li>
+    </ul>
+    <ul class="m">
+        <li class="ms">生肖设置：</li>
+        <li class="s">
+            <select name="sx" id="sx" class="form-control">
+                @{
+                    string[] sxx = Model.s12sx.Trim().Split(',');
+                    foreach (var s in sxx)
+                    {
+                        var e = "selected=\"selected\" ";
+                        if (s != sx)
+                        {
+                            e = "";
+                        }
+                        <option value="@s" @e>@s</option>
+                    }
+                }
+            </select>
+        </li>
+    </ul>
+    <ul class="m">
+        <li class="s" style="padding:10px">
+            <button type="button" name="set" id="set" class="btn btn-success">提交设置</button>
+        </li>
+    </ul>
+    <ul class="m" style="border:0">
+        <li class="ms">网站开关：</li>
+        <li class="s" style="padding-top:6px">
+            @{
+                var check = "";
+                if ((bool)Model.web_switch)
+                {
+                    check = "checked ";
+                }
+            }
+            <input type="checkbox" name="web_switch" id="web_switch" @check />
+        </li>
+    </ul>
+</div>
+<div>
+    <ol class="breadcrumb" style="margin-top:10px;margin-bottom:10px">
+        <li class="active">五行设置</li>
+    </ol>
+</div>
+<div class="box2">
+    @{
+        var xball_model = new List<x9web.Models.xball>(ViewBag.xball_model);
+        var m1 = from q in xball_model
+                 where (q.color != null)
+                 select q;
+        if (m1.Count() > 0)
+        {
+            <div class="b1">
+                <div class="b1title"></div>
+                <div class="mm">
+                    @{
+            var i = 1;
+            foreach (var m in m1)
+            {
+                var colorname = "ball" + m.color;
+                <ul class="m">
+                    <li class="@colorname s1">
+                        <span>@m.name.Trim()</span>
+                        <input type="hidden" name="ball" value="@m.name.Trim()" />
+                    </li>
+                    <li class="s2" style="margin-left:10px;margin-top:4px">
+                        @m.wuxin.ToString()
+                    </li>
+                    <li class="s3">
+                        @{
+                var sss1 = "金,木,水,火,土";
+                string[] sss2 = sss1.Split(',');
+
+                <select name="wuxi" id="wuxi" class="form-control" style="padding:3px;margin-left:20px">
+                    @{
+                foreach (var s in sss2)
+                {
+                    string eee = "";
+                    if (s == m.wuxin.ToString())
+                    {
+                        eee = "selected=\"selected\" ";
+                    }
+                    <option value="@s" @eee>@s</option>
+                }
+                    }
+                </select>
+                        }
+                    </li>
+                </ul>
+                if (i % 10 == 0)
+                {
+                    @Html.Raw("</div>");
+                                       if (i > 39)
+                                       {
+                                        @Html.Raw("<div class='mm' style='border:0'>");
+                                       }
+                                       else
+                                       {
+                                        @Html.Raw("<div class='mm'>");
+                                       }
+                }
+                i++;
+            }
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="wuxi-btn">
+    <button class="btn btn-primary" id="edit-wuxi" name="edit-wuxi" type="button">修改五行设置</button>
+</div>

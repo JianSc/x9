@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 15, 19.125" name="Data">
+  <DataContextMoniker Name="/Sqlconnect" />
+  <nestedChildShapes>
+    <classShape Id="8107f3cd-13ab-45bd-a148-dcd6d9ed148b" absoluteBounds="0.75, 0.75, 2, 1.9068933105468751">
+      <DataClassMoniker Name="/Sqlconnect/xauto_beilu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="816b7d1e-a242-4355-ad91-6044bf28f5a8" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.346893310546875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8eb7e443-c51c-405f-853e-fcc46ab41229" absoluteBounds="3.75, 0.75, 2, 13.548922119140626">
+      <DataClassMoniker Name="/Sqlconnect/xball" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e7e962f3-e418-440b-acc3-9d092b6b8094" absoluteBounds="3.765, 1.21, 1.9700000000000002, 12.988922119140625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8aa57e26-c4a3-4df5-bd2d-beec2eff5e47" absoluteBounds="6.75, 0.75, 2, 13.364128011067708">
+      <DataClassMoniker Name="/Sqlconnect/xball_copy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7dd2ae85-b884-4690-882a-c5fc125f1def" absoluteBounds="6.765, 1.21, 1.9700000000000002, 12.804128011067707" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="597c70df-8632-48a4-9cc9-a7db2019ac86" absoluteBounds="9.75, 0.75, 2, 1.3525109863281253">
+      <DataClassMoniker Name="/Sqlconnect/xconfig" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a295014d-34c1-46b2-9dcc-f3539771a936" absoluteBounds="9.765, 1.21, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ee07708e-f5ff-4b49-b28e-e29f0f29cf90" absoluteBounds="9.75, 3.75, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/Sqlconnect/xliubie" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fc87b032-0469-4d69-b34a-6f7907b6af47" absoluteBounds="9.765, 4.21, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cbdb4360-5441-4179-b147-ce2066f78403" absoluteBounds="9.75, 6.75, 2, 1.3525109863281255">
+      <DataClassMoniker Name="/Sqlconnect/xmarquee" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e8a2c45e-c300-4c6c-a3f9-fa7d5216ff92" absoluteBounds="9.765, 7.21, 1.9700000000000002, 0.792510986328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8aecd62b-8c0a-4f93-9c1e-bbb582607d0d" absoluteBounds="9.75, 9.75, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/Sqlconnect/xmenus" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c63eb8e7-72f8-440f-8a96-48ccb88a0a80" absoluteBounds="9.765, 10.21, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0cc38283-5a4d-4785-baf8-849ce5fae3e8" absoluteBounds="12.75, 0.75, 2, 4.1244226074218737">
+      <DataClassMoniker Name="/Sqlconnect/xqisu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1f977449-18be-4c03-a50d-46fea6f43694" absoluteBounds="12.765, 1.21, 1.9700000000000002, 3.564422607421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="11fa10c8-d977-4160-9d04-2e67954a94ee" absoluteBounds="12.75, 5.75, 2, 2.2764815266927094">
+      <DataClassMoniker Name="/Sqlconnect/xtuisui" />
+      <nestedChildShapes>
+        <elementListCompartment Id="63614fa6-4b3e-445d-813c-25f64bb5ef85" absoluteBounds="12.765, 6.21, 1.9700000000000002, 1.7164815266927085" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="700d7702-b568-44ab-9a40-5b96ae5c5a70" absoluteBounds="12.75, 9.75, 2, 3.5700402832031237">
+      <DataClassMoniker Name="/Sqlconnect/xusers" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4c339284-5379-4127-92b0-c3a6ca0b3acb" absoluteBounds="12.765, 10.21, 1.9700000000000002, 3.010040283203125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dc70197a-3003-4f02-8fde-9277abb250e7" absoluteBounds="9.75, 14.75, 2, 4.1244226074218755">
+      <DataClassMoniker Name="/Sqlconnect/xxiazu" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8609b7ac-d550-4b72-8429-0629063a862e" absoluteBounds="9.765, 15.21, 1.9700000000000002, 3.564422607421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

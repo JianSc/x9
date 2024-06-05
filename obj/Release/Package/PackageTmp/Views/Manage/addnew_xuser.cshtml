@@ -1,0 +1,414 @@
+﻿@model IEnumerable<x9web.Models.xtuisui>
+
+@{
+    ViewBag.Title = "添加会员";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .box1 {
+            border: 1px solid #0094ff;
+            overflow: hidden;
+        }
+
+            .box1 .m {
+                border-bottom: 1px solid #aadcff;
+                padding: 5px 0;
+            }
+
+            .box1 .ms {
+                float: left;
+                padding: 8px 10px;
+                text-align: right;
+            }
+
+            .box1 .mms {
+                width: 90px;
+            }
+
+            .box1 .s {
+                float: left;
+                padding: 2px;
+            }
+
+        .box2 {
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+            .box2 .m {
+                width: 50%;
+                float: left;
+                overflow: hidden;
+                border: 1px solid #4fb5ff;
+            }
+
+            .box2 .mm {
+                border-top: 1px solid #7fc4f6;
+            }
+
+                .box2 .mm li {
+                    float: left;
+                    padding: 3px 5px;
+                }
+
+            .box2 .form-control {
+                width: 80px;
+                height: 20px;
+            }
+
+            .box2 .A {
+                width: 80px;
+            }
+
+            .box2 .B {
+                width: 110px;
+                text-align: center;
+            }
+
+            .box2 .C {
+                width: 110px;
+            }
+
+            .box2 .D {
+                width: 110px;
+            }
+
+            .box2 .E {
+                width: 110px;
+            }
+
+            .box2 .title {
+                background: #e1f3ff;
+                text-align: center;
+            }
+
+                .box2 .title li {
+                    padding: 5px;
+                }
+
+        .subut {
+            margin: 10px 0 10px 0;
+            padding: 8px;
+            border: 1px solid #0094ff;
+        }
+
+        #exit {
+            margin-left: 10px;
+        }
+
+        .auto {
+            margin: 10px 0 10px 0;
+            border: 1px solid #0094ff;
+            padding: 5px;
+            overflow: hidden;
+        }
+
+            .auto .m {
+                overflow: hidden;
+            }
+
+            .auto .sx {
+                margin-top: 3px;
+            }
+
+            .auto .form-control {
+                height: 26px;
+                width: 80px;
+                border-radius: 0;
+            }
+
+            .auto .btn {
+                border-radius: 0;
+                padding: 2px 12px;
+            }
+
+            .auto li {
+                float: left;
+                margin: 0 5px 0 5px;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("input[name='gf_state']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    if (xbool) {
+                        $(".box1 input[name='gf']").removeAttr('readonly');
+                    } else {
+                        var dom = $(".box1 input[name='gf']");
+                        $(dom).val('');
+                        $(dom).attr('readonly', 'readonly');
+                    }
+
+                }
+            })
+
+            $("#exit").click(function () {
+                window.location.href = "/manage/member";
+            })
+
+            $("#auto_yongjin").click(function () {
+                var s = $(".auto input[name='auto_yongjin']").val();
+                if (s == '') {
+                    return;
+                }
+                $("#form1 input[name='yongjin']").each(function (e) {
+                    $(this).val(s);
+                })
+            })
+            $("#auto_mine").click(function () {
+                var s = $(".auto input[name='auto_mine']").val();
+                if (s == '') {
+                    return;
+                }
+                $("#form1 input[name='min_e']").each(function (e) {
+                    $(this).val(s);
+                })
+            })
+            $("#auto_danzue").click(function () {
+                var s = $(".auto input[name='auto_danzue']").val();
+                if (s == '') {
+                    return;
+                }
+                $("#form1 input[name='danzu_e']").each(function (e) {
+                    $(this).val(s);
+                })
+            })
+            $("#auto_maxe").click(function () {
+                var s = $(".auto input[name='auto_maxe']").val();
+                if (s == '') {
+                    return;
+                }
+                $("#form1 input[name='max_e']").each(function (e) {
+                    $(this).val(s);
+                })
+            })
+            $("#addnew").click(function () {
+                var name = $("#form1 input[name='name']").val();
+                var pwd = $("#form1 input[name='pwd']").val();
+                var m1 = $("#form1 input[name='m1']").val();
+                var f = $("#form1");
+                var gf = $("#form1 input[name='gf']").val();
+                if (name == '') {
+                    layer.alert("请输入新会员帐号！");
+                    return;
+                }
+                if (pwd = '') {
+                    layer.alert("请输入新会员密码！");
+                    return;
+                }
+                if (m1 == '') {
+                    layer.alert("请输入新会员信用额度！");
+                    return;
+                }
+                m1 = parseInt(m1);
+                if (isNaN(m1)) {
+                    layer.alert("信用额度只能输入整数！");
+                    $("#form1 input[name='m1']").val('');
+                    return;
+                }
+                if (gf != '') {
+                    var xgf = gf;
+                    xgf = parseFloat(xgf);
+                    if (isNaN(xgf)) {
+                        layer.alert("占股额度只能输入小数！");
+                        $("#form1 input[name='gf']").val('');
+                        return;
+                    }
+                }
+
+                var index = layer.load(1, {shade:[0.3]});
+
+                f.ajaxSubmit({
+                    url: "/handle/save_addnew_user",
+                    type: "POST",
+                    async: true,
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.close(index);
+                                layer.alert(data.msg);
+                                return;
+                                break;
+                            case "suc":
+                                layer.close(index);
+                                alert(data.msg);
+                                window.location.reload();
+                                return;
+                                break;
+                        }
+                        
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>会员管理</li>
+        <li class="active">添加会员</li>
+    </ol>
+</div>
+@using (Html.BeginForm("", "", FormMethod.Post, new { name = "form1", id = "form1" }))
+{
+    <div class="box1">
+        <ul class="m">
+            <li class="ms mms">帐号:</li>
+            <li class="s">
+                <input type="text" name="name" class="form-control" />
+            </li>
+            <li class="ms mms">密码:</li>
+            <li class="s">
+                <input type="password" name="pwd" class="form-control" />
+            </li>
+        </ul>
+        <ul class="m">
+            <li class="ms mms">姓名:</li>
+            <li class="s">
+                <input type="text" name="xinmin" class="form-control" />
+            </li>
+            <li class="ms mms">电话:</li>
+            <li class="s">
+                <input type="text" name="tel" class="form-control" />
+            </li>
+            <li class="ms mms">性别:</li>
+            <li class="s" style="margin-right:100px">
+                <select name="xb" id="xb" class="form-control">
+                    <option value="男" selected="selected">男</option>
+                    <option value="女">女</option>
+                </select>
+            </li>
+            <li class="ms mms">信用额度:</li>
+            <li class="s">
+                <input type="text" name="m1" class="form-control" />
+            </li>
+        </ul>
+        <ul class="m">
+            <li class="ms mms">
+                占股:
+            </li>
+            <li class="s">
+                <input type="text" name="gf" readonly class="form-control" />
+            </li>
+            <li class="ms mms">
+                是否占股:
+            </li>
+            <li class="s" style="margin-top:4px">
+                <input type="checkbox" name="gf_state" />
+            </li>
+        </ul>
+    </div>
+    <div class="box2">
+        <div class="m">
+            <ul class="title mm">
+                <li class="A">名称</li>
+                <li class="B">佣金</li>
+                <li class="C">最小限额</li>
+                <li class="D">单注限额</li>
+                <li class="E">单项限额</li>
+            </ul>
+            @{
+    var i = 1;
+    foreach (var m in Model)
+    {
+        <ul class="mm">
+            <li class="A">@m.name.Trim()</li>
+            <li class="B">
+                <input type="hidden" name="tname" value="@m.name.Trim()" />
+                <input type="text" class="form-control" name="yongjin" value="@m.yongjin">
+            </li>
+            <li class="C">
+                <input type="text" class="form-control" name="min_e" value="@m.min_e" />
+            </li>
+            <li class="D">
+                <input type="text" class="form-control" name="danzu_e" value="@m.danzu_e" />
+            </li>
+            <li class="E">
+                <input type="text" class="form-control" name="max_e" value="@m.max_e" />
+            </li>
+        </ul>
+
+        if (i % 27 == 0)
+        {
+            if (i < 54)
+            {
+                @Html.Raw("</div>")
+                @Html.Raw("<div class='m' style='border-left:0'>")
+                <ul class="title mm">
+                    <li class="A">名称</li>
+                    <li class="B">佣金</li>
+                    <li class="C">最小限额</li>
+                    <li class="D">单注限额</li>
+                    <li class="E">单项限额</li>
+                </ul>
+            }
+
+        }
+        i++;
+    }
+            }
+        </div>
+    </div>
+}
+<div class="auto">
+    <ul class="m">
+        <li class="sx">佣金:</li>
+        <li class="s">
+            <input type="text" class="form-control" name="auto_yongjin" value="" />
+        </li>
+        <li class="s">
+            <button class="btn btn-primary" id="auto_yongjin" type="button">统一推送</button>
+        </li>
+        <li class="sx">最小限额:</li>
+        <li class="s">
+            <input type="text" class="form-control" name="auto_mine" value="" />
+        </li>
+        <li class="s">
+            <button class="btn btn-primary" id="auto_mine" type="button">统一推送</button>
+        </li>
+        <li class="sx">单注限额:</li>
+        <li class="s">
+            <input type="text" class="form-control" name="auto_danzue" value="" />
+        </li>
+        <li class="s">
+            <button class="btn btn-primary" id="auto_danzue" type="button">统一推送</button>
+        </li>
+        <li class="sx">单项限额:</li>
+        <li class="s">
+            <input type="text" class="form-control" name="auto_maxe" value="" />
+        </li>
+        <li class="s">
+            <button class="btn btn-primary" id="auto_maxe" type="button">统一推送</button>
+        </li>
+    </ul>
+</div>
+<div class="subut">
+    <button class="btn btn-success" type="button" id="addnew">添加会员</button>
+    <button class="btn btn-primary" type="button" id="exit">取消</button>
+</div>

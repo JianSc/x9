@@ -1,0 +1,102 @@
+﻿@model x9web.Models.xxiazu
+<style>
+    .xiazu-view-dan-box {
+        font-size: 12px;
+        padding: 5px;
+        background: #fff;
+        width: 100%;
+        overflow: hidden;
+    }
+
+        .xiazu-view-dan-box ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #9c9c9c;
+        }
+
+        .xiazu-view-dan-box .xiazu-view-dan-btn .btn {
+            border-radius: 0;
+        }
+
+        .xiazu-view-dan-box li {
+            list-style: none;
+            padding: 5px;
+            border-bottom: 1px solid #9c9c9c;
+            width: 100%;
+            text-align: center;
+        }
+
+            .xiazu-view-dan-box li input {
+                border-radius: 0;
+            }
+</style>
+<div class="xiazu-view-dan-box">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { name = "form3", id = "form3" }))
+    {
+
+        <ul>
+            <li style="font-weight:bold">下注类别</li>
+            <li>
+                <span>@Model.t1.Trim():@Model.t2.Trim()</span>
+            </li>
+            <li style="font-weight:bold">下注项目</li>
+            <li>
+                <span>@Model.ball.Trim()</span>
+                <input type="hidden" name="ball" value="@Model.ball.Trim()" />
+                <input type="hidden" name="name" value="@Model.name.Trim()" />
+            </li>
+            <li style="font-weight:bold">下注倍率</li>
+            <li>
+                <span>@Model.beilu</span>
+                <input type="hidden" name="beilu" value="@Model.beilu" />
+            </li>
+            <li style="font-weight:bold">佣金</li>
+            <li>
+                @{var yj = Model.yongjin * 100;}
+                @yj%
+            </li>
+            <li style="font-weight:bold">输入金额</li>
+            <li>
+                <input class="form-control" type="text" id="money" name="money" onkeyup="value = this.value.replace(/\D+/g, '')"/>
+            </li>
+            <li class="xiazu-view-dan-btn" style="border-bottom:0">
+                <input type="text" style="display:none" />
+                <button class="btn btn-primary" id="send" name="send" type="button">提交</button>
+                <button class="btn btn-primary" id="reset" name="reset" type="button" style="margin-left:5px">关闭</button>
+            </li>
+        </ul>
+    }
+</div>
+<script>
+    $(function () {
+        $("#form3 input[name='money']").focus();
+        $(".xiazu-view-dan-btn #reset").click(function () {
+            layer.closeAll();
+        })
+        $(".xiazu-view-dan-btn #send").click(function () {
+            var money = $("#form3 input[name='money']").val();
+            if (money == 0 || money == null) {
+                layer.msg("下注金额没有输入");
+                $("#form3 input[name='money']").focus();
+                return;
+            }
+            var f = $(this).parent().parent().parent();
+            f.ajaxSubmit({
+                url: "/handle/xiazu_view/@ViewBag.id",
+                type: "POST",
+                async: false,
+                success: function (data) {
+                    layer.closeAll();
+                    layer.open({
+                        type: 1,
+                        title: "<i class='fa fa-sign-in'></i> 确认下注",
+                        resize: false,
+                        area: ["600px", "400px"],
+                        content: data
+                    })
+                }
+            })
+        })
+    })
+</script>

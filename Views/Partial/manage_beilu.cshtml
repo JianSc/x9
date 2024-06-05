@@ -1,0 +1,19 @@
+﻿@model IEnumerable<x9web.Models.xliubie>
+
+@{
+    foreach (var m in Model)
+    {
+        <li><a onclick="getbox(this,@m.sid)">@m.t2.Trim()</a></li>
+    }
+}
+
+<script>
+    $(function () {
+        $(".nav-pills a").click(function () {
+            $(".nav-pills .active").each(function () {
+                $(this).removeClass("active");
+            })
+            $(this).parent().addClass("active");
+        })
+    })
+</script>

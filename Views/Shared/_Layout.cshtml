@@ -1,0 +1,30 @@
+﻿@if (!x9web.Api.WebClass.auto_pankou())
+{
+    Response.Write("连接出现异常，请稍候再试！");
+    return;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    @*<meta name="viewport" content="width=device-width" />*@
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    @*<meta name="viewport" content="width=device-width,initial-scale=1" />*@
+    <meta name="renderer" content="webkit" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @RenderSection("styles", required: false)
+    <!--if lt IE 9-->
+    <script type="text/javascript" src="~/Scripts/html5.js"></script>
+    <script type="text/javascript" src="~/Scripts/respond.min.js"></script>
+    <!--endif-->
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+<ul class="title">
+    <li class="AA">序号</li>
+    <li class="II">期号</li>
+    <li class="CC">会员</li>
+    <li class="DD">注数</li>
+    <li class="EE">下注总额</li>
+    <li class="FF">会员占成</li>
+    <li class="GG">公司占成</li>
+</ul>
+@{
+    var id = 1;
+    var ms = from q in Model
+             group q by new { q.pname, q.pid, q.qisu } into g
+             select new
+             {
+                 pname = g.Key.pname,
+                 pid = g.Key.pid,
+                 qisu = g.Key.qisu,
+                 zs = g.Count(a => a.xid == a.xid),
+                 money = g.Sum(a => a.money),
+                 moneye = g.Sum(a => a.moneye)
+             };
+    foreach (var m in ms)
+    {
+        <ul class="mb" onclick="select(this,'@m.pname.Trim()')">
+            <li class="AA">@id</li>
+            <li class="II">
+                <span>@m.qisu</span>
+                <input type="hidden" name="qisu" value="@m.qisu" />
+        </li>
+        <li class="CC">@m.pname.Trim()<span style="color:#988100">@@@x9web.Api.WebClass.f_user_gd((int)m.pid)</span></li>
+        <li class="DD">@m.zs</li>
+        <li class="EE">@m.money</li>
+        <li class="FF">@x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money)</li>
+        <li class="GG">@x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money)</li>
+    </ul>
+        id++;
+    }
+}

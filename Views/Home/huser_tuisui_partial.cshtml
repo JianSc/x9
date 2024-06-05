@@ -1,0 +1,39 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+<ul class="title">
+    <li class="AA">期数</li>
+    <li class="BB">帐号</li>
+    <li class="CC">球号</li>
+    <li class="DD">赔率</li>
+    <li class="EE">金额</li>
+    <li class="FF">彩金</li>
+    <li class="GG">佣金</li>
+</ul>
+@{
+    foreach (var m in Model)
+    {
+        var color = "";
+        if ((bool)m.z)
+        {
+            color = "R";
+        }
+        <ul class="m @color">
+            <li class="AA">@m.qisu</li>
+            <li class="BB">@m.pname.Trim()</li>
+            <li class="CC">@m.ball.Trim()</li>
+            <li class="DD">@m.beilu.Trim()</li>
+            <li class="EE">@m.money</li>
+            <li class="FF">@m.moneye</li>
+            <li class="GG">@m.yongjine2</li>
+        </ul>
+    }
+}
+<ul class="bom">
+    <li class="AA">&nbsp;</li>
+    <li class="BB">&nbsp;</li>
+    <li class="CC"><span style="font-weight:bold">合计:</span></li>
+    <li class="DD">&nbsp;</li>
+    <li class="EE">@Model.Sum(a=>a.money)</li>
+    <li class="FF">@Model.Sum(a=>a.moneye)</li>
+    <li class="GG">@Model.Sum(a=>a.yongjine2)</li>
+</ul>

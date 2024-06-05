@@ -1,0 +1,70 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    var ms = from q in Model
+             group q by new { q.qisu, q.t2 } into g
+             select new
+             {
+                 qisu = g.Key.qisu,
+                 t2 = g.Key.t2,
+                 zs = g.Count(a => a.t2 == a.t2),
+                 money = g.Sum(a => a.money),
+                 yonge = g.Sum(a => a.yongjine),
+                 moneye = g.Sum(a => a.moneye)
+             };
+}
+<ul class="title">
+    <li class="AA">序号</li>
+    <li class="GG">期号</li>
+    <li class="BB">类别</li>
+    <li class="CC">注数</li>
+    <li class="DD">下注金额</li>
+    <li class="EE">佣金</li>
+    <li class="FF">盈亏</li>
+</ul>
+@{
+    var id = 1;
+    foreach (var m in ms.OrderByDescending(a=>a.moneye).ToList())
+    {
+        string color = "";
+        if (m.moneye >= 0)
+        {
+            color = "R";
+        }
+        <ul class="m @color" onclick="select(this,'@m.t2.Trim()')">
+            <li class="AA">@id</li>
+            <li class="GG">
+                @m.qisu
+                <input type="hidden" name="qisu" value="@m.qisu" />
+            </li>
+            <li class="BB">@m.t2.Trim()</li>
+            <li class="CC">@m.zs</li>
+            <li class="DD">@m.money</li>
+            <li class="EE">@m.yonge</li>
+            <li class="FF">
+                <span>@m.moneye</span>
+                @{
+        var mx = Model.Where(a => a.t2.Trim() == m.t2.Trim()).ToList();
+        var mm = "";
+        foreach (var ma in mx)
+        {
+            mm += ma.id;
+            mm += ",";
+        }
+        mm = mm.Substring(0, mm.Length - 1);
+                }
+                <input type="hidden" name="xid" value="@mm" />
+            </li>
+        </ul>
+        id++;
+    }
+}
+<ul class="bom">
+    <li class="AA">&nbsp;</li>
+    <li class="GG">&nbsp;</li>
+    <li class="BB"><span style="font-weight:bold">合计：</span></li>
+    <li class="CC">@ms.Sum(a => a.zs)</li>
+    <li class="DD">@ms.Sum(a => a.money)</li>
+    <li class="EE">@ms.Sum(a => a.yonge)</li>
+    <li class="FF">@ms.Sum(a => a.moneye)</li>
+</ul>

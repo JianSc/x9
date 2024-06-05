@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "赔率设置";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        ul{
+            margin:0;
+            padding:0;
+        }
+
+        .nav-pills {
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            height: 45px;
+        }
+
+            .nav-pills li > a {
+                border-radius: 0;
+                cursor: pointer;
+            }
+
+        .nav li > a {
+            padding: 6px 10px;
+        }
+
+        .nav-tabs li > a {
+            cursor: pointer;
+        }
+
+        .box {
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+            .box .b1 {
+                border: 1px solid #0094ff;
+                overflow: hidden;
+            }
+            .box .b1title{
+                padding:5px;
+                overflow:hidden;
+                height:32px;
+                background:#ddd;
+            }
+            .box .b1 .mm{
+                float:left;
+                border-right:1px solid #0094ff;
+                overflow:hidden;
+                width:20%;
+            }
+            .b1 .mm ul{
+                padding:5px;
+            }
+            .b1 .mm li{
+                float:left;
+            }
+            .b1 .mm .m{
+                overflow:hidden;
+                border-top:1px solid #6dc2ff;
+            }
+            .b1 .s1{
+                margin-right:10px;
+            }
+            .form-control{
+                border-radius:0;
+                height:29px;
+                width:80px;
+            }
+            .b1 .m .form-control{
+                width:70px;
+            }
+            .b2{
+                border: 1px solid #0094ff;
+                overflow:hidden;
+            }
+            .box .b2title{
+                padding:5px;
+                overflow:hidden;
+                height:32px;
+                background:#ddd;
+                border-bottom:1px solid #6dc2ff;
+            }
+            .box .auto1{
+                overflow:hidden;
+                border:1px solid #0094ff;
+                border-top:0;
+                margin-bottom:10px;
+                padding:5px;
+            }
+            .auto1 li{
+                float:left;
+                margin:0 5px;
+            }
+            .auto1 .sx{
+                line-height:29px;
+            }
+            .box .auto2{
+                overflow:hidden;
+                border:1px solid #0094ff;
+                border-top:0;
+                margin-bottom:10px;
+                padding:5px;
+            }
+            .auto2 li{
+                float:left;
+                margin:0 5px;
+            }
+            .auto2 .sx{
+                line-height:29px;
+            }
+            .auto1 .btn,
+            .auto2 .btn{
+                border-radius:0;
+                padding:4px 8px;
+            }
+            .b2 .m{
+                float:left;
+                margin:5px;
+                overflow:hidden;
+                border:1px solid #6dc2ff;
+                padding:5px;
+            }
+            .b2 .m li{
+                float:left;
+            }
+            .b2 .sx{
+                line-height:29px;
+                margin-right:10px;
+            }
+            .b2 .form-control{
+                width:75px;
+            }
+            .setbut{
+                padding:5px;
+                margin-bottom:20px;
+                border:1px solid #0094ff;
+            }
+            .setbut .btn{
+                border-radius:0;
+                padding:5px 8px;
+            }
+
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".nav-tabs a").click(function () {
+                if ($(this).parent().hasClass('active')) {
+                    return;
+                }
+                var name = $(this).html();
+                var dom = $(this).parent().parent();
+                var active = $(dom).find(".active");
+                $(active).each(function () {
+                    $(this).removeClass('active');
+                })
+                $(this).parent().addClass('active');
+                $.ajax({
+                    url: "/partial/beilu_menud",
+                    type: "POST",
+                    async: false,
+                    data: { name: name },
+                    success: function (data) {
+                        $(".nav-pills").html(data);
+                    }
+                })
+            })
+            $(".nav-pills a").click(function () {
+                $(".nav-pills .active").each(function () {
+                    $(this).removeClass('active');
+                })
+                $(this).parent().addClass('active');
+            })
+            $("#set").click(function () {
+                var f = $("#form1");
+                var index = layer.load(1, {shade:[0.3]});
+
+                f.ajaxSubmit({
+                    url: "/handle/edit_beilu",
+                    type: "POST",
+                    success: function (data) {
+                        layer.close(index);
+                        layer.alert(data.msg);
+                    }
+                })
+            })
+            $(".auto1 #auto1").click(function () {
+                var beilu = $(".auto1 input[name='auto1']").val();
+                if (beilu == "") {
+                    return;
+                }
+                $(".b1 input[name='beilu']").val(beilu);
+            })
+            $(".auto1 #auto12").click(function () {
+                var beilu = $(".auto1 input[name='auto12']").val();
+                if (beilu == "") {
+                    return;
+                }
+                $(".b1 input[name='beilu2']").val(beilu);
+            })
+            $(".auto2 #auto2").click(function () {
+                var beilu = $(".auto2 input[name='auto2']").val();
+                if (beilu == "") {
+                    return;
+                }
+                $(".b2 input[name='beilu']").val(beilu);
+            })
+        })
+        function getbox(obj) {
+            var name = $(obj).html();
+            if ($(obj).parent().hasClass('active')) {
+                return;
+            }
+            $("#form1 input[name='panname']").val(name);
+            var index = layer.load(1, {shade:[0.3]});
+            $.ajax({
+                url: "/partial/manage_beilu_ball",
+                type: "POST",
+                data: { name: name },
+                success: function (data) {
+                    layer.close(index);
+                    $(".box").html(data);
+                }
+            })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li class="active">赔率设置</li>
+    </ol>
+</div>
+<div>
+    <ul class="nav nav-tabs">
+        @{
+            string menu_zz = "特码,正码,正码特,连码,多选不中,多选中一,特码项目,生肖项目,总数项目,生肖连,尾数连,特平中";
+            string[] menu_z = menu_zz.Split(',');
+            foreach (var s in menu_z)
+            {
+                if (s == "特码")
+                {
+                    <li class="active"><a>@s</a></li>
+                }
+                else
+                {
+                    <li><a>@s</a></li>
+                }
+            }
+        }
+    </ul>
+    <ul class="nav nav-pills">
+        <li class="active"><a onclick="getbox(this,1)">特A</a></li>
+        <li><a onclick="getbox(this)">特B</a></li>
+    </ul>
+</div>
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form1", name = "form1" }))
+{
+    <input type="hidden" name="panname" value="特A" />
+    <div class="box">
+        @Html.Action("manage_beilu_ball", "partial", new { name = "特A" })
+    </div>
+}
+<div class="setbut">
+    <button class="btn btn-success" type="button" id="set" name="set">提交修改</button>
+</div>

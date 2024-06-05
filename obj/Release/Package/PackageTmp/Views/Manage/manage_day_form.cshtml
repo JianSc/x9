@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "期报表";
+    Layout = "~/Views/Pages/Manage.cshtml";    
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select li {
+                float: left;
+            }
+
+        .box {
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+            .box .title {
+                background: #ccc;
+                border-top: 1px solid #808080;
+            }
+
+            .box .bom {
+                background: #adddff;
+            }
+
+            .box ul {
+                border-left: 1px solid #808080;
+                overflow: hidden;
+            }
+
+            .box li {
+                border: 1px solid #808080;
+                border-top: 0;
+                border-left: 0;
+                float: left;
+                padding: 5px;
+                text-align: center;
+            }
+
+        .AA {
+            width: 5%;
+        }
+
+        .GG {
+            width: 10%;
+        }
+
+        .BB {
+            width: 20%;
+        }
+
+        .CC {
+            width: 15%;
+        }
+
+        .DD {
+            width: 20%;
+        }
+
+        .EE {
+            width: 15%;
+        }
+
+        .FF {
+            width: 15%;
+        }
+
+        .box .m {
+            cursor: pointer;
+        }
+
+            .box .m:hover,
+            .box .m:host {
+                background: #fff4b9;
+            }
+
+        .A {
+            width: 5%;
+        }
+
+        .B {
+            width: 15%;
+        }
+
+        .C {
+            width: 7%;
+        }
+
+        .D {
+            width: 8%;
+        }
+
+        .E {
+            width: 7%;
+        }
+
+        .F {
+            width: 7%;
+            overflow:hidden;
+            white-space:nowrap;
+        }
+
+        .K {
+            width: 6%;
+        }
+
+        .G {
+            width: 13%;
+        }
+
+        .H {
+            width: 13%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .I {
+            width: 8%;
+        }
+
+        .J {
+            width: 11%;
+        }
+        .box .R{
+            background:#efebb3;
+        }
+        .box .r{
+            background:#5bfb84;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".select #reload").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.href = "/manage/zhudan";
+            })
+            $(".select #snew").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.reload();
+            })
+            $(".select #select_qisu").click(function () {
+                var qisu = $(".select select[name='select_qisu']").val();
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/partial/manage_day_form_partial",
+                    type: "POST",
+                    data: { qisu: qisu },
+                    success: function (data) {
+                        $(".box").html(data);
+                        layer.close(index);
+                    }
+                })
+            })
+        })
+        function select(obj, e) {
+            var index = layer.load(1, { shade: [0.3] });
+            var xid = $(obj).find("input[name='xid']").val();
+            var qisu = $(obj).find("input[name='qisu']").val();
+            $.ajax({
+                url: "/partial/manage_zhudan_ajax",
+                type: "POST",
+                data: { xid: xid, qisu: qisu },
+                success: function (data) {
+                    layer.close(index);
+                    $(".tongji").remove();
+                    $(".box").html(data);
+                }
+            })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>期报表</li>
+        <li class="active">当前：<span style="color:#ff0000">@x9web.Api.WebClass.xconfig_qisu</span> 期</li>
+    </ol>
+</div>
+<div class="select">
+    <ul>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-danger" name="snew" id="snew" type="button">返回</button>
+        </li>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-primary" name="reload" id="reload" type="button">统计报表</button>
+        </li>
+        <li style="margin-left:30px; padding:6px 0">
+            期号：
+        </li>
+        <li style="width:130px">
+            <select name="select_qisu" class="form-control">
+                @{
+                    var m_qisu = new List<x9web.Models.xqisu>(ViewBag.qisu_model);
+                    foreach (var m in m_qisu)
+                    {
+                        if (m.name == x9web.Api.WebClass.xconfig_qisu)
+                        {
+                            <option value="@m.name" selected="selected">@m.name</option>
+                        }
+                        else
+                        {
+                            <option value="@m.name">@m.name</option>
+                        }
+                    }
+                }
+            </select>
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="select_qisu" id="select_qisu" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    @Html.Action("manage_day_form_partial","partial")
+</div>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="1.hqsc.co" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^F:\\Web\.Design\\X9娱乐平台\\x9web\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^F:\\Web\.Design\\X9娱乐平台\\x9web\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="x9dataConnectionString-Web.config Connection String" description="x9dataConnectionString 由应用程序在 web.config 中用来访问数据库的连接字符串。" value="Data Source=103.224.22.18;Initial Catalog=anxda_hqsc_data;Persist Security Info=True;User ID=anxda_mssql;Password=cnsdjian051A@@" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\Web\.Design\\X9娱乐平台\\x9web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='x9dataConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

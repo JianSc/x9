@@ -1,0 +1,422 @@
+﻿@model IEnumerable<x9web.Models.xball>
+@{
+    ViewBag.Title = "香港六合彩";
+    Layout = "~/Views/Pages/Home.cshtml";
+    var script_id = 8012; //AJAX处理类别ID
+    var page_name = "特B";
+    var che_box = 811;  //侧边显示项目ID
+    var page_menu_active = "B盘";
+    var page_menu = "A盘,B盘";
+    var page_menu_url = "/home/main/temaA,/home/main/temaB";
+    var btn_kuaisu = "/home/main/temaBK";
+    var m3 = from q in Model
+             where (q.type == che_box || q.type == null)
+             select new
+             {
+                 name = q.name.Trim(),
+                 color = q.color,
+                 tma = q.tmb //选择数据库倍率
+             };
+}
+@section styles{
+    <style>
+        .tma-box {
+            margin-right: 5px;
+            overflow: hidden;
+            float: left;
+            margin-bottom: 10px;
+        }
+
+            .tma-box ul {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                border: #31708F;
+                border-style: none solid solid solid;
+                border-width: 1px;
+            }
+
+            .tma-box .title {
+                background: #31708F;
+                color: #FFF;
+            }
+
+                .tma-box .title li {
+                    text-align: center;
+                }
+
+                .tma-box .title .tA {
+                    width: 30px;
+                }
+
+                .tma-box .title .tB {
+                    width: 40px;
+                }
+
+                .tma-box .title .tC {
+                    width: 60px;
+                }
+
+            .tma-box li {
+                float: left;
+                list-style: none;
+                margin: 5px;
+            }
+
+            .tma-box .tb-m .tB {
+                padding: 4px 0 0 0;
+                margin-left: 7px;
+            }
+
+            .tma-box .tb-m .tA,
+            .tma-box .tb-m .tB {
+                cursor: pointer;
+            }
+
+            .tma-box .tb-m:hover {
+                background: #94d2ff;
+            }
+
+        .tma-menu {
+            overflow: hidden;
+            margin: 5px 0 10px 0;
+        }
+
+            .tma-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu li {
+                list-style: none;
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu a {
+                display: block;
+                padding: 5px 10px;
+                text-decoration: none;
+            }
+
+                .tma-menu a:hover,
+                .tma-menu a:focus {
+                    background: #a3d2e9;
+                }
+
+            .tma-menu .active {
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+            }
+
+                .tma-menu .active a,
+                .tma-menu .active a:hover,
+                .tma-menu .active a:focus {
+                    background: #31708F;
+                    color: #fff;
+                }
+
+        .tb-m input {
+            width: 55px;
+            margin: 0;
+            margin-left: 5px;
+        }
+
+        .tma-menu-r {
+            float: right;
+        }
+
+            .tma-menu-r li {
+                padding: 5px 10px;
+                border: #3c763d;
+                color: #3c763d;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                margin: 0;
+                margin-left: 5px;
+            }
+
+        .tma-but {
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            padding-right: 5px;
+        }
+
+            .tma-but .btn {
+                margin: 5px 10px 5px 0;
+                width: 100px;
+                border-radius: 0;
+            }
+
+        .tma-box-che .title .tAA {
+            width: 60px;
+            text-align: left;
+        }
+
+        .tma-box-che .title .tBB {
+            width: 40px;
+        }
+
+        .tma-box-che .title .tCC {
+            width: 50px;
+        }
+
+        .tma-box-che input {
+            width: 40px;
+            margin: 0;
+        }
+
+        .tma-box-che .tb-m .tAA {
+            width: 60px;
+            margin: 5px;
+            height: 29px;
+            line-height: 29px;
+            cursor: pointer;
+        }
+
+        .tma-box-che .tb-m .tBB {
+            margin-left: 7px;
+            padding-top: 4px;
+            cursor: pointer;
+        }
+
+        .tma-box-che .tb-m .tCC {
+            float: right;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            var id = @script_id;
+            $(".tma-but #submit").click(function (e) {
+                //$("#form1 input[name='money']").each(function () {
+                //    var t = $(this).val();
+                //    t = parseInt(t);
+                //    if (isNaN(t)) {
+                //        $(this).val("0");
+                //    }
+                //})
+                var f = $(this).parent().parent();
+                f.ajaxSubmit({
+                    url: "/handle/xiazu_view/" + id,
+                    type: "POST",
+                    async: false,
+                    success: function (data) {
+                        layer.open({
+                            type: 1,
+                            title: "<i class='fa fa-sign-in'></i> 下注池",
+                            resize: false,
+                            area: ["600px", "400px"],
+                            content: data
+                        })
+                    }
+                })
+            })
+            var t;
+            $("input[name='money']").focus(function () {
+                t = $(this).val();
+                $(this).val('');
+            })
+            $("input[name='money']").blur(function () {
+                if ($(this).val() == '') {
+                    $(this).val(t);
+                }
+            })
+            $(".tma-box .tb-m .tA").click(function () {
+                xiazu(this);
+            })
+            $(".tma-box .tb-m .tB").click(function () {
+                xiazu(this);
+            })
+            $(".tma-box-che .tb-m .tAA").click(function () {
+                xiazu(this);
+            })
+            $(".tma-box-che .tb-m .tBB").click(function () {
+                xiazu(this);
+            })
+            function xiazu(obj) {
+                var ul = $(obj).parent();
+                var ball = $(ul).find("input[name='ball']").val();
+                var beilu = $(ul).find("input[name='beilu']").val();
+
+                $.ajax({
+                    url: "/handle/xiazu_view_dan/" + id,
+                    type: "POST",
+                    async: false,
+                    data: { ball: ball, beilu: beilu },
+                    success: function (data) {
+                        layer.open({
+                            type: 1,
+                            title: "<i class='fa fa-sign-in'></i> 输入金额",
+                            resize: false,
+                            area: ["230px", "395px"],
+                            content: data
+                        })
+                    }
+                })
+
+            }
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { name = "form1", id = "form1" }))
+{
+    <div class="tma-menu">
+        <ul style="overflow:hidden;float:left">
+            @{
+    var page_menu_arr = page_menu.Split(',');
+    var page_menu_url_arr = page_menu_url.Split(',');
+    for (int j = 0; j < page_menu_arr.Length; j++)
+    {
+        if (page_menu_arr[j] == page_menu_active)
+        {
+            <li class="active"><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+        else
+        {
+            <li><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+    }
+            }
+        </ul>
+        @{
+    var tea = from q in x9web.Api.WebClass.u_tuisui
+              where q.name.Trim() == page_name
+              select q;
+    var niangm = from q in x9web.Api.WebClass.u_tuisui
+                 where q.name.Trim() == "两面"
+                 select q;
+    var bose = from q in x9web.Api.WebClass.u_tuisui
+               where q.name.Trim() == "波色"
+               select q;
+        }
+        <ul class="tma-menu-r">
+            <li>
+                <span style="color:#ff0000">
+                    限額:
+                </span>
+                <span>
+                    @page_name:@tea.First().min_e/@tea.First().danzu_e/@tea.First().max_e
+                    两面:@niangm.First().min_e/@niangm.First().danzu_e/@niangm.First().max_e
+                    波色:@bose.First().min_e/@bose.First().danzu_e/@bose.First().max_e
+                </span>
+            </li>
+        </ul>
+        <ul class="tma-menu-r">
+            <li style="margin-left:10px">
+                <span style="color:#ff0000">佣金:</span>
+                <span>
+                    @page_name:@tea.First().yongjin &nbsp;两面:@niangm.First().yongjin &nbsp;波色:@bose.First().yongjin
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tma-box">
+        <ul class="title">
+            <li class="tA">號碼</li>
+            <li class="tB">倍率</li>
+            <li class="tC">金額</li>
+        </ul>
+        @{
+    var i = 1;
+    foreach (var mm in m3)
+    {
+        if (mm.color == null)
+        {
+            continue;
+        }
+        var colorname = "ball" + mm.color;
+        <ul class="tb-m">
+            <li class="@colorname.Trim() tA">
+                <span>@mm.name.Trim()</span>
+                <input name="ball" value="@mm.name.Trim()" type="hidden" />
+            </li>
+            <li class="tB">
+                <span>@mm.tma</span>
+                <input name="beilu" value="@mm.tma" type="hidden" />
+            </li>
+            <li class="tC">
+                <input class="form-group" name="money" type="text" onkeyup="value=this.value.replace(/\D+/g,'')">
+            </li>
+        </ul>
+        if (i % 10 == 0)
+        {
+            @Html.Raw("</div>");
+            @Html.Raw("<div class=\"tma-box\">")
+            <ul class="title">
+                <li class="tA">號碼</li>
+                <li class="tB">倍率</li>
+                <li class="tC">金額</li>
+            </ul>
+        }
+        i++;
+    }
+        }
+    </div>
+    {
+        var ff = from q in m3
+                 where (q.color == null)
+                 select q;
+        if (ff.Count() > 0)
+        {
+
+            <div class="tma-box tma-box-che" style="float:right;margin-right:0">
+                <ul class="title">
+                    <li class="tAA">號碼</li>
+                    <li class="tBB">倍率</li>
+                    <li class="tCC">金額</li>
+                </ul>
+                @foreach (var mm in m3)
+                {
+                    if (mm.color == null)
+                    {
+                        <ul class="tb-m">
+                            <li class="tAA">
+
+                                @if (@mm.name.Trim() == "红波")
+                                {
+                                    <span style="color:#c10505">@mm.name.Trim()</span>
+                                }
+                                else if (@mm.name.Trim() == "绿波")
+                                {
+                                    <span style="color:#08b91f">@mm.name.Trim()</span>
+                                }
+                                else if (@mm.name.Trim() == "蓝波")
+                                {
+                                    <span style="color:#0668ae">@mm.name.Trim()</span>
+                                }
+                                else
+                                {
+                                    <span>@mm.name.Trim()</span>
+                                }
+                                <input name="ball" value="@mm.name.Trim()" type="hidden" />
+                            </li>
+                            <li class="tBB">
+                                <span>@mm.tma</span>
+                                <input name="beilu" value="@mm.tma" type="hidden" />
+                            </li>
+                            <li class="tCC">
+                                <input class="form-group" name="money" type="text" onkeyup="value=this.value.replace(/\D+/g,'')">
+                            </li>
+                        </ul>
+                    }
+                }
+            </div>
+        }
+    }
+    <div class="tma-but">
+        <button class="btn btn-primary" type="button" name="submit" id="submit">提交</button>
+        <button class="btn btn-primary" type="reset" name="reset" id="reset">清除</button>
+        <a href="@btn_kuaisu" class="btn btn-primary">快速模式</a>
+    </div>
+}

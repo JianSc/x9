@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "用戶協議";
+    Layout = "~/Views/Shared/_LayoutMobile.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .xheader {
+            margin-top: 10px;
+            border-top: 20px solid #0775c6;
+        }
+
+        .xtitle {
+            border: 1px solid #d9d9d9;
+            background-color: #eeeeee;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #003576;
+        }
+
+            .xtitle .h4 {
+                font-weight: bold;
+            }
+
+        .xbody {
+            background-color: #ffffff;
+            padding: 5px;
+            font-size: 14px;
+            margin-top:45px;
+            margin-bottom:15px;
+        }
+
+            .xbody li {
+                margin: 10px;
+            }
+
+        .xbut {
+            text-align: center;
+            border: 1px solid #cacaca;
+            background-color: #f1f1f1;
+        }
+
+            .xbut .btn {
+                width: 100px;
+            }
+
+            .xbut .xbuttext {
+                color: #ff0000;
+                margin: 10px;
+                font-size: 14px;
+            }
+
+            .xbut .xbutb {
+                margin-bottom: 20px;
+            }
+
+        .navbar {
+            min-height: unset;
+        }
+        .navbar-nav{
+            margin:0;
+        }
+
+        .navbar-nav li > a {
+            padding-top:10px;
+            padding-bottom:10px;
+            font-weight:bold;
+        }
+
+        .h4 {
+            margin: 0;
+        }
+        .navbar-default{
+            background-color:#2954aa;
+            border-color:#2954aa;
+        }
+        .navbar-default a{
+            color:#fff !important;
+        }
+    </style>
+}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav" style="text-align:center">
+            <li><a class="h4">用戶協議</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="container xbody">
+        <ul>
+            <li>( 1 ) 當你在下注之後，請等待下注後的成功提示信息。</li>
+            <li>( 2 ) 為了避免出現爭議，你必須在下注之後檢查“下注狀況”。</li>
+            <li>( 3 ) 任何的投訴必須在開獎之前提出，本公司不會受理任何開獎之後的投訴。</li>
+            <li>( 4 ) 所有投注項目，公佈賠率時出現的任何打字錯誤或非故意人為失誤，本公司將保留改正錯誤和按正確賠率結算投注的權利。</li>
+            <li>( 5 ) 公佈之所有賠率為浮動賠率，下注時請確認當前賠率及金額，下注確認後一概不能更改。</li>
+            <li>( 6 ) 開獎後的投注，將被視為無效。</li>
+            <li>( 7 ) 因根據不同的會員賬號所設置的投注金額範圍有所不同，如投注金額超出設定範圍，本公司有權取消其超出之投注金額。</li>
+            <li>( 8 ) 客戶每次登陸時都應該核對自己賬戶的結算金額。如對結算金額有任何疑問，請在第一時間內通知本公司。</li>
+            <li>( 9 ) 敬告有意與本公司博彩之客戶，應注意您所在的國家或居住地可能規定網絡博彩不合法，若此情況屬實，本公司將不接受任何客戶因違反當地博彩或賭博法令所引起之任何責任。</li>
+            <li>( 10 ) 倘若發生遭駭客入侵破壞行為或不可抗拒之災害因素導致網站故障或資料損壞、資料丟失等情況，我們將以本公司線上交易之後備資料為最後處理依據；為了確保各方真實利益，請各會員交易後列印資料，本公司才接受投訴及處理。</li>
+            <li>( 11 ) 請認真了解遊戲規則。</li>
+        </ul>
+    </div>
+    <div class="container xbom"></div>
+    <div class="container xbut">
+        <div class="xbuttext">了解 以及 同意 以上列明的協議和規則</div>
+        <div class="xbutb">
+            @Html.ActionLink("拒絕", "exit", null, new { @class = "btn btn-danger" })
+            @Html.ActionLink("同意", "main", "home", null, new { @class = "btn btn-success", style = "margin-left:10px" })
+        </div>
+
+    </div>
+</div>

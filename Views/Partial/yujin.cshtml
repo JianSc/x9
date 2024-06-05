@@ -1,0 +1,284 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    var totaldat = from q in Model
+                   group q by new { q.t1 } into g
+                   select new
+                   {
+                       t1 = g.Key.t1.Trim(),
+                       money = g.Sum(a => a.money)
+                   };
+    var totaldat2 = from q in Model
+                    group q by new { q.t2 } into g
+                    select new
+                    {
+                        t2 = g.Key.t2.Trim(),
+                        //beilu = g.Key.beilu.Trim(),
+                        money = g.Sum(a => a.money)
+                    };
+    var thedat = Model.ToList();
+    var temdat = new List<x9web.Models.xxiazu>();
+    foreach (var m in Model.ToList())
+    {
+        var ms = new x9web.Models.xxiazu();
+        ms.t1 = m.t1;
+        ms.t2 = m.t2;
+        ms.moneye = m.moneye;
+        ms.z = m.z;
+        temdat.Add(ms);
+    }
+    decimal totalmoney = decimal.Parse(Model.Sum(a => a.money).ToString());
+    foreach (var m in thedat)
+    {
+        if (m.name.Trim() == "")
+        {
+            m.name = m.ball;
+        }
+
+        if (m.beilu.IndexOf(',') > -1)
+        {
+            string[] beiluary = m.beilu.Trim().Split(',');
+            decimal thebeilu = 0;
+            foreach (var s in beiluary)
+            {
+                if (decimal.Parse(s) > thebeilu)
+                {
+                    thebeilu = decimal.Parse(s);
+                }
+            }
+            m.beilu = thebeilu.ToString();
+        }
+        if (m.beilu.IndexOf('/') > -1)
+        {
+            string[] beiluary = m.beilu.Trim().Split('/');
+            decimal thebeilu = 0;
+            foreach (var s in beiluary)
+            {
+                if (decimal.Parse(s) > thebeilu)
+                {
+                    thebeilu = decimal.Parse(s);
+                }
+                m.beilu = thebeilu.ToString();
+            }
+        }
+        var moneye = (decimal)m.money * decimal.Parse(m.beilu.Trim());
+        moneye = -moneye;
+        m.moneye = moneye;
+        //m.z = false;
+    }
+
+    var totaldat4 = from q in thedat
+                    group q by new { q.t2, q.beilu, q.name, q.z } into g
+                    select new
+                    {
+                        z = g.Key.z,
+                        t2 = g.Key.t2.Trim(),
+                        beilu = g.Key.beilu,
+                        name = g.Key.name.Trim(),
+                        money = g.Sum(a => a.money),
+                        moneye = g.Sum(a => a.moneye)
+                    };
+
+    string delname = "特A,特B,正A,正B";
+    decimal delbeilu = 10;
+    decimal delb = 0.25M;
+    decimal delmoney = -15000M;
+
+    var totaldat3 = totaldat4.ToList();
+
+    for (var i = totaldat3.Count - 1; i >= 0; i--)
+    {
+        if ((decimal.Parse(totaldat3[i].beilu) < delbeilu && (decimal)totaldat3[i].moneye > delmoney) || ((decimal)totaldat3[i].moneye > delmoney))
+        {
+            totaldat3.Remove(totaldat3[i]);
+            continue;
+        }
+        string[] delnames = delname.Split(',');
+        foreach (var s in delnames)
+        {
+            var yyl2 = Math.Abs((decimal)totaldat3[i].moneye) / totalmoney;
+            if (totaldat3[i].t2.IndexOf(s) > -1 && yyl2 < 0.25M)
+            {
+                totaldat3.Remove(totaldat3[i]);
+                break;
+            }
+        }
+    }
+
+    int swith = (int)ViewData["b"];
+
+}
+<div class="viewtitle" onclick="slide(1)">总览:</div>
+<div class="line"></div>
+<div class="total1">
+    <ul>
+        @foreach (var m in totaldat.OrderByDescending(a => a.money))
+        {
+            <li>
+                <span>@m.t1:</span>
+                <span style="color:#ff0000">@m.money</span>
+                @{
+            if (swith == 1)
+            {
+                var km1 = temdat.Where(a => a.t1.Trim() == m.t1.Trim()).Where(a => a.moneye > 0).Sum(a => a.moneye);
+                km1 = -km1;
+                <span>(@km1)</span>
+            }
+                }
+            </li>
+        }
+    </ul>
+
+</div>
+<div class="line"></div>
+<div class="viewtitle" onclick="slide(2)" style="margin-top:5px">分览:</div>
+<div class="line"></div>
+<div class="total2">
+    <ul>
+        @foreach (var m in totaldat2.OrderByDescending(a => a.money))
+        {
+            <li>
+                <span>@m.t2:</span>
+                @*<span style="color:#0004ff">(@m.beilu)</span>*@
+                <span style="color:#ff0000">@m.money</span>
+                @{
+            if (swith == 1)
+            {
+                var km1 = temdat.Where(a => a.t2.Trim() == m.t2.Trim()).Where(a => a.moneye > 0).Sum(a => a.moneye);
+                km1 = -km1;
+                <span>(@km1)</span>
+            }
+                }
+            </li>
+        }
+    </ul>
+</div>
+<div class="line"></div>
+<div class="viewtitle" onclick="slide(3)" style="margin-top:5px">预警:&nbsp;&nbsp;红色为危险项目，绿色为不建议抛项目，蓝色为中奖金额超总下注金额的25%以上，无色看情况，不计退水</div>
+<div class="line"></div>
+<div class="total3">
+    <ul>
+        <li class="A titlep">分类</li>
+        <li class="B titlep">项目</li>
+        <li class="C titlep">赔率</li>
+        <li class="D titlep">下注金额</li>
+        <li class="E titlep">中奖亏损</li>
+        <li class="F titlep">下注比率</li>
+        <li class="G titlep">亏损比率</li>
+        <li class="H titlep">建议抛出量</li>
+    </ul>
+    @{
+        int pcmoney = 0;
+    }
+    @foreach (var m in totaldat3.OrderBy(a => a.moneye))
+    {
+        var ulclass = "";
+        var yyl = Math.Abs((decimal)m.moneye) / totalmoney;
+        if (yyl > 0.25M)
+        {
+            ulclass = "style=\"background:#cfe4fb\"";
+        }
+        if (decimal.Parse(m.beilu) > 100 && m.moneye < -15000M)
+        {
+            ulclass = "style=\"background:#ffbebe\"";
+        }
+        if (decimal.Parse(m.beilu) < 5)
+        {
+            ulclass = "style=\"background:#c1ffcc\"";
+        }
+        var ulclass2 = "";
+        if ((bool)m.z == true)
+        {
+            ulclass2 = "style=\"font-weight:bold;color:#C00\"";
+        }
+
+
+        <ul class="content" @Html.Raw(ulclass2)>
+            <li class="A" @Html.Raw(ulclass)>@m.t2</li>
+            <li class="B" @Html.Raw(ulclass)>@m.name</li>
+            <li class="C" @Html.Raw(ulclass)>@m.beilu</li>
+            <li class="D" @Html.Raw(ulclass)>@m.money</li>
+            <li class="E" @Html.Raw(ulclass)>@decimal.Parse(m.moneye.ToString()).ToString("0.00")</li>
+            <li class="F" @Html.Raw(ulclass)>
+                @{
+        var zl = m.money / totalmoney;
+        var szl = ((decimal)zl * 100).ToString("0.00");
+        <span>@szl%</span>
+                }
+            </li>
+            <li class="G" @Html.Raw(ulclass)>
+                @{
+        var yl = Math.Abs((decimal)m.moneye) / totalmoney;
+        var syl = ((decimal)yl * 100).ToString("0.00");
+        <span>@syl%</span>
+                }
+            </li>
+            <li class="H" @Html.Raw(ulclass)>
+                @{
+        var pm = m.money * 0.7M;
+        int pmw = (int)pm;
+        if (decimal.Parse(m.beilu) > 5)
+        {
+            pcmoney += pmw;
+        }
+        <span>@pmw</span>
+                }
+            </li>
+            <div class="contents" style="display:none">
+                <ul>
+                    <li>aaaa</li>
+                    <li>bbbb</li>
+                </ul>
+            </div>
+        </ul>
+    }
+    @*<ul>
+            <li class="A">&nbsp;</li>
+            <li class="B">&nbsp;</li>
+            <li class="C">&nbsp;</li>
+            <li class="D">&nbsp;</li>
+            <li class="E">&nbsp;</li>
+            <li class="F">&nbsp;</li>
+            <li class="G">合计:</li>
+            <li class="H">@pcmoney</li>
+        </ul>*@
+</div>
+
+@*<div class="line"></div>
+    <div class="viewtitle" onclick="slide(4)" style="margin-top:5px">下注项目表（复合式赔率选最高）:</div>
+    <div class="total4">
+        <ul>
+            <li class="A titlep">分类</li>
+            <li class="B titlep">项目</li>
+            <li class="C titlep">赔率</li>
+            <li class="D titlep">下注金额</li>
+            <li class="E titlep">中奖亏损</li>
+            <li class="F titlep">下注比率</li>
+            <li class="G titlep">亏损比率</li>
+        </ul>
+        @foreach (var m in totaldat4.OrderBy(a => a.moneye))
+        {
+            <ul>
+                <li class="A">@m.t2</li>
+                <li class="B">@m.name</li>
+                <li class="C">@m.beilu</li>
+                <li class="D">@m.money</li>
+                <li class="E">@decimal.Parse(m.moneye.ToString()).ToString("0.00")</li>
+                <li class="F">
+                    @{
+            var zl = m.money / totalmoney;
+            var szl = ((decimal)zl * 100).ToString("0.00");
+            <span>@szl%</span>
+                    }
+                </li>
+                <li class="G">
+                    @{
+            var yl = Math.Abs((decimal)m.moneye) / totalmoney;
+            var syl = ((decimal)yl * 100).ToString("0.00");
+            <span>@syl%</span>
+                    }
+                </li>
+            </ul>
+
+        }
+    </div>*@

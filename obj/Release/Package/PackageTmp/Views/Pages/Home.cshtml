@@ -1,0 +1,510 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var qisu = x9web.Api.WebClass.xconfig_qisu;
+    var ms = x9web.Api.WebClass.f_get_xqisu_kjiang(qisu);
+    int timerdiff = 0;
+    if ((bool)ms.bankou)
+    {
+        DateTime ddd1 = DateTime.Now.AddHours(x9web.Api.WebClass.plus_timer_hours);
+        DateTime ddd2 = (DateTime)ms.t_time;
+        TimeSpan ddd3 = ddd2.Subtract(ddd1);
+        timerdiff = ddd3.Seconds;
+        timerdiff += ddd3.Minutes * 60;
+        timerdiff += ddd3.Hours * 60 * 60;
+        timerdiff += ddd3.Days * 24 * 60 * 60;
+    }
+
+}
+@section styles{
+    <style>
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+        }
+
+        * {
+            list-style: none;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination {
+            margin: 0;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #col-l {
+            float: left;
+            width: 220px;
+            overflow: hidden;
+            background: #0b2532;
+        }
+
+        #col-r {
+            overflow: hidden;
+        }
+
+        .usercol {
+            color: #53788b;
+        }
+
+            .usercol .s {
+                padding: 15px 30px 5px 30px;
+            }
+
+                .usercol .s .h4 {
+                    margin-top: 0;
+                }
+
+            .usercol .m {
+                padding: 10px;
+                color: #fff;
+                background: url("/Content/image/home-col-l-bg.png");
+            }
+
+            .usercol .s-info {
+                padding: 5px 0 5px 0;
+            }
+
+            .usercol .infoA {
+                border-bottom: 1px solid #133140;
+                padding-bottom: 10px;
+            }
+
+            .usercol .infoB {
+                border-bottom: 1px solid #133140;
+                border-top: 1px solid #09202b;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #ff0000;
+            }
+
+            .usercol .infoC {
+                padding-top: 10px;
+                border-top: 1px solid #09202b;
+                color: #08d000;
+            }
+
+        .col-l-menu {
+            padding: 0 30px 5px 30px;
+        }
+
+            .col-l-menu li {
+                list-style: none;
+            }
+
+            .col-l-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .col-l-menu li > a {
+                display: block;
+                padding: 5px 10px 5px 5px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                .col-l-menu li > a:hover,
+                .col-l-menu li > a:focus {
+                    background: #00a5d3;
+                    color: #fff;
+                    border-radius: 5px;
+                }
+
+        .k-jiang ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .k-jiang li {
+            list-style: none;
+            color: #fff;
+            font-weight: bold;
+            float: left;
+        }
+
+        .x-list .m {
+            padding: 15px 30px;
+            background: #08374f;
+            color: #fff;
+        }
+
+        .x-list li {
+            list-style: none;
+            float: left;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .x-list .s {
+            padding: 0 10px 10px 10px;
+            color: #3EA940;
+        }
+
+        .x-list ul {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .col-r-t ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .col-r-t li {
+            list-style: none;
+            color: #fff;
+            float: left;
+        }
+
+
+        .col-r-t {
+            height: 46px;
+            background: url("/Content/image/home-col-l-bg.png");
+        }
+
+            .col-r-t .t-x {
+                margin: 12px 5px;
+                background: #fff;
+                border: 1px solid #ff6a00;
+                color: #ff0000;
+                font-weight: bold;
+                padding: 0 5px;
+            }
+
+            .col-r-t .t-x1 {
+                margin: 13px 0;
+            }
+
+            .col-r-t .t-b {
+                margin: 7px 20px 8px 20px;
+            }
+
+        .col-r-m {
+            height: 36px;
+            background: #11394C;
+            border-bottom: 1px solid #0b2532;
+        }
+
+            .col-r-m ul {
+                margin: 0 0 0 20px;
+                padding: 0;
+            }
+
+            .col-r-m li {
+                list-style: none;
+                float: left;
+                margin: 0 5px;
+            }
+
+            .col-r-m .active > a,
+            .col-r-m .active > a:hover,
+            .col-r-m .active > a:focus {
+                background: #fff;
+                color: #000;
+                margin-top: 6px;
+                border-radius: 3px 3px 0 0;
+            }
+
+            .col-r-m li > a {
+                display: block;
+                text-decoration: none;
+                color: #fff;
+                padding: 5px 10px;
+                margin-top: 6px;
+            }
+
+                .col-r-m li > a:hover,
+                .col-r-m li > a:focus {
+                    background: #97BD21;
+                    color: #fff;
+                    border-radius: 3px 3px 0 0;
+                }
+
+
+        .col-r-b {
+            margin: 10px;
+            overflow: hidden;
+        }
+
+            .col-r-b .tB span,
+            .col-r-b .tma-box .box .c span {
+                font-size: 13px;
+            }
+
+        .marquee {
+            background: #ffffff;
+            border: 2px solid #00a5d3;
+            overflow: hidden;
+            height: 32px;
+            margin-top: 6px;
+            margin-right: 6px;
+            line-height: 28px;
+            padding: 0 5px;
+        }
+
+            .marquee span {
+                color: #0460a3 !important;
+                margin: 0 10px;
+            }
+
+        .home_zhudan li {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    @RenderSection("styles", required: false)
+}
+@section scripts{
+    <script>
+        function autoH() {
+            var h = $(document).height();
+            if (h > $("#col-l").height()) {
+                $("#col-l").height(h);
+            }
+        }
+        function timer(intDiff) {
+            var index = window.setInterval(function () {
+                var day = 0,
+                    hour = 0,
+                    minute = 0,
+                    second = 0;//时间默认值
+                if (intDiff > 0) {
+                    day = Math.floor(intDiff / (60 * 60 * 24));
+                    hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                    minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                    second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                } else {
+                    window.clearInterval(index);
+                    $('.auto-timer .auto-timer-li').html("总盘已封，等待开奖！");
+                }
+                if (minute <= 9) minute = '0' + minute;
+                if (second <= 9) second = '0' + second;
+                //$('#day_show').html(day + "天");
+                $('.auto-timer .h').html(hour + ' 时');
+                $('.auto-timer .m').html(minute + ' 分');
+                $('.auto-timer .s').html(second + ' 秒');
+                intDiff--;
+            }, 1000);
+        }
+
+        autoH();
+        $(".col-r-t .marquee").liMarquee();
+        var sec = parseInt(@timerdiff);
+        timer(sec);
+        $(".pwdedit").click(function () {
+            layer.open({
+                type: 2,
+                title: "<i class='fa fa-edit'></i> 修改密码",
+                area: ["300px", "300px"],
+                resize: false,
+                content: ['/home/pwdedit', 'no']
+            })
+        })
+        $(".state_time").downCount({
+            date: '2018-03-25 12:00:00',
+            statrdate: '@DateTime.Now.AddHours(0)',
+            offset: 0
+        }, function () {
+
+        })
+        @*$(function () {
+            autoH();
+            $(".col-r-t .marquee").liMarquee();
+            var sec = parseInt(@timerdiff);
+            timer(sec);
+            $(".pwdedit").click(function () {
+                layer.open({
+                    type: 2,
+                    title: "<i class='fa fa-edit'></i> 修改密码",
+                    area: ["300px", "300px"],
+                    resize: false,
+                    content: ['/home/pwdedit', 'no']
+                })
+            })
+            $(".state_time").downCount({
+                date: '2018-03-25 12:00:00',
+                statrdate: '@DateTime.Now.AddHours(0)',
+                offset: 0
+            }, function () {
+
+            })
+        })*@
+    </script>
+    @RenderSection("scripts", required: false)
+}
+<div class="container-fluid">
+    <div id="col-l">
+        <div class="usercol">
+            <div class="m" style="">
+                <span class="h3">@x9web.Api.WebClass.web_name</span>
+            </div>
+            <div class="s">
+                <div class="s-user h4">
+                    <i class="fa fa-user"></i>
+                    <span style="color:#ef5f56;font-weight:bold"> @Session["name"].ToString()</span>
+                </div>
+                <div>
+                    @Html.Action("home_user_info", "partial")
+                </div>
+            </div>
+            <div class="col-l-menu">
+                <ul>
+                    <li><a href="/home/ur_touzu_list/@x9web.Api.WebClass.xconfig_qisu/1">投注明細</a></li>
+                    @*<li><a href="/home/ur_qisu_list">歷史報表</a></li>*@
+                    <li><a href="/home/utuisui">退水資料</a></li>
+                    @{
+                        try
+                        {
+                            if (!bool.Parse(Session["gf"].ToString()))
+                            {
+                                <li><a href="/home/liskaijiang">開獎結果</a></li>
+                                <li class="infoA"><a href="/home/huser_tuisui">报表结算</a></li>
+                            }
+                            else
+                            {
+                                <li class="infoA"><a href="/home/liskaijiang">開獎結果</a></li>
+                            }
+                        }
+                        catch { }
+
+}
+
+                    <li class="infoC"><a href="/home/help">遊戲規則</a></li>
+                    <li><a id="pwdedit" class="pwdedit">更改密碼</a></li>
+                    @{
+                        try
+                        {
+                            if (!bool.Parse(Session["gf"].ToString()))
+                            {
+                                <li><a href="/home/umember">会员管理</a></li>
+                            }
+                        }
+                        catch { }
+
+                    }
+                    <li><a href="/home/exit">登出</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="x-list">
+            <div class="m h4">
+                <i class="fa fa-edit"></i>
+                <span> 最新注单</span>
+            </div>
+            <div class="s">
+                @Html.Action("home_zhudan", "partial")
+            </div>
+        </div>
+    </div>
+    <div id="col-r">
+        <div class="col-r-t">
+            <ul style="overflow:hidden">
+                <li class="t-x1">第 </li>
+                <li class="t-x">@qisu</li>
+                <li class="t-x1"> 期</li>
+                <li class="t-b">
+                    <div class="k-jiang" style="overflow:hidden;width:413px;">
+                        @{
+                            if ((bool)ms.bankou)
+                            {
+                                <ul class="auto-timer" style="overflow:hidden">
+                                    <li style="overflow:hidden;margin-top:5px;margin-left:50px;color:#97BD21;font-weight:100" class="auto-timer-li">
+                                        <span class="text">离总盘封盘：</span>
+                                        <span class="h"></span>
+                                        <span class="m"></span>
+                                        <span class="s"></span>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                if ((bool)ms.jiang)
+                                {
+                                    string[] xball = ms.ball.Trim().Split(',');
+                                    string[] ssx = ms.shengxiao.Trim().Split(',');
+                                    string[] colors = ms.color.Trim().Split(',');
+
+                                    <ul style="overflow:hidden">
+                                        @{
+                                    for (var i = 0; i < xball.Length; i++)
+                                    {
+                                        var color = "ball" + colors[i];
+                                        if (i == xball.Length - 1)
+                                        {
+                                            <li class="ball-plus"><i class="fa fa-plus"></i></li>
+                                            <li class="@color">@xball[i]</li>
+                                            <li style="margin-top:5px">[@ssx[i]]</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="@color">@xball[i]</li>
+                                            <li style="margin-top:5px">[@ssx[i]]</li>
+                                        }
+
+
+                                    }
+                                        }
+
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul class="auto-timer" style="overflow:hidden">
+                                        <li style="overflow:hidden;margin-top:5px;margin-left:50px;color:#97BD21;font-weight:100" class="auto-timer-li">
+                                            <span class="text">总盘已封，等待开奖！</span>
+                                        </li>
+                                    </ul>
+                                }
+                            }
+
+
+                        }
+                    </div>
+                </li>
+                <li style="float:none">
+                    <div class="marquee">
+
+                        @{
+                            var mt = x9web.Api.WebClass.web_marquee;
+                            if (mt != null)
+                            {
+                                foreach (var t in mt)
+                                {
+                                    <span>@t.text</span>
+                                }
+                            }
+                        }
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-r-m">
+            <ul>
+                @{
+                    foreach (var m in x9web.Api.WebClass.u_menu)
+                    {
+                        if (m.name.Trim() == ViewBag.menuname)
+                        {
+                            <li class="active"><a href="@m.url.Trim()">@m.name.Trim()</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@m.url.Trim()">@m.name.Trim()</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+        <div class="col-r-b">
+            @RenderBody()
+        </div>
+    </div>
+</div>

@@ -1,0 +1,215 @@
+﻿@model x9web.Models.um_man_cplook
+
+@{
+    var the_qisu = Model.qisu;
+    string xm_name = Model.xm_name;
+    var z_moneys = (decimal)Model.xiazu.Sum(a => a.money);
+    var x_moneys = (decimal)(from q in Model.xiazu
+                             where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                             select q).ToList().Sum(a => a.money);
+}
+<div class="the-menu">
+    <ul class="menu2">
+        @{
+            string menu = "特码,正码,特肖,尾数,一肖,二肖中,三肖中,四肖中,五肖中,六肖";
+            string[] menus = menu.Split(',');
+
+            foreach (var s in menus)
+            {
+                var m = from q in Model.xiazu
+                        where (q.t1.Trim() == s || q.t2.Trim() == s)
+                        select q;
+                var z_money = decimal.Parse(m.ToList().Sum(a => a.money).ToString()).ToString("0.##");
+                if (s == xm_name)
+                {
+                    if (decimal.Parse(z_money) > 0)
+                    {
+                        <li class="active">@s<span class="badge">@z_money</span></li>
+                    }
+                }
+                else
+                {
+                    if (decimal.Parse(z_money) > 0)
+                    {
+                        <li><a onclick="xopen(this,'@s')">@s<span class="badge">@z_money</span></a></li>
+                    }
+                }
+
+            }
+
+            <li class="active" style="background:#00aa09;float:right;color:#fff">总额度<span class="badge">@z_moneys.ToString("0.##")</span></li>
+        }
+    </ul>
+</div>
+<div class="menu3">
+    <ul class="m">
+        <li>当前:</li>
+        <li>第<span>@the_qisu</span>期<span style="color:#a88e00">@@@xm_name</span></li>
+        <li style="margin-left:50px">选择期数:</li>
+        <li style="padding:3px">
+            <select class="form-control" name="select_qisu">
+                @{
+                    foreach (var m in Model.xqisu)
+                    {
+                        var check = "";
+                        if (m.name == the_qisu)
+                        {
+                            check = "selected='selected'";
+                        }
+                        <option @check>@m.name</option>
+                    }
+                }
+            </select>
+        </li>
+        <li style="padding:3px">
+            <button class="btn btn-danger" onclick="select_qisu(this)" name="select_btn" id="select_btn"><i class="fa fa-search"></i></button>
+        </li>
+    </ul>
+</div>
+<div class="ball-box999">
+    <ul class="m title">
+        <li class="A">序号</li>
+        <li class="B">下注项目</li>
+        <li class="C">注数</li>
+        <li class="D">总额</li>
+        <li class="E">佣金</li>
+        <li class="F">彩金</li>
+        <li class="G">预计盈亏</li>
+        <li class="H">走飞</li>
+    </ul>
+    @{
+        var i = 1;
+        var ms = (from q in Model.xiazu
+                  where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                  group q by new { q.ball, q.t2, q.name } into g
+                  select new
+                  {
+                      name = g.Key.name.Trim(),
+                      ball = g.Key.ball.Trim(),
+                      t2 = g.Key.t2.Trim(),
+                      zs = g.Count(a => a.ball == a.ball),
+                      money = g.Sum(a => a.money),
+                      yonge = g.Sum(a => a.yongjine),
+                      moneye = g.Sum(a => a.moneye)
+                  }).OrderByDescending(a => a.money).ToList();
+        foreach (var m in ms)
+        {
+            <ul class="m">
+                <li class="A">@i</li>
+                <li class="B">
+                    <span style="color:#ad9303">@m.t2 @@</span>
+                    @{
+            string xmname = "特肖,一肖,一肖不中";
+            string xxmname = "尾数,尾数不中";
+            if (xmname.IndexOf(m.t2.Trim()) > -1)
+            {
+                <span style="color:#ff0000">@m.name</span>
+                        <span>@@</span>
+
+            }
+            if (xxmname.IndexOf(m.t2.Trim()) > -1)
+            {
+                <span style="color:#ff0000">@m.name</span>
+                        <span>尾@@</span>
+            }
+
+                    }
+                    <span>@m.ball</span>
+                </li>
+                <li class="C">@m.zs</li>
+                <li class="D" onclick="openUser(this)">@decimal.Parse(m.money.ToString()).ToString("0.##")</li>
+                <li class="E">@decimal.Parse(m.yonge.ToString()).ToString("0.##")</li>
+                <li class="F">@decimal.Parse(m.moneye.ToString()).ToString("0.##")</li>
+                <li class="G">
+                    @{
+            var mball = (from q in Model.xiazu
+                         where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                         where (q.ball.Trim() == m.ball.Trim())
+                         select q).ToList();
+            decimal ballmoney = 0;
+            string xid = "";
+            foreach (var m2 in mball)
+            {
+                decimal beilu = 0;
+                try
+                {
+                    if (m2.beilu.IndexOf(',') < 0)
+                    {
+                        beilu = decimal.Parse(m2.beilu.Trim());
+                    }
+                    else
+                    {
+                        beilu = decimal.Parse(m2.beilu.Split(',')[0]);
+                    }
+                }
+                catch
+                {
+                    beilu = 0;
+                }
+                ballmoney += (decimal)m2.money * beilu;
+                xid += m2.id + ",";
+
+            }
+            if (xid.IndexOf(',') >= 0)
+            {
+                xid = xid.Substring(0, xid.Length - 1);
+            }
+            <input type="hidden" name="xid" value="@xid" />
+            var yk_money = x_moneys - ballmoney;
+            if (yk_money > 0)
+            {
+                <span style="color:#03a816">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+            }
+            else
+            {
+                <span style="color:#ba0202">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+            }
+                    }
+                </li>
+                <li class="H">
+                    @*@{
+                        if (yk_money > 0)
+                        {
+                            <span style="color:#03a816">盈:@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                        else
+                        {
+                            decimal yk_money2 = -yk_money / ;
+                            <span style="color:#a88e00">补:@decimal.Parse(yk_money2.ToString()).ToString("0.##")</span>
+                        }
+                                }*@
+                    0
+                </li>
+            </ul>
+            i++;
+        }
+    }
+</div>
+<div class="xm-list">
+    <div class="xm-list-box">
+        @{
+            var xmlist = (from q in Model.xiazu
+                          group q by new { q.t2 } into g
+                          select new
+                          {
+                              t2 = g.Key.t2,
+                              money = g.Sum(a => a.money)
+                          }).OrderByDescending(a => a.money).ToList();
+            foreach (var m in xmlist)
+            {
+                var ccl = "";
+                if (m.t2.Trim() == xm_name)
+                {
+                    ccl = "ccl";
+                }
+                <ul>
+                    <li class="@ccl" onclick="xxopen(this,'@m.t2.Trim()')">
+                        @m.t2.Trim()
+                        <span class="badge" style="background-color:#4fb5ff">@decimal.Parse(m.money.ToString()).ToString("0.##")</span>
+                    </li>
+                </ul>
+            }
+
+        }
+    </div>
+</div>

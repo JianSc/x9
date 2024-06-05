@@ -1,0 +1,732 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model IPagedList<x9web.Models.xqisu>
+
+@{
+    ViewBag.Title = "盘口设定";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        ul li {
+            list-style: none;
+        }
+
+        .m-top {
+            overflow: hidden;
+        }
+
+        .m-but {
+            overflow: hidden;
+            background: #d6eeff;
+            border: 1px solid #0094ff;
+            padding: 5px;
+        }
+
+        .btn {
+            padding: 3px 5px;
+            border-radius: 3px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .m-box1 {
+            border: 1px solid #0094ff;
+            margin-top: -1px;
+            overflow: hidden;
+        }
+
+            .m-box1 ul {
+                margin: 0;
+                padding: 0;
+                float: left;
+                width: 50%;
+            }
+
+            .m-box1 li {
+                padding: 5px;
+                float: left;
+                height: 36px;
+                line-height: 26px;
+            }
+
+        .m-line {
+            border-bottom: 1px solid #6ac0fe;
+        }
+
+        .m-line2 {
+            border-bottom: 1px solid #6ac0fe;
+            border-left: 1px solid #6ac0fe;
+        }
+
+        .m-box1 .xlable {
+            width: 130px;
+            text-align: right;
+        }
+
+        .m-box2 {
+            overflow: hidden;
+            border: 1px solid #0094ff;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+            .m-box2 ul {
+                padding: 0;
+                margin: 0;
+            }
+
+            .m-box2 .xlable {
+                background: #d6eeff;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                /*max-width:1101px;*/
+            }
+
+            .m-box2 .manmxh {
+                overflow: hidden;
+                /*max-width:1101px;*/
+            }
+
+            .m-box2 .xlable li {
+                text-align: center;
+            }
+
+            .m-box2 li {
+                padding: 5px;
+                float: left;
+            }
+
+            .m-box2 .A {
+                width: 80px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .B {
+                width: 160px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .C {
+                width: 160px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .D {
+                width: 150px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .E {
+                width: 70px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .G {
+                width: 70px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .H {
+                width: 70px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .I {
+                width: 70px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .J {
+                width: 70px;
+                border-right: 1px solid #6ac0fe;
+            }
+
+            .m-box2 .F {
+                padding: 0;
+            }
+
+            .m-box2 .xlable .F {
+                float: none;
+                padding: 5px;
+                overflow: hidden;
+            }
+
+            .m-box2 .F ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .m-box2 .F li {
+                float: left;
+                padding: 0;
+            }
+
+                .m-box2 .F li > a {
+                    display: block;
+                    padding: 5px 10px;
+                    text-decoration: none;
+                }
+
+                    .m-box2 .F li > a:hover,
+                    .m-box2 .F li > a:focus {
+                        background: #d6eeff;
+                        color: #ff0000;
+                    }
+
+        .oper li > a {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script src="/Scripts/apps/laydate.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $("#but-new").click(function () {
+                layer.open({
+                    type: 2,
+                    title: "<i class='fa fa-edit'></i> 新增盘口",
+                    area: ["400px", "440px"],
+                    resize: false,
+                    content: ['/manage/addnew_pankou', 'no']
+                })
+            })
+            laydate.render({
+                elem: ".m-box1 input[name='select_time']",
+                range: ">>>"
+            })
+            $("#select_time").click(function () {
+                var arrtime = $(".m-box1 input[name='select_time']").val();
+                if (arrtime == "") {
+                    layer.alert("请选择要查询的时间段！");
+                    return;
+                }
+                layer.confirm('确定要删除选中的时间段下注数据吗？<br /><span color="#ff000">注意:此操作不可恢复！！</span>',
+                {
+                    btn: ['确定', '取消'],
+                },
+                function (index) {
+                    layer.close(index);
+                    var indexx = layer.load(1, { shade: [0.3] });
+                    $.ajax({
+                        url: "/handle/del_arrtime_zhudan",
+                        type: "POST",
+                        data: { arrtime: arrtime },
+                        success: function (data) {
+                            layer.close(indexx);
+                            layer.alert(data.msg);
+                        }
+                    })
+                },
+                function (index) {
+                    layer.close(index);
+                });
+                
+            })
+            $("input[name='zema']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var qisu = $(".m-box1 input[name='xid']").val();
+                    if (qisu == null || qisu == '') {
+                        return;
+                    }
+                    var id = 6001;
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: qisu },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.msg(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                                case "suc":
+                                    layer.alert("由于你手动操作的盘口开关，<span style='color:#ff0000'>正码</span>盘自动封盘已经自动关闭；<br /><span style='color:#ff0000'>如需要开启自动封盘，请手动打开正码自动封盘开关！</sapn>");
+                                    $("input[name='zmauto']").bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $("input[name='tema']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var qisu = $(".m-box1 input[name='xid']").val();
+                    if (qisu == null || qisu == '') {
+                        return;
+                    }
+                    var id = 6002;
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: qisu },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.msg(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                                case "suc":
+                                    layer.alert("由于你手动操作的盘口开关，<span style='color:#ff0000'>特码</span>盘自动封盘已经自动关闭；<br /><span style='color:#ff0000'>如需要开启自动封盘，请手动打开特码自动封盘开关！</sapn>");
+                                    $("input[name='tmauto']").bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $("input[name='pankou']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var qisu = $(".m-box1 input[name='xid']").val();
+                    if (qisu == null || qisu == '') {
+                        return;
+                    }
+                    var id = 6003;
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: qisu },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.msg(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $("input[name='zmauto']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var qisu = $(".m-box1 input[name='xid']").val();
+                    if (qisu == null || qisu == '') {
+                        return;
+                    }
+                    var id = 6004;
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: qisu },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $("input[name='tmauto']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var qisu = $(".m-box1 input[name='xid']").val();
+                    if (qisu == null || qisu == '') {
+                        return;
+                    }
+                    var id = 6005;
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: qisu },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+            $("#reload_beilu").click(function () {
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/handle/reload_beilu",
+                    type: "POST",
+                    success: function (data) {
+                        layer.close(index);
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                return;
+                            case "suc":
+                                layer.alert(data.msg);
+                                return;
+                        }
+                    }
+                })
+            })
+        })
+
+        function xdelete(obj, e, g) {
+            layer.confirm('确定要放弃并删除掉<span style="color:#ff0000">' + g + '</span>期吗<br />下注数据也会一并删除，并不能恢复！！',
+                {
+                    btn: ['确定', '取消'],
+                },
+                function (index) {
+                    layer.close(index);
+                    var indexx = layer.load(1, { shade: [0.3] });
+                    $.ajax({
+                        url: "/handle/pankou_del",
+                        type: "POST",
+                        async: false,
+                        data: { id: e, xn: g },
+                        success: function (data) {
+                            layer.close(indexx);
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    return;
+                                case "suc":
+                                    alert(data.msg);
+                                    var dom = $(obj).parent().parent().parent().parent().remove();
+                                    return;
+                            }
+                        }
+                    })
+                },
+                function (index) {
+                    layer.close(index);
+                });
+
+        }
+        function xkaijiang(obj, e, g) {
+            layer.open({
+                type: 2,
+                title: "<i class='fa fa-edit'></i> 第 <span style='font-weight:bold'>" + g + "</span> 开奖",
+                area: ["495px", "120px"],
+                resize: false,
+                content: ['/manage/kaijiang/' + e, 'no']
+            })
+        }
+        function xconfig(obj, e) {
+            layer.open({
+                type: 2,
+                title: "<i class='fa fa-edit'></i> 修改盘口",
+                area: ["400px", "440px"],
+                resize: false,
+                content: ['/manage/edit_pankou/' + e, 'no']
+            })
+        }
+        function xsuan(obj, id, e) {
+            layer.confirm('即将开始第' + e + '期结算任务，结算程序运行需要点时间，请耐心等候，如不结算请点取消。',
+                {
+                    btn: ['确定', '取消'],
+                },
+                function (index) {
+                    layer.close(index);
+                    var xindex = layer.load(1, { shade: [0.3] });
+                    $.ajax({
+                        url: "/handle/jies",
+                        type: "POST",
+                        data: { id: id, qisu: e },
+                        success: function (data) {
+                            layer.close(xindex);
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    return;
+                                case "suc":
+                                    alert(data.msg);
+                                    window.location.reload();
+                                    return;
+                            }
+                        }
+                    })
+                },
+                function (index) {
+                    layer.close(index);
+                });
+        }
+    </script>
+}
+<div class="m-top">
+    <ol class="breadcrumb">
+        <li class="active">盘口设定</li>
+    </ol>
+</div>
+
+<div class="m-but">
+    <ul style="margin:0;padding:0">
+        <li style="float:left">
+            <button type="button" name="but-new" id="but-new" class="btn btn-primary">新增盘口</button>
+            <button type="button" name="reload_beilu" id="reload_beilu" style="margin-left:10px" class="btn btn-danger">恢复默认赔率</button>
+        </li>
+        <li style="overflow:hidden; padding-left:30px;padding-top:1px">
+            <div class="ifram">
+                <iframe id="5432" src="https://bmwbmw.6665432.com/live3.htm" width="100%" height="26" scrolling="no" frameborder="0"></iframe>
+            </div>
+        </li>
+    </ul>
+</div>
+@{
+    var m = from q in Model
+            where (q.jiang == false)
+            select q;
+    if (m.Count() > 0)
+    {
+        <div class="m-box1">
+            <ul class="m-line">
+                <li class="xlable">期数：</li>
+                <li style="font-weight:bold">
+                    @m.First().name.ToString()
+                    <input type="hidden" name="xid" id="xid" value="@m.First().id" />
+                </li>
+                <li style="margin-left:20px">
+                    <span style="color:#ff0000">
+                        [服务器: @DateTime.Now.AddHours(x9web.Api.WebClass.plus_timer_hours).ToString("yyyy/MM/dd HH:mm:ss")]
+                    </span>
+                </li>
+            </ul>
+            <ul class="m-line2">
+                <li class="xlable">自动开盘时间：</li>
+                <li>@DateTime.Parse(m.First().k_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+            </ul>
+
+            <ul class="m-line">
+                <li class="xlable">总盘状态：</li>
+                <li>
+                    @{
+        var check = "";
+        if ((bool)m.First().bankou)
+        {
+            check = "checked ";
+        }
+                    }
+                    <input type="checkbox" name="pankou" id="pankou" @check />
+                </li>
+            </ul>
+            <ul class="m-line2">
+                <li class="xlable">正码自动封盘：</li>
+                <li>@DateTime.Parse(m.First().z_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+            </ul>
+            <ul class="m-line">
+                <li class="xlable">正码：</li>
+                <li>
+                    @{
+        check = "";
+        if ((bool)m.First().zema_bankou)
+        {
+            check = "checked";
+        }
+                    }
+                    <input name="zema" id="zema" type="checkbox" @check />
+                </li>
+            </ul>
+
+            <ul class="m-line2">
+                <li class="xlable">特码自动封盘：</li>
+                <li>@DateTime.Parse(m.First().t_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+            </ul>
+            <ul class="m-line">
+                <li class="xlable">特码：</li>
+                <li>
+                    @{
+        check = "";
+        if ((bool)m.First().tema_bankou)
+        {
+            check = "checked";
+        }
+                    }
+                    <input type="checkbox" name="tema" id="tema" @check />
+                </li>
+            </ul>
+
+            <ul class="m-line2">
+                <li class="xlable">正码自动封盘：</li>
+                @{
+        check = "";
+        if ((bool)m.First().z_auto)
+        {
+            check = "checked";
+        }
+                }
+                <li><input type="checkbox" name="zmauto" id="zmauto" @check /></li>
+                <li class="xlable">特码自动封盘：</li>
+                @{
+        check = "";
+        if ((bool)m.First().t_auto)
+        {
+            check = "checked";
+        }
+                }
+                <li><input type="checkbox" name="tmauto" id="tmauto" @check /></li>
+            </ul>
+            <ul>
+                <li class="xlable">本期下注金额：</li>
+                <li>
+                    <span style="color:#ff0000;font-weight:bold">@x9web.Api.WebClass.f_pankou_money((int)m.First().name)</span>
+                </li>
+            </ul>
+            <ul>
+                <li style="padding:6px 0">时间段：</li>
+                <li style="width:230px">
+                    <input style="border-radius:0;height:26px;padding:3px" name="select_time" class="form-control" value="" lay-key="1" type="text">
+                </li>
+                <li>
+                    <button style="padding:1px 3px" type="button" name="select_time" id="select_time" class="btn btn-warning">删除选中时间段的下注资料</button>
+                </li>
+
+            </ul>
+        </div>
+    }
+}
+<div class="m-box2">
+    <ul class="xlable">
+        <li class="A">期数</li>
+        <li class="B">自动开盘时间</li>
+        <li class="C">正码自动封盘</li>
+        <li class="D">特码自动封盘</li>
+        <li class="E">总盘状态</li>
+        <li class="G">正码</li>
+        <li class="H">特码</li>
+        <li class="I">开奖</li>
+        <li class="J">结算</li>
+        <li class="F">操作</li>
+    </ul>
+    @{
+        foreach (var mm in Model)
+        {
+            <ul class="manmxh">
+                <li class="A" style="font-weight:bold">@mm.name</li>
+                <li class="B">@DateTime.Parse(mm.k_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                <li class="C">@DateTime.Parse(mm.z_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                <li class="D">@DateTime.Parse(mm.t_time.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                @{
+            var state = "";
+            if ((bool)mm.bankou)
+            {
+                state = "On";
+            }
+            else
+            {
+                state = "Off";
+            }
+                }
+                <li class="E" style="text-align:center">@state</li>
+                @{
+            state = "";
+            if ((bool)mm.zema_bankou)
+            {
+                state = "On";
+            }
+            else
+            {
+                state = "Off";
+            }
+                }
+                <li class="G" style="text-align:center">@state</li>
+                @{
+            state = "";
+            if ((bool)mm.tema_bankou)
+            {
+                state = "On";
+            }
+            else
+            {
+                state = "Off";
+            }
+                }
+                <li class="H" style="text-align:center">@state</li>
+                @{
+            state = "";
+            if ((bool)mm.jiang)
+            {
+                state = "On";
+            }
+            else
+            {
+                state = "Off";
+            }
+                }
+                <li class="I" style="text-align:center">@state</li>
+                @{
+            state = "";
+            if ((bool)mm.jiesuan)
+            {
+                state = "On";
+            }
+            else
+            {
+                state = "Off";
+            }
+                }
+                <li class="J" style="text-align:center">@state</li>
+                <li class="F">
+                    <ul class="oper">
+                        <li><a id="config" onclick="xconfig(this,'@mm.id')">修改</a></li>
+                        <li><a id="kaijiang" onclick="xkaijiang(this,'@mm.id','@mm.name')">开奖</a></li>
+                        @{
+            if ((bool)mm.jiesuan)
+            {
+                <li style="min-width:76px"><a id="js_pan" onclick="xsuan(this,'@mm.id','@mm.name')">重新结算</a></li>
+            }
+            else
+            {
+                <li style="min-width:76px"><a id="js_pan" onclick="xsuan(this,'@mm.id','@mm.name')">结算</a></li>
+            }
+                        }
+                        <li><a id="del_pankou" onclick="xdelete(this,'@mm.id','@mm.name')">删除</a></li>
+                    </ul>
+                </li>
+            </ul>
+        }
+    }
+</div>
+<div class="pagelist">
+    @Html.Pager(Model, new PagerOptions
+{
+    PageIndexParameterName = "id",
+    ContainerTagName = "ul",
+    CssClass = "pagination",
+    PrevPageText = "上页",
+    NextPageText = "下页",
+    FirstPageText = "首页",
+    LastPageText = "尾页",
+    ShowPrevNext = false,
+    AutoHide = false,
+    CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+    PagerItemTemplate = "<li>{0}</li>",
+    Id = "bootstrappager"
+})
+</div>

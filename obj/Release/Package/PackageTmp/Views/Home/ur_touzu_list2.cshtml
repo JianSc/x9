@@ -1,0 +1,98 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+
+    <ul class="title">
+        <li class="A">序号</li>
+        <li class="B">下注时间</li>
+        <li class="C">项目</li>
+        <li class="D">球号</li>
+        <li class="E">金额</li>
+        <li class="F">退水</li>
+        <li class="G">倍率</li>
+        <li class="H">佣金</li>
+        <li class="I">彩金</li>
+    </ul>
+    @{
+        var xh = 1;
+        foreach (var m in Model)
+        {
+            var color = "";
+            if ((bool)m.z)
+            {
+                color = "RR";
+            }
+
+            <ul class="m @color">
+                <li class="A">@xh</li>
+                <li class="B">@DateTime.Parse(m.timer.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                <li class="C">
+                    <span>@m.t1.Trim()</span>
+                    <span style="color:#ff0000">@@@m.t2.Trim()</span>
+                    <span style="color:#9d8500">@m.other.Trim()</span>
+                </li>
+                <li class="D">
+                    @{
+            var xball = "";
+            var test = "一肖,一肖不中,特肖";
+            if (test.IndexOf(m.t2.Trim()) > -1)
+            {
+                xball = m.name.Trim();
+            }
+            else
+            {
+                xball = m.ball.Trim();
+            }
+            test = "尾数,尾数不中";
+            if (test.IndexOf(m.t2.Trim()) > -1)
+            {
+                xball = m.name.Trim() + "尾";
+            }
+            else
+            {
+                if (xball == "")
+                {
+                    xball = m.ball.Trim();
+                }
+
+            }
+                    }
+                    @xball
+                </li>
+                <li class="E">@decimal.Parse(m.money.ToString()).ToString("0.##")</li>
+                <li class="F">@decimal.Parse(m.yongjin.ToString()).ToString("0.###")</li>
+                <li class="G">@m.beilu</li>
+                <li class="H">
+                    @{
+            string yongjine = "0";
+            if (m.yongjine != null)
+            {
+                yongjine = decimal.Parse(m.yongjine.ToString()).ToString("0.##");
+            }
+                    }
+                    @yongjine
+                </li>
+                <li class="I">
+                    @{
+            string moneye = "0";
+            if (m.moneye != null)
+            {
+                moneye = decimal.Parse(m.moneye.ToString()).ToString("0.##");
+            }
+                    }
+                    @moneye
+                </li>
+            </ul>
+            xh++;
+        }
+        <ul class="m" style="font-weight:bold;background:#ddd">
+            <li class="A">&nbsp;</li>
+            <li class="B">&nbsp;</li>
+            <li class="C">&nbsp;</li>
+            <li class="D">&nbsp;</li>
+            <li class="E">@decimal.Parse(Model.Sum(a => a.money).ToString()).ToString("0.##")</li>
+            <li class="F">&nbsp;</li>
+            <li class="G">&nbsp;</li>
+            <li class="H">@decimal.Parse(Model.Sum(a => a.yongjine).ToString()).ToString("0.##")</li>
+            <li class="I">@decimal.Parse(Model.Sum(a => a.moneye).ToString()).ToString("0.##")</li>
+        </ul>
+    }

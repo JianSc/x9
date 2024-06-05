@@ -1,0 +1,185 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    ViewBag.Title = "manage_zhudan_ajax22";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .um-box  {
+            margin: 10px;
+        }
+
+            .um-box ,
+            .um-box  ul {
+                overflow: hidden;
+            }
+
+                .um-box  .title {
+                    border: 1px solid #808080;
+                    border-bottom: 0;
+                    border-right: 0;
+                    background: #ddd;
+                }
+
+                .um-box  .m {
+                    border-left: 1px solid #808080;
+                    font-size:12px;
+                }
+
+                .um-box  li {
+                    padding: 6px;
+                    float: left;
+                    border: 1px solid #808080;
+                    border-top: 0;
+                    border-left: 0;
+                    text-align: center;
+                    /*white-space:nowrap;
+                overflow:hidden;*/
+                }
+
+                .um-box  .title li {
+                    text-align: center;
+                }
+
+        .um-box .A {
+            width: 5%;
+        }
+
+        .um-box .B {
+            width: 15%;
+        }
+
+        .um-box .C {
+            width: 7%;
+        }
+
+        .um-box .D {
+            width: 8%;
+        }
+
+        .um-box .E {
+            width: 7%;
+        }
+
+        .um-box .F {
+            width: 7%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .um-box .K {
+            width: 6%;
+        }
+
+        .um-box .G {
+            width: 13%;
+        }
+
+        .um-box .H {
+            width: 13%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .um-box .I {
+            width: 8%;
+        }
+
+        .um-box .J {
+            width: 11%;
+        }
+
+        .um-box .r {
+            background: #ffa2a2;
+        }
+    </style>
+}
+@section scripts{
+
+}
+<div class="um-box">
+    <ul class="title">
+        <li class="A">序号</li>
+        <li class="B">下注时间</li>
+        <li class="C">期数</li>
+        <li class="D">会员帐号</li>
+        <li class="E">下注金额</li>
+        <li class="F">赔率</li>
+        <li class="K">退水</li>
+        <li class="G">类别</li>
+        <li class="H">球号</li>
+        <li class="I">佣金</li>
+        <li class="J">盈亏</li>
+    </ul>
+    @{
+        int id = 1;
+        foreach (var m in Model)
+        {
+            var color = "";
+            if (m.z == true)
+            {
+                color = "r";
+            }
+            <ul class="m @color">
+                <li class="A">@id</li>
+                <li class="B">@DateTime.Parse(m.timer.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                <li class="C">@m.qisu</li>
+                <li class="D">@m.pname.Trim()</li>
+                <li class="E">@decimal.Parse(m.money.ToString()).ToString("0.###")</li>
+                <li class="F">@m.beilu.Trim()</li>
+                <li class="K">@decimal.Parse(m.yongjin.ToString()).ToString("0.###")</li>
+                <li class="G">
+                    <span style="color:#ff0000">@m.t1.Trim():</span>@m.t2.Trim()
+                </li>
+                <li class="H">
+                    @{
+            string sss = "";
+            string ssd = "一肖,一肖不中";
+            if (ssd.IndexOf(m.t2.Trim()) > -1)
+            {
+                sss = "<span style='color:#ff0000'>[" + m.name.Trim() + "]</span>";
+            }
+            ssd = "尾数,尾数不中";
+            if (ssd.IndexOf(m.t2.Trim()) > -1)
+            {
+                sss = "<span style='color:#ff0000'>[" + m.name.Trim() + "尾]</span>";
+            }
+                    }
+                    <span>@m.ball.Trim()</span>
+                    @Html.Raw(sss)
+                </li>
+                <li class="I">
+                    @{
+            decimal yongjine = 0;
+            if (m.yongjine != null)
+            {
+                yongjine = (decimal)m.yongjine;
+            }
+                    }
+                    @yongjine
+                </li>
+                <li class="J">
+                    @{
+            decimal moneye = 0;
+            if (m.moneye != null)
+            {
+                moneye = (decimal)m.moneye;
+            }
+                    }
+                    @moneye
+                </li>
+            </ul>
+            id++;
+        }
+    }
+</div>

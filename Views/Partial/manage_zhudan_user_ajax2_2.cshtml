@@ -1,0 +1,109 @@
+﻿@model x9web.Models.um_man_touji
+
+<ul class="title">
+    <li class="AA">序号</li>
+    <li class="II">期号</li>
+    <li class="CC">会员</li>
+    <li class="DD">注数</li>
+    <li class="EE">下注总额</li>
+    <li class="FF">会员占成</li>
+    <li class="GG">公司占成</li>
+    <li class="BB">佣金</li>
+    <li class="HH">总盈亏统计</li>
+</ul>
+@{
+    var id = 1;
+    var ms = from q in Model.xxiazu
+             group q by new { q.pname, q.pid, } into g
+             select new
+             {
+                 pname = g.Key.pname,
+                 pid = g.Key.pid,
+                 zs = g.Count(a => a.xid == a.xid),
+                 money = g.Sum(a => a.money),
+                 moneye = g.Sum(a => a.moneye),
+                 yongjine = g.Sum(a => a.yongjine)
+             };
+    foreach (var m in ms)
+    {
+        @*<ul class="mb" onclick="select(this,'@m.pname.Trim()')">*@
+            <ul class="mb">
+                <li class="AA">@id</li>
+                <li class="II">
+                    <span>&nbsp;</span>
+                    <input type="hidden" name="qisu" value="" />
+                </li>
+                <li class="CC">
+                    @{
+        var um = Model.xusers.Where(a => a.id == m.pid).First();
+        if (um.pid == 0)
+        {
+            <i style="color:#0471c1;margin-right:3px" class="fa fa-user"></i>
+        }
+                    }
+                    @m.pname.Trim()<span style="color:#988100">@@@x9web.Api.WebClass.f_user_gd((int)m.pid)</span>
+                    @{
+        if (um.pid != 0)
+        {
+            var umm = Model.xusers.Where(a => a.id == um.pid).First();
+            <span style="color:#ff0000">[@umm.name.Trim()]</span>
+        }
+                    }
+                </li>
+                <li class="DD">@m.zs</li>
+                <li class="EE">@m.money</li>
+                <li class="FF">@x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money)</li>
+                <li class="GG">@x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money)</li>
+                <li class="BB">
+                    <span>@m.yongjine</span>
+                </li>
+                <li class="HH">
+                    <span>@m.moneye</span>
+                    @{
+        var xid = "";
+        var ml = from q in Model.xxiazu
+                 where (q.pname == m.pname)
+                 select q;
+        foreach (var m1 in ml.ToList())
+        {
+            xid += m1.id;
+            xid += ",";
+        }
+        xid = xid.Substring(0, xid.Length - 1);
+                    }
+                    <input type="hidden" name="xid" value="@xid" />
+                </li>
+            </ul>
+        id++;
+    }
+}
+<div class="tongji">
+    <ul class="m">
+        <li class="AA">&nbsp;</li>
+        <li class="II">&nbsp;</li>
+        <li class="CC"><span style="font-weight:bold;color:#0067b1">合计：</span></li>
+        <li class="DD">@ms.Sum(a => a.zs)</li>
+        <li class="EE">@ms.Sum(a => a.money)</li>
+        <li class="FF">&nbsp;</li>
+        <li class="GG">&nbsp;</li>
+        <li class="BB">@ms.Sum(a => a.yongjine)</li>
+        <li class="HH">
+            @{
+                decimal moneye = (decimal)ms.Sum(a => a.moneye);
+
+                var h = "";
+                if (moneye < 0)
+                {
+                    h = "盈:";
+                }
+                else
+                {
+                    h = "亏:";
+                }
+    //moneye = -moneye;
+            }
+            @moneye
+        </li>
+    </ul>
+
+</div>

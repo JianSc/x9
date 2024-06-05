@@ -1,0 +1,170 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model Webdiyer.WebControls.Mvc.IPagedList<x9web.Models.xqisu>
+
+@{
+    ViewBag.Title = "历史开奖";
+    Layout = "~/Views/Pages/Home.cshtml";
+}
+@section styles{
+    <style>
+        .box {
+            overflow: hidden;
+            border: 1px solid #808080;
+            border-top: 0;
+            border-left: 0;
+        }
+
+            .box ul {
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+
+        .title {
+            background: #ddd;
+        }
+
+        .box li {
+            padding: 5px;
+            float: left;
+            min-height: 31px;
+            line-height: 31px;
+            border: 1px solid #808080;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .xxball li {
+            padding: 0;
+            margin-left: 3px;
+            margin-right: 3px;
+            min-height: 29px;
+            line-height: 29px;
+            border: 0;
+        }
+
+        .box .A {
+            width: 40px;
+            text-align: center;
+        }
+
+        .box .B {
+            width: 100px;
+            text-align: center;
+        }
+
+        .box .C {
+            width: 360px;
+            text-align: center;
+        }
+
+        .box .D {
+            width: 250px;
+            text-align: center;
+        }
+
+        .box .E {
+            float: none;
+            overflow: hidden;
+            text-align: center;
+        }
+    </style>
+}
+@section scripts{
+
+}
+<div class="box">
+    <ul class="title">
+        <li class="A">序号</li>
+        <li class="B">期数</li>
+        <li class="C">开奖号码</li>
+        <li class="D">生肖</li>
+        <li class="E">五行</li>
+    </ul>
+    @{
+        var ii = 1;
+        foreach (var m in Model)
+        {
+            <ul class="m">
+                <li class="A">@ii</li>
+                <li class="B">@m.name</li>
+                <li class="C">
+                    <ul class="xxball" style="margin-left:20px">
+                        @{
+            string[] s1 = m.ball.Trim().Split(',');
+            string[] s2 = m.color.Trim().Split(',');
+            for (var i = 0; i < s1.Length; i++)
+            {
+                var color = "ball" + s2[i];
+                if (i == 6)
+                {
+                    <li style="margin-top:2px"><span><i class="fa fa-plus"></i></span></li>
+                            <li class="@color"><span>@s1[i]</span></li>
+                }
+                else
+                {
+                    <li class="@color"><span>@s1[i]</span></li>
+                }
+
+            }
+                        }
+                    </ul>
+                </li>
+                <li class="D">
+                    @{
+            var iii = 1;
+            s1 = m.shengxiao.Trim().Split(',');
+            for (var i = 0; i < s1.Length; i++)
+            {
+                if (iii > 6)
+                {
+                    <span style="color:#ff0000">@s1[i]</span>
+                }
+                else
+                {
+                    <span>@s1[i]，</span>
+                }
+                iii++;
+            }
+                    }
+                </li>
+                <li class="E">
+                    @{
+            iii = 1;
+            s1 = m.wuxin.Trim().Split(',');
+            for (var i = 0; i < s1.Length; i++)
+            {
+                if (iii > 6)
+                {
+                    <span style="color:#ff0000">@s1[i]</span>
+                }
+                else
+                {
+                    <span>@s1[i]，</span>
+                }
+                iii++;
+            }
+                    }
+                </li>
+            </ul>
+            ii++;
+        }
+    }
+</div>
+
+@Html.Pager(Model, new PagerOptions
+{
+    PageIndexParameterName = "id",
+    ContainerTagName = "ul",
+    CssClass = "pagination",
+    PrevPageText = "上页",
+    NextPageText = "下页",
+    FirstPageText = "首页",
+    LastPageText = "尾页",
+    ShowPrevNext = false,
+    AutoHide = false,
+    CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+    PagerItemTemplate = "<li>{0}</li>",
+    Id = "bootstrappager"
+})

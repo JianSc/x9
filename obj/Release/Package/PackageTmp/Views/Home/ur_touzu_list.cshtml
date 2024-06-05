@@ -1,0 +1,296 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    ViewBag.Title = "投注明细";
+    Layout = "~/Views/Pages/Home.cshtml";
+}
+
+@section styles{
+    <style>
+        .select .m {
+            overflow: hidden;
+        }
+
+        .select {
+            background: #5099bb;
+            border: 1px solid #0d7eb4;
+            padding: 5px;
+        }
+
+            .select li {
+                float: left;
+                padding: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            .select .s {
+                padding: 0;
+            }
+
+            .select .form-control {
+                border-radius: 0;
+            }
+
+        .box li {
+            float: left;
+            padding: 5px;
+            border-right: 1px solid #808080;
+            border-bottom: 1px solid #808080;
+            text-align: center;
+        }
+
+        .box,
+        .box ul {
+            overflow: hidden;
+        }
+
+        .box {
+            border-top: 1px solid #808080;
+            border-left: 1px solid #808080;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+            .box .title {
+                background: #ddd;
+            }
+
+            .box .A {
+                width: 50px;
+            }
+
+            .box .B {
+                width: 160px;
+            }
+
+            .box .C {
+                width: 150px;
+            }
+
+            .box .D {
+                width: 320px;
+            }
+
+            .box .E {
+                width: 70px;
+            }
+
+            .box .F {
+                width: 60px;
+            }
+
+            .box .G {
+                width: 60px;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .box .H {
+                width: 70px;
+            }
+
+            .box .I {
+                float: none;
+                overflow: hidden;
+            }
+
+            .box .RR {
+                background: #d9ffa2;
+            }
+    </style>
+}
+@section scripts{
+<script src="~/Scripts/apps/laydate.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $(".select #btn_qisu").click(function () {
+                var qisu = $(this).parent().parent().find("select[name='qisu']").val();
+                layer.load(1, { shade: [0.3] });
+                window.location.href = "/home/ur_touzu_list/" + qisu + "/1";
+            })
+            $("#select_time").click(function () {
+                var arrtime = $(".select input[name='select_time']").val();
+                if (arrtime == "") {
+                    layer.alert("请选择要查询的时间段！");
+                    return;
+                }
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/home/ur_touzu_list2",
+                    type: "POST",
+                    data: { arrtime: arrtime },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".pagelist").remove();
+                        $(".box").html(data);
+                    }
+                })
+            })
+        })
+        laydate.render({
+            elem: ".select_time input[name='select_time']",
+            range: ">>>"
+        })
+    </script>
+}
+<div class="select">
+    <ul class="m">
+        <li style="color:#fff;margin-right:20px;">
+            <span>当前:</span>
+            <span style="color:#e5d05b">第 @ViewBag.qisu 期</span>
+        </li>
+        <li style="color:#fff">期号:</li>
+        <li class="s">
+            <select class="form-control" name="qisu">
+                @{
+                    string arrqisu = ViewBag.xqisu;
+                    string[] xqisu = arrqisu.Split(',');
+                    int qisu = ViewBag.qisu;
+                    foreach (var m in xqisu)
+                    {
+                        var check = "";
+                        if (m == qisu.ToString())
+                        {
+                            check = "selected='selected'";
+                        }
+                        <option @check>@m</option>
+                    }
+                }
+            </select>
+        </li>
+        <li class="s">
+            <button name="btn_qisu" id="btn_qisu" class="btn btn-danger" type="button"><i class="fa fa-search"></i></button>
+        </li>
+        <li class="s">
+            <ul class="select_time">
+                <li style="padding:6px 0;color:#fff;margin-left:30px">时间段：</li>
+                <li style="width:230px;padding:0">
+                    <input type="text" name="select_time" class="form-control" value="" />
+                </li>
+                <li style="margin-left:10px;padding:0">
+                    <button type="button" name="select_time" id="select_time" class="btn btn-warning">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    <ul class="title">
+        <li class="A">序号</li>
+        <li class="B">下注时间</li>
+        <li class="C">项目</li>
+        <li class="D">球号</li>
+        <li class="E">金额</li>
+        <li class="F">退水</li>
+        <li class="G">倍率</li>
+        <li class="H">佣金</li>
+        <li class="I">彩金</li>
+    </ul>
+    @{
+        var xhh = 50 * (int)ViewBag.id - 49;
+        var xh = xhh;
+        foreach (var m in Model)
+        {
+            var color = "";
+            if ((bool)m.z)
+            {
+                color = "RR";
+            }
+
+            <ul class="m @color">
+                <li class="A">@xh</li>
+                <li class="B">@DateTime.Parse(m.timer.ToString()).ToString("yyyy/MM/dd HH:mm:ss")</li>
+                <li class="C">
+                    <span>@m.t1.Trim()</span>
+                    <span style="color:#ff0000">@@@m.t2.Trim()</span>
+                    <span style="color:#9d8500">@m.other.Trim()</span>
+                </li>
+                <li class="D">
+                    @{
+            var xball = "";
+            var test = "一肖,一肖不中,特肖";
+            if (test.IndexOf(m.t2.Trim()) > -1)
+            {
+                xball = m.name.Trim();
+            }
+            else
+            {
+                xball = m.ball.Trim();
+            }
+            test = "尾数,尾数不中";
+            if (test.IndexOf(m.t2.Trim()) > -1)
+            {
+                xball = m.name.Trim() + "尾";
+            }
+            else
+            {
+                if (xball == "")
+                {
+                    xball = m.ball.Trim();
+                }
+                
+            }
+                    }
+                    @xball
+                </li>
+                <li class="E">@decimal.Parse(m.money.ToString()).ToString("0.##")</li>
+                <li class="F">@decimal.Parse(m.yongjin.ToString()).ToString("0.###")</li>
+                <li class="G">@m.beilu</li>
+                <li class="H">
+                    @{
+            string yongjine = "0";
+            if (m.yongjine != null)
+            {
+                yongjine = decimal.Parse(m.yongjine.ToString()).ToString("0.##");
+            }
+                    }
+                    @yongjine
+                </li>
+                <li class="I">
+                    @{
+            string moneye = "0";
+            if (m.moneye != null)
+            {
+                moneye = decimal.Parse(m.moneye.ToString()).ToString("0.##");
+            }
+                    }
+                    @moneye
+                </li>
+            </ul>
+            xh++;
+        }
+        <ul class="m" style="font-weight:bold;background:#ddd">
+            <li class="A">&nbsp;</li>
+            <li class="B">&nbsp;</li>
+            <li class="C">&nbsp;</li>
+            <li class="D">&nbsp;</li>
+            <li class="E">@decimal.Parse(Model.Sum(a => a.money).ToString()).ToString("0.##")</li>
+            <li class="F">&nbsp;</li>
+            <li class="G">&nbsp;</li>
+            <li class="H">@decimal.Parse(Model.Sum(a => a.yongjine).ToString()).ToString("0.##")</li>
+            <li class="I">@decimal.Parse(Model.Sum(a => a.moneye).ToString()).ToString("0.##")</li>
+        </ul>
+    }
+
+</div>
+@*<div class="pagelist">
+    @Html.Pager(Model, new PagerOptions
+{
+    PageIndexParameterName = "id",
+    ContainerTagName = "ul",
+    CssClass = "pagination",
+    PrevPageText = "上页",
+    NextPageText = "下页",
+    FirstPageText = "首页",
+    LastPageText = "尾页",
+    ShowPrevNext = false,
+    AutoHide = false,
+    CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+    PagerItemTemplate = "<li>{0}</li>",
+    Id = "bootstrappager"
+})
+</div>*@

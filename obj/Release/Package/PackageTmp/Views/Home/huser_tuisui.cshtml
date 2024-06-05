@@ -1,0 +1,475 @@
+﻿@model IEnumerable<x9web.Models.xqisu>
+
+@{
+    ViewBag.Title = "佣金结算";
+    Layout = "~/Views/Pages/Home.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .box {
+            overflow: hidden;
+            border: 1px solid #808080;
+            border-left: none;
+            border-top: none;
+            margin-top: 10px;
+            float: left;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .box .title {
+            overflow: hidden;
+            background: #ddd;
+        }
+
+        .box .m {
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .box li {
+            float: left;
+            padding: 5px;
+            border: 1px solid #808080;
+            border-bottom: 0;
+            border-right: 0;
+        }
+
+        /*.box .A {
+            width: 100px;
+            text-align: center;
+        }*/
+
+        .box .AA {
+            width: 120px;
+            text-align: center;
+        }
+
+        .box .DD {
+            width: 80px;
+            text-align: center;
+        }
+
+        .box .EE {
+            width: 110px;
+            text-align: center;
+        }
+
+        .box .FF {
+            width: 90px;
+            text-align: center;
+        }
+
+        .box .CC {
+            width: 80px;
+            text-align: center;
+        }
+
+        .box .BB {
+            width: 100px;
+            text-align: center;
+        }
+
+        .box .II {
+            text-align: center;
+            width: 120px;
+        }
+
+        .box .JJ {
+            width: 110px;
+            text-align: center;
+        }
+
+        .box .title .II,
+        .box .title .JJ,
+        .box .title .HH {
+            background: #ffd800 !important;
+        }
+
+        .box .HH {
+            width: 80px;
+            border-left: 1px solid #f00 !important;
+            text-align: center;
+        }
+
+        .box .GG {
+            width: 130px;
+            text-align: center;
+        }
+
+        .box .KK {
+            width: 130px;
+            text-align: center;
+        }
+
+        .A {
+            width: 40px;
+            text-align: center;
+        }
+
+        .B {
+            width: 160px;
+            text-align: center;
+        }
+
+        .C {
+            width: 70px;
+            text-align: center;
+        }
+
+        .D {
+            width: 120px;
+            text-align: center;
+        }
+
+        .E {
+            width: 100px;
+            text-align: center;
+        }
+
+        .F {
+            width: 60px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .K {
+            width: 60px;
+            text-align: center;
+        }
+
+        .G {
+            width: 130px;
+            text-align: center;
+        }
+
+        .H {
+            width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .I {
+            width: 100px;
+            text-align: center;
+        }
+
+        .J {
+            width: 160px;
+            text-align: center;
+        }
+
+        .I li {
+            border: 0;
+            margin: 0 8px;
+            padding: 0;
+        }
+
+            .I li > a {
+                cursor: pointer;
+                text-decoration: none;
+                display: block;
+            }
+
+                .I li > a:hover,
+                .I li > a:host {
+                    background: #d4edff;
+                }
+
+        .box .r {
+            background: #ffa2a2;
+        }
+
+        .tongji {
+            margin-bottom: 10px;
+        }
+
+            .tongji,
+            .tongji .m {
+                overflow: hidden;
+            }
+
+                .tongji .m {
+                    background: #ddd;
+                    border-left: 1px solid #808080;
+                    font-size: 12px;
+                }
+
+                .tongji li {
+                    padding: 6px;
+                    float: left;
+                    border: 1px solid #808080;
+                    border-top: 0;
+                    border-left: 0;
+                    text-align: center;
+                    color: #0471c1;
+                    /*white-space:nowrap;
+                overflow:hidden;*/
+                }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select li {
+                float: left;
+            }
+
+        /*.box .title .B,
+        .box .title .G,
+        .box .title .F,
+        .box .title .H,
+        .box .title .C,
+        .box .title .D,
+        .box .title .E {
+            height:62px;
+            line-height:60px;
+        }*/
+
+        .box .m li {
+            min-height: 31px;
+        }
+
+        .box a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .box .m:hover,
+        .box .m:focus {
+            background: #eaeaea;
+        }
+
+        .box .zz {
+            /*margin-top: 20px;*/
+            background: #808080;
+            overflow: hidden;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .box .AAA {
+            width: 8%;
+            text-align: center;
+        }
+
+        .box .BBB {
+            width: 27%;
+            text-align: center;
+        }
+
+        .box .CCC {
+            width: 10%;
+            text-align: center;
+        }
+
+        .box .DDD {
+            width: 10%;
+            text-align: center;
+        }
+
+        .box .EEE {
+            width: 10%;
+            text-align: center;
+        }
+
+        .box .HHH {
+            width: 5%;
+            text-align: center;
+        }
+
+        .box .FFF {
+            width: 15%;
+            text-align: center;
+        }
+
+        .box .GGG {
+            width: 15%;
+            text-align: center;
+        }
+
+        .box .m .AAA,
+        .box .m .BBB,
+        .box .m .CCC,
+        .box .m .DDD,
+        .box .m .EEE,
+        .box .m .HHH,
+        .box .m .FFF,
+        .box .m .GGG {
+            color: #a50909;
+        }
+
+        .box ul {
+            overflow: hidden;
+        }
+
+        .box .ABCD {
+            overflow: hidden;
+        }
+
+        .box .ABC {
+            overflow: hidden;
+            background: #005390;
+            color: #fff;
+            float: none !important;
+        }
+
+        .box .m .AAAA,
+        .box .m .BBBB,
+        .box .m .CCCC,
+        .box .m .DDDD,
+        .box .m .EEEE {
+            color: #a50909;
+        }
+
+        .box .AAAA {
+            width: 10%;
+        }
+
+        .box .BBBB {
+            width: 20%;
+        }
+
+        .box .CCCC {
+            width: 20%;
+        }
+
+        .box .DDDD {
+            width: 25%;
+        }
+
+        .box .EEEE {
+            width: 25%;
+        }
+
+        .box .myz {
+            text-align: center;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/apps/laydate.js"></script>
+    <script>
+        laydate.render({
+            elem: ".select input[name='timediff']",
+            range: ">>>"
+        });
+        $(".select #select_qisu").click(function () {
+            var qisu = $(".select select[name='select_qisu']").val();
+            var type = 1;
+            var time = "";
+            var index = layer.load(1, { shade: [0.3] });
+
+            $.ajax({
+                url: "/partial/manage_usertuisui",
+                type: "POST",
+                data: { id: qisu, type: type, time: time },
+                success: function (data) {
+                    layer.close(index);
+                    $(".box").html(data);
+                }
+
+            })
+        });
+        $(".select button[name='select_time']").click(function () {
+            var s = $(".select input[name='timediff']").val();
+            if (s == "") {
+                layer.alert("请选择需要查询的时间段！");
+                return;
+            }
+            var type = 2;
+            var time = s;
+            var qisu = "";
+
+            var index = layer.load(1, { shade: [0.3] });
+            $.ajax({
+                url: "/partial/manage_usertuisui",
+                type: "POST",
+                data: { id: qisu, type: type, time: time },
+                success: function (data) {
+                    layer.close(index);
+                    $(".box").html(data);
+                }
+            })
+        })
+
+        function theList(obj) {
+            var id = obj;
+            var type = $(".box input[name='select_type']").val();
+            var val = $(".box input[name='select_val']").val();
+
+            var index = layer.load(1, { shade: [0.3] });
+            $.ajax({
+                url: "/partial/ustuisuizudan",
+                type: "POST",
+                data: { id: id, type: type, val: val },
+                success: function (data) {
+                    layer.close(index);
+                    $(".box").html(data);
+                }
+            })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>佣金结算</li>
+    </ol>
+</div>
+<div class="select">
+    <ul>
+        @*<li style="margin-left:5px">
+                <button style="padding:6px 30px" class="btn btn-primary" name="zhudan2" id="zhudan2" type="button">统计报表</button>
+            </li>*@
+        <li style="margin-left:30px; padding:6px 0">
+            期号：
+        </li>
+        <li style="width:130px">
+            <select name="select_qisu" class="form-control">
+                @{
+                    foreach (var m in Model.OrderByDescending(a => a.id).ToList())
+                    {
+                        <option value="@m.name">@m.name</option>
+                    }
+                }
+            </select>
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="select_qisu" id="select_qisu" class="btn btn-success">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+        <li style="margin-left:20px; padding:6px 0">
+            时间段：
+        </li>
+        <li style="margin-right:10px">
+            <input class="form-control" name="timediff" style="width:220px" />
+        </li>
+        <li>
+            <button type="button" name="select_time" id="select_time" class="btn btn-danger">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    @Html.Action("manage_usertuisui", "partial")
+</div>

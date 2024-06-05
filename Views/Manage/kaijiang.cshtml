@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "kaijiang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var id = ViewBag.id;
+    string xball = ViewBag.ball;
+    string[] xxball;
+    string t1 = string.Empty;
+    string t2 = string.Empty;
+    string t3 = string.Empty;
+    string t4 = string.Empty;
+    string t5 = string.Empty;
+    string t6 = string.Empty;
+    string t7 = string.Empty;
+    if (xball != string.Empty || xball != "")
+    {
+        xxball = xball.Split(',');
+        t1 = xxball[0];
+        t2 = xxball[1];
+        t3 = xxball[2];
+        t4 = xxball[3];
+        t5 = xxball[4];
+        t6 = xxball[5];
+        t7 = xxball[6];
+    }
+
+}
+@section styles{
+    <style>
+        .box {
+            overflow: hidden;
+            padding: 10px;
+        }
+
+            .box ul {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            .box li {
+                list-style: none;
+            }
+
+            .box .s {
+                float: left;
+                width: 55px;
+                text-align: center;
+            }
+
+                .box .s input {
+                    width: 50px;
+                }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        #set {
+            margin-left: 10px;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".box #set").click(function () {
+                var t1 = $(".box input[name='t1']").val().trim();
+                var t2 = $(".box input[name='t2']").val().trim();
+                var t3 = $(".box input[name='t3']").val().trim();
+                var t4 = $(".box input[name='t4']").val().trim();
+                var t5 = $(".box input[name='t5']").val().trim();
+                var t6 = $(".box input[name='t6']").val().trim();
+                var t7 = $(".box input[name='t7']").val().trim();
+                if (t1 == '' || t2 == '' || t3 == '' || t4 == '' || t5 == '' || t6 == '' || t7 == '') {
+                    alert("请输入完整开奖数据！");
+                    return;
+                }
+                if (t1.length < 2) {
+                    t1 = "0" + t1;
+                }
+                if (t2.length < 2) {
+                    t2 = "0" + t2;
+                }
+                if (t3.length < 2) {
+                    t3 = "0" + t3;
+                }
+                if (t4.length < 2) {
+                    t4 = "0" + t4;
+                }
+                if (t5.length < 2) {
+                    t5 = "0" + t5;
+                }
+                if (t6.length < 2) {
+                    t6 = "0" + t6;
+                }
+                if (t7.length < 2) {
+                    t7 = "0" + t7;
+                }
+                var ball = t1 + "," + t2 + "," + t3 + "," + t4 + "," + t5 + "," + t6 + "," + t7;
+
+                $.ajax({
+                    url: "/handle/pankou_kaijiang",
+                    type: "POST",
+                    async: false,
+                    data:{id:@id,ball:ball},
+                    success:function(data){
+                        switch(data.type){
+                            case "err":
+                                alert(data.msg);
+                                return;
+                            case "suc":
+                                alert(data.msg);
+                                window.parent.location.reload();
+                                return;
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div class="box">
+    <ul class="m">
+        <li class="s">No1</li>
+        <li class="s">No2</li>
+        <li class="s">No3</li>
+        <li class="s">No4</li>
+        <li class="s">No5</li>
+        <li class="s">No6</li>
+        <li class="s" style="width:20px;height:20px"></li>
+        <li class="s">特码</li>
+    </ul>
+    <ul class="m">
+        <li class="s"><input type="text" class="form-control" name="t1" value="@t1" /></li>
+        <li class="s"><input type="text" class="form-control" name="t2" value="@t2" /></li>
+        <li class="s"><input type="text" class="form-control" name="t3" value="@t3" /></li>
+        <li class="s"><input type="text" class="form-control" name="t4" value="@t4" /></li>
+        <li class="s"><input type="text" class="form-control" name="t5" value="@t5" /></li>
+        <li class="s"><input type="text" class="form-control" name="t6" value="@t6" /></li>
+        <li class="s" style="width:20px;padding:5px;margin-right:5px;padding-top:6px"><i class="fa fa-plus"></i></li>
+        <li class="s"><input type="text" class="form-control" name="t7" value="@t7" /></li>
+        <li class="s">
+            <button type="button" id="set" class="btn btn-success">开奖</button>
+        </li>
+    </ul>
+</div>

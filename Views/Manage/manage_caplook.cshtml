@@ -1,0 +1,833 @@
+﻿@model x9web.Models.um_man_cplook
+
+@{
+    ViewBag.Title = "彩盘监控";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var the_qisu = x9web.Api.WebClass.xconfig_qisu;
+    int auto_time = 10;
+    string xm_name = "特码";
+    var z_moneys = (decimal)Model.xiazu.Sum(a => a.money);
+    var x_moneys = (decimal)(from q in Model.xiazu
+                             where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                             select q).ToList().Sum(a => a.money);
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid {
+            width: 1260px;
+        }
+
+        .the-menu,
+        .the-menu ul {
+            overflow: hidden;
+        }
+
+        .the-menu {
+            overflow: hidden;
+        }
+
+            .the-menu li {
+                float: left;
+            }
+
+            .the-menu .menu1 .active {
+                padding: 8px 8px;
+                background: #CC5500;
+                color: #fff;
+            }
+
+            .the-menu .menu1 li > a {
+                padding: 8px 8px;
+                display: block;
+                text-decoration: none;
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .the-menu .menu2 .active {
+                padding: 8px 4px;
+                background: #777;
+                color: #fff;
+            }
+
+            .the-menu .menu2 li > a {
+                padding: 8px 4px;
+                display: block;
+                text-decoration: none;
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .the-menu .menu1 li > a:host,
+            .the-menu .menu1 li > a:hover {
+                background: #ffc195;
+                color: #000;
+            }
+
+            .the-menu .menu2 li > a:host,
+            .the-menu .menu2 li > a:hover {
+                background: #8b8b8b;
+                color: #fff;
+            }
+
+            .the-menu .menu1 {
+                background: #4193d0;
+            }
+
+            .the-menu .menu2 {
+                background: #76b7e8;
+            }
+
+        .badge {
+            background-color: #923434;
+        }
+
+        .menu3 {
+            overflow: hidden;
+            border-bottom: 1px solid #76b7e8;
+        }
+
+            .menu3 li {
+                float: left;
+                padding: 5px;
+            }
+
+            .menu3 .form-control {
+                border-radius: 0;
+                padding: 0;
+                height: 24px;
+            }
+
+            .menu3 .btn {
+                border-radius: 0;
+                padding: 1px;
+                width: 36px;
+                height: 24px;
+            }
+
+        .auto_time {
+            overflow: hidden;
+            background: #fff;
+            padding: 5px;
+            margin-top: 3px;
+            margin-right: 3px;
+        }
+
+        .colorR {
+            font-weight: bold;
+            color: #b60303;
+        }
+
+        .colorB {
+            font-weight: bold;
+            color: #0365ac;
+        }
+
+        .colorG {
+            font-weight: bold;
+            color: #03aa18;
+        }
+
+        .ball-box .ms {
+            float: left;
+            overflow: hidden;
+            border: 1px solid #0094ff;
+            border-right: 0;
+            border-left: 0;
+            width: 322px;
+        }
+
+        .ball-box .m {
+            border-top: 1px solid #808080;
+            border-right: 1px solid #0094ff;
+            overflow: hidden;
+        }
+
+        .ball-box {
+            overflow: hidden;
+            margin-top: 10px;
+            border-left: 1px solid #0094ff;
+        }
+
+            .ball-box .title {
+                background: #ddd;
+                border-top: 0;
+            }
+
+            .ball-box li {
+                float: left;
+                padding: 5px;
+            }
+
+            .ball-box .A {
+                width: 45px;
+                text-align: center;
+            }
+
+            .ball-box .B {
+                width: 76px;
+                text-align: center;
+                padding: 3px 2px;
+            }
+
+                .ball-box .B .btn {
+                    border-radius: 0;
+                    padding: 1px;
+                    margin: 0;
+                }
+
+            .ball-box .C {
+                width: 50px;
+                text-align: center;
+                color: #ff0000;
+                cursor: pointer;
+            }
+
+                .ball-box .C:hover,
+                .ball-box .C:host {
+                    background: #87ff97;
+                }
+
+            .ball-box .title .C:hover,
+            .ball-box .title .C:host {
+                background: #ddd;
+            }
+
+            .ball-box .D {
+                width: 70px;
+            }
+
+            .ball-box .E {
+                width: 80px;
+            }
+
+            .ball-box .form-control {
+                padding: 1px;
+                margin: 0;
+                border-radius: 0;
+                height: 24px;
+                width: 50px;
+            }
+
+        .title .C {
+            color: #000;
+        }
+
+        .title .E {
+            text-align: center;
+        }
+
+        .ball-box-q .A {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ball-box-pan {
+            overflow: hidden;
+            float: left;
+        }
+
+        .xm-list {
+            overflow: hidden;
+            margin-bottom: 10px;
+            max-width: 263px;
+            /*float: right;*/
+        }
+
+        .xm-list-box {
+            overflow: hidden;
+            margin-top: 10px;
+            margin-left: 5px;
+            border: 1px solid #0094ff;
+            border-bottom: 0;
+            border-right: 0;
+        }
+
+        .xm-list ul {
+            width: 100%;
+            border: 1px solid #0094ff;
+            border-top: 0;
+            border-left: 0;
+            overflow: hidden;
+            float: left;
+        }
+
+        .xm-list li {
+            padding: 5px 3px;
+            cursor: pointer;
+        }
+
+        .xm-list .ccl {
+            background: #7ad184;
+        }
+
+        .xm-list li:host,
+        .xm-list li:hover {
+            background: #eeffa9;
+        }
+
+        .ball-box999 {
+            overflow: hidden;
+            float: left;
+            width: 967px;
+            border: 1px solid #808080;
+            border-bottom: 0;
+            border-right: 0;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+            .ball-box999 li {
+                float: left;
+                padding: 5px;
+                text-align: center;
+                border: 1px solid #808080;
+                border-top: 0;
+                border-left: 0;
+            }
+
+            .ball-box999 ul {
+                overflow: hidden;
+            }
+
+            .ball-box999 .title {
+                background: #ddd;
+            }
+
+            .ball-box999 .A {
+                width: 50px;
+            }
+
+            .ball-box999 .B {
+                width: 226px;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .ball-box999 .C {
+                width: 60px;
+            }
+
+            .ball-box999 .E {
+                width: 100px;
+            }
+
+            .ball-box999 .F {
+                width: 130px;
+            }
+
+            .ball-box999 .G {
+                width: 120px;
+            }
+
+            .ball-box999 .H {
+                width: 150px;
+            }
+
+            .ball-box999 .D {
+                width: 130px;
+                text-align: center;
+                color: #ff0000;
+                cursor: pointer;
+            }
+
+                .ball-box999 .D:hover,
+                .ball-box999 .D:host {
+                    background: #87ff97;
+                }
+
+            .ball-box999 .title .D:hover,
+            .ball-box999 .title .D:host {
+                background: #ddd;
+            }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            timer(@auto_time);
+        })
+        function edit_beilu(obj) {
+            var id = $(obj).attr('beiluid');
+            var beilu = $(obj).parent().parent().find("input[name='beilu']").val();
+            var xname = $(".menu1 input[name='table']").val();
+            //alert(xname);
+
+            $.ajax({
+                url: "/handle/cplook_edit_beilu",
+                type: "POST",
+                data: { id: id, beilu: beilu, xname: xname },
+                success: function (data) {
+                    layer.alert(data.msg);
+                }
+            })
+        }
+        function select_qisu(obj) {
+            var qisu = $(obj).parent().parent().find("select[name='select_qisu']").val();
+            var xname = $(".menu1 input[name='table']").val();
+            var dom = $(".menu1 input[name='qisu']").val(qisu);
+            select(qisu, xname);
+        }
+
+
+        function select(qisu, xm) {
+            if (qisu == "" || xm == "") {
+                return;
+            }
+            var indexx = layer.load(1, { shade: [0.3] });
+            $.ajax({
+                url: "/manage/manage_caplook_partial",
+                type: "POST",
+                data: { qisu: qisu, xm: xm },
+                success: function (data) {
+                    layer.close(indexx);
+                    if (data != "err") {
+                        $(".box").html(data);
+                    }
+                }
+            })
+        }
+        function xopen(obj, e) {
+            var dom = $(".menu1 input[name='table']").val(e);
+            var qisu = $(".menu1 input[name='qisu']").val();
+            select(qisu, e);
+        }
+        function xxopen(obj, e) {
+            var dom = $(".menu1 input[name='table']").val(e);
+            var qisu = $(".menu1 input[name='qisu']").val();
+            $(".xm-list-box li").each(function () {
+                $(this).removeClass("ccl");
+            })
+            $(this).addClass("ccl");
+            select(qisu, e);
+        }
+        function timer(intDiff) {
+            var set = true;
+            var intsec = intDiff;
+            var index = window.setInterval(function () {
+                var second = intsec;
+                var xm = $(".menu1 input[name='table']").val();
+                var qisu = $(".menu1 input[name='qisu']").val();
+                if (set) {
+                    if (intsec < 0) {
+                        set = false;
+                        $(".menu1 .text").html("正在更新...");
+                        $.ajax({
+                            url: "/manage/manage_caplook_partial",
+                            type: "POST",
+                            data: { qisu: qisu, xm: xm },
+                            success: function (data) {
+                                if (data != "err") {
+                                    $(".box").html(data);
+                                }
+                                intsec = intDiff;
+                                set = true;
+                            }
+                        })
+                    } else {
+                        if (second <= 9 && second > 0) second = '0' + second;
+                        $('.menu1 .time').html(second);
+                        $(".menu1 .text").html("离自动更新:");
+                        intsec--;
+                    }
+                }
+
+
+            }, 1000);
+        }
+        function openUser(obj) {
+            var xid = $(obj).parent().find("input[name='xid']").val();
+            var qisu = $(".the-menu").find("input[name='qisu']").val();
+            var indexx = layer.load(1, { shade: [0.3] });
+            $.ajax({
+                url: "/partial/manage_zhudan_ajax22",
+                type: "POST",
+                data: { xid: xid, qisu: qisu },
+                success: function (data) {
+                    layer.close(indexx);
+                    layer.open({
+                        type: 1,
+                        title: "<i class='fa fa-sign-in'></i> 注单",
+                        resize: false,
+                        area: ["1025px", "500px"],
+                        content: data
+                    })
+                }
+            })
+        }
+    </script>
+}
+<div class="container-fluid">
+    <div class="the-menu">
+        <ul class="menu1">
+            <li class="active">彩盘监控</li>
+            <li><a href="/manage/man_look_sum/?type=dx">开奖统计</a></li>
+            <li><a href="/manage/main">盘口设定</a></li>
+            <li><a href="/manage/yujin">开奖预警</a></li>
+            <li><a href="/manage/user_tuisui">报表结算</a></li>
+            <li><a href="/manage/xconfig">系统设置</a></li>
+            <li><a href="/manage/beilu">赔率设置</a></li>
+            <li><a href="/manage/marquee">公告设置</a></li>
+            <li><a href="/manage/member">会员管理</a></li>
+            <li><a href="/manage/beilu_default">默认赔率</a></li>
+            <li><a href="/manage/auto_beilu">自动降赔</a></li>
+            <li><a href="/manage/tuisui">默认退水</a></li>
+            <li><a href="/manage/zhudan">统计报表</a></li>
+            <li style="display:none">
+                <input type="hidden" name="qisu" value="@the_qisu" />
+                <input type="hidden" name="table" value="@xm_name" />
+            </li>
+            <li style="float:right">
+                <ul class="auto_time">
+                    <li class="text">离自动更新:</li>
+                    <li class="time" style="color:#ff0000">@auto_time</li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <div class="box" style="overflow:hidden">
+        <div class="the-menu">
+            <ul class="menu2">
+                @{
+                    string menu = "特码,正码,特肖,尾数,一肖,二肖中,三肖中,四肖中,五肖中,六肖";
+                    string[] menus = menu.Split(',');
+
+                    foreach (var s in menus)
+                    {
+                        var m = from q in Model.xiazu
+                                where (q.t1.Trim() == s || q.t2.Trim() == s)
+                                select q;
+                        var z_money = decimal.Parse(m.ToList().Sum(a => a.money).ToString()).ToString("0.##");
+                        if (s == xm_name)
+                        {
+                            if (decimal.Parse(z_money) > 0)
+                            {
+                                <li class="active">@s<span class="badge">@z_money</span></li>
+                            }
+                        }
+                        else
+                        {
+                            if (decimal.Parse(z_money) > 0)
+                            {
+                                <li><a onclick="xopen(this,'@s')">@s<span class="badge">@z_money</span></a></li>
+                            }
+                        }
+
+                    }
+
+                    <li class="active" style="background:#00aa09;float:right;color:#fff">总额度<span class="badge">@z_moneys.ToString("0.##")</span></li>
+                }
+            </ul>
+
+        </div>
+        <div class="menu3">
+            <ul class="m">
+                <li>当前:</li>
+                <li>第<span>@the_qisu</span>期<span style="color:#a88e00">@@@xm_name</span></li>
+                <li style="margin-left:50px">选择期数:</li>
+                <li style="padding:3px">
+                    <select class="form-control" name="select_qisu">
+                        @{
+                            foreach (var m in Model.xqisu)
+                            {
+                                var check = "";
+                                if (m.name == the_qisu)
+                                {
+                                    check = "selected='selected'";
+                                }
+                                <option @check>@m.name</option>
+                            }
+                        }
+                    </select>
+                </li>
+                <li style="padding:3px">
+                    <button class="btn btn-danger" onclick="select_qisu(this)" name="select_btn" id="select_btn"><i class="fa fa-search"></i></button>
+                </li>
+            </ul>
+        </div>
+        <div class="ball-box-pan">
+            @{
+                var msss = Model.xball.Where(a => a.color != null).ToList();
+                if (msss.Count > 0)
+                {
+                    <div class="ball-box">
+                        <div class="ms">
+                            <ul class="m title">
+                                <li class="A">号码</li>
+                                <li class="B">赔率</li>
+                                <li class="C">金额</li>
+                                <li class="D">预计盈亏</li>
+                                <li class="E">走飞</li>
+                            </ul>
+                            @{
+                    var i = 1;
+                    var mball = from q in Model.xball
+                                where (q.color != null)
+                                join p in
+                                    (from k in Model.xiazu
+                                     where (k.t1.Trim() == xm_name || k.t2.Trim() == xm_name)
+                                     select k)
+                                on q.name.Trim() equals p.ball.Trim() into t
+                                select new
+                                {
+                                    id = q.id,
+                                    name = q.name,
+                                    color = q.color,
+                                    tma = q.tma,
+                                    sx = q.shenxiao,
+                                    money = t.Sum(a => a.money)
+                                };
+                    foreach (var m in mball.OrderByDescending(a => a.money))
+                    {
+                        var color = "color" + m.color;
+
+                        <ul class="m">
+                            <li class="A @color">@m.name.Trim()</li>
+                            <li class="B">
+                                <ul style="overflow:hidden">
+                                    <li style="float:left;padding:0">
+                                        <input type="text" name="beilu" class="form-control" value="@decimal.Parse(m.tma.ToString()).ToString("0.###")" />
+                                    </li>
+                                    <li style="float:left;padding:0;margin-left:3px">
+                                        <button type="button" class="btn btn-success" name="edit_beilu" id="edit_beilu" beiluid="@m.id" onclick="edit_beilu(this)">改</button>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="C" onclick="openUser(this)">
+                                @decimal.Parse(m.money.ToString()).ToString("0.##")
+                            </li>
+                            <li class="D">
+                                @{
+                        var ballm = (from q in Model.xiazu
+                                     where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                                     where (q.ball.Trim() == m.name.Trim())
+                                     select q).ToList();
+                        decimal ballmoney = 0;
+                        string xid = "";
+                        foreach (var m2 in ballm)
+                        {
+                            decimal thebeilu = 0;
+                            try { thebeilu = decimal.Parse(m2.beilu); }
+                            catch { thebeilu = 0; }
+                            ballmoney += (decimal)m2.money * thebeilu;
+                            xid += m2.id + ",";
+
+                        }
+                        if (xid.IndexOf(',') >= 0)
+                        {
+                            xid = xid.Substring(0, xid.Length - 1);
+                        }
+                        <input type="hidden" name="xid" value="@xid" />
+                        var yk_money = x_moneys - ballmoney;
+                        if (yk_money > 0)
+                        {
+                            <span style="color:#03a816">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                        else
+                        {
+                            <span style="color:#ba0202">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                                }
+                            </li>
+                            <li class="E">
+                                @{
+                        if (yk_money > 0)
+                        {
+                            <span style="color:#03a816">盈:@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                        else
+                        {
+                            decimal yk_money2 = -yk_money / (decimal)m.tma;
+                            <span style="color:#a88e00">补:@decimal.Parse(yk_money2.ToString()).ToString("0.##")</span>
+                        }
+                                }
+                            </li>
+                        </ul>
+                        if (i % 17 == 0)
+                        {
+                            @Html.Raw("</div>")
+                                @Html.Raw("<div class='ms'>")
+                                <ul class="m title">
+                                    <li class="A">号码</li>
+                                    <li class="B">赔率</li>
+                                    <li class="C">金额</li>
+                                    <li class="D">预计盈亏</li>
+                                    <li class="E">走飞</li>
+                                </ul>
+                        }
+                        if (i > 48)
+                        {
+                            <ul class="m">
+                                <li style="margin-left:30px;color:#0068b4;font-weight:bold">总项投注：@z_moneys.ToString("0.##")</li>
+                            </ul>
+                                <ul class="m">
+                                    <li style="margin-left:30px;color:#0068b4;font-weight:bold">本项投注：@x_moneys.ToString("0.##")</li>
+                                    <li style="color:#a88e00;">@@@xm_name</li>
+                                </ul>
+                        }
+                        i++;
+
+                    }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                msss = Model.xball.Where(a => a.type != null).ToList();
+                if (msss.Count > 0)
+                {
+
+                    <div class="ball-box ball-box-q">
+                        <div class="ms">
+                            <ul class="m title">
+                                <li class="A">号码</li>
+                                <li class="B">赔率</li>
+                                <li class="C">金额</li>
+                                <li class="D">预计盈亏</li>
+                                <li class="E">走飞</li>
+                            </ul>
+                            @{
+                    var i = 1;
+                    var mball = from q in Model.xball
+                                where (q.color == null)
+                                join p in
+                                    (from k in Model.xiazu
+                                     where (k.t1.Trim() == xm_name || k.t2.Trim() == xm_name)
+                                     select k)
+                                on q.name.Trim() equals p.ball.Trim() into t
+                                select new
+                                {
+                                    id = q.id,
+                                    name = q.name,
+                                    color = q.color,
+                                    tma = q.tma,
+                                    money = t.Sum(a => a.money)
+                                };
+                                var tdat = mball.OrderByDescending(a=>a.money).ToList();
+                    foreach (var m in tdat)
+                    {
+
+                        <ul class="m">
+                            <li class="A">@m.name.Trim()</li>
+                            <li class="B">
+                                <ul style="overflow:hidden">
+                                    <li style="float:left;padding:0">
+                                        <input type="text" name="beilu" class="form-control" value="@decimal.Parse(m.tma.ToString()).ToString("0.###")" />
+                                    </li>
+                                    <li style="float:left;padding:0;margin-left:3px">
+                                        <button type="button" class="btn btn-success" name="edit_beilu" id="edit_beilu" beiluid="@m.id" onclick="edit_beilu(this)">改</button>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="C" onclick="openUser(this)">
+                                @decimal.Parse(m.money.ToString()).ToString("0.##")
+                            </li>
+                            <li class="D">
+                                @{
+                        var ballm = (from q in Model.xiazu
+                                     where (q.t1.Trim() == xm_name || q.t2.Trim() == xm_name)
+                                     where (q.ball.Trim() == m.name.Trim())
+                                     select q).ToList();
+                        decimal ballmoney = 0;
+                        string xid = "";
+                        foreach (var m2 in ballm)
+                        {
+                            decimal thebeilu = 0;
+                            try { thebeilu = decimal.Parse(m2.beilu); }
+                            catch { thebeilu = 0; }
+                            ballmoney += (decimal)m2.money * thebeilu;
+                            xid += m2.id + ",";
+
+                        }
+                        if (xid.IndexOf(',') >= 0)
+                        {
+                            xid = xid.Substring(0, xid.Length - 1);
+                        }
+                        <input type="hidden" name="xid" value="@xid" />
+                        var yk_money = x_moneys - ballmoney;
+                        if (yk_money > 0)
+                        {
+                            <span style="color:#03a816">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                        else
+                        {
+                            <span style="color:#ba0202">@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                                }
+                            </li>
+                            <li class="E">
+                                @{
+                        if (yk_money > 0)
+                        {
+                            <span style="color:#03a816">盈:@decimal.Parse(yk_money.ToString()).ToString("0.##")</span>
+                        }
+                        else
+                        {
+                            decimal yk_money2 = -yk_money / (decimal)m.tma;
+                            <span style="color:#a88e00">补:@decimal.Parse(yk_money2.ToString()).ToString("0.##")</span>
+                        }
+                                }
+                            </li>
+                        </ul>
+                        if (i % 4 == 0 && i < mball.Count())
+                        {
+                            @Html.Raw("</div>")
+                                @Html.Raw("<div class='ms'>")
+                                <ul class="m title">
+                                    <li class="A">号码</li>
+                                    <li class="B">赔率</li>
+                                    <li class="C">金额</li>
+                                    <li class="D">预计盈亏</li>
+                                    <li class="E">走飞</li>
+                                </ul>
+                        }
+                        i++;
+
+                    }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="xm-list">
+            <div class="xm-list-box">
+                @{
+                    var xmlist = (from q in Model.xiazu
+                                  group q by new { q.t2 } into g
+                                  select new
+                                  {
+                                      t2 = g.Key.t2,
+                                      money = g.Sum(a => a.money)
+                                  }).OrderByDescending(a => a.money).ToList();
+                    foreach (var m in xmlist)
+                    {
+                        var ccl = "";
+                        if (m.t2.Trim() == xm_name)
+                        {
+                            ccl = "ccl";
+                        }
+                        <ul>
+                            <li class="@ccl" onclick="xxopen(this,'@m.t2.Trim()')">
+                                @m.t2.Trim()
+                                <span class="badge" style="background-color:#4fb5ff">@decimal.Parse(m.money.ToString()).ToString("0.##")</span>
+                            </li>
+                        </ul>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

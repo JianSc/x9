@@ -1,0 +1,374 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    ViewBag.Title = "注单管理";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select li {
+                float: left;
+            }
+
+        .alert {
+            margin-bottom: 10px;
+        }
+
+        .box {
+            margin: 10px 0;
+        }
+
+            .box,
+            .box ul {
+                overflow: hidden;
+            }
+
+                .box .title {
+                    border: 1px solid #808080;
+                    border-bottom: 0;
+                    border-right: 0;
+                    background: #ddd;
+                }
+
+                .box .m {
+                    border-left: 1px solid #808080;
+                }
+
+                .box li {
+                    padding: 6px;
+                    float: left;
+                    border: 1px solid #808080;
+                    border-top: 0;
+                    border-left: 0;
+                    text-align: center;
+                    /*white-space:nowrap;
+                overflow:hidden;*/
+                }
+
+                .box .title li {
+                    text-align: center;
+                }
+
+        .A {
+            width: 5%;
+        }
+
+        .B {
+            width: 15%;
+        }
+
+        .C {
+            width: 14%;
+        }
+
+        .D {
+            width: 8%;
+        }
+
+        .E {
+            width: 7%;
+        }
+
+        .F {
+            width: 7%;
+        }
+
+        .J {
+            width: 6%;
+        }
+
+        .G {
+            width: 13%;
+        }
+
+        .H {
+            width: 13%;
+        }
+
+        .I {
+            width: 12%;
+        }
+
+        .pagination {
+            margin: 0 0 10px 0;
+        }
+
+        .box .form-control {
+            height: 26px;
+            padding: 3px 5px;
+        }
+
+        .box .m .F,
+        .box .m .E,
+        .box .m .H,
+        .box .m .J {
+            padding: 3px;
+        }
+
+        .I li {
+            border: 0;
+            margin: 0 8px;
+            padding: 0;
+        }
+
+            .I li > a {
+                cursor: pointer;
+                text-decoration: none;
+                display: block;
+            }
+
+                .I li > a:hover,
+                .I li > a:host {
+                    background: #d4edff;
+                }
+
+        .AA {
+            width: 5%;
+        }
+
+        .CC {
+            width: 30%;
+        }
+
+        .DD {
+            width: 12%;
+        }
+
+        .EE {
+            width: 15%;
+        }
+
+        .FF {
+            width: 15%;
+        }
+
+        .GG {
+            width: 15%;
+        }
+
+        .II {
+            width: 8%;
+        }
+
+
+        .box .mb {
+            cursor: pointer;
+            border-left: 1px solid #808080;
+        }
+
+            .box .mb:host,
+            .box .mb:hover {
+                background: #fff8d4;
+            }
+
+        .select_qisu li {
+            margin: 0 3px;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/apps/laydate.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $(".select #reload").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.reload();
+            })
+            $(".select #panload").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.href = "/manage/zhudan";
+            })
+            $("#select_qisu").click(function () {
+                var name = $(".select select[name='qisu']").val();
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/partial/manage_zhudan_u_ajax2",
+                    type: "POST",
+                    data: { qisu: name },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".box").html(data);
+                    }
+                })
+            })
+        })
+        function select(obj, e) {
+            var qisu = $(obj).find("input[name='qisu']").val();
+            var index = layer.load(1, { shade: [0.3] });
+            $.ajax({
+                url: "/partial/manage_zhudan_ajax2",
+                type: "POST",
+                data: { name: e, qisu: qisu },
+                success: function (data) {
+                    layer.close(index);
+                    $(".box").html(data);
+                    $(".pagelist").remove();
+                }
+            })
+        }
+
+        function edit(obj, e) {
+            var dom = $(obj).parent().parent().parent().parent();
+            var ball = $(dom).find("input[name='ball']").val();
+            var money = $(dom).find("input[name='money']").val();
+            var beilu = $(dom).find("input[name='beilu']").val();
+            var yongjin = $(dom).find("input[name='yongjin']").val();
+            if (ball == "") {
+                layer.msg("球号不能为空！");
+                return;
+            }
+            if (money == "") {
+                layer.msg("金额不能为空！");
+                return;
+            }
+            if (beilu == "") {
+                layer.msg("倍率不能为空！");
+                return;
+            }
+            if (yongjin == "") {
+                layer.msg("佣金不能为空！");
+                return;
+            }
+            $.ajax({
+                url: "/handle/edit_zhudan",
+                type: "POST",
+                async: false,
+                data: { id: e, money: money, beilu: beilu, ball: ball, yongjin: yongjin },
+                success: function (data) {
+                    layer.alert(data.msg);
+                }
+            })
+        }
+        function del(obj, e) {
+            var dom = $(obj).parent().parent().parent().parent();
+            $.ajax({
+                url: "/handle/del_zhudan",
+                type: "POST",
+                async: false,
+                data: { id: e },
+                success: function (data) {
+                    switch (data.type) {
+                        case "err":
+                            layer.alert(data.msg);
+                            return;
+                        case "suc":
+                            layer.alert(data.msg);
+                            $(dom).remove();
+                            return;
+                    }
+                }
+            })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>注单管理</li>
+        <li class="active">当前：<span style="color:#ff0000">@x9web.Api.WebClass.xconfig_qisu</span> 期</li>
+    </ol>
+</div>
+<div class="select">
+    <ul>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-danger" name="reload" id="reload" type="button">返回</button>
+        </li>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-primary" name="panload" id="panload" type="button">统计报表</button>
+        </li>
+        <li style="margin:0 5px 0 50px;padding:6px 0">
+            期号：
+        </li>
+        <li>
+            <select name="qisu" id="qisu" class="form-control">
+                @{
+                    var m_qisu = new List<x9web.Models.xqisu>(ViewBag.qisu_model);
+                    foreach (var m in m_qisu)
+                    {
+                        if (m.name == x9web.Api.WebClass.xconfig_qisu)
+                        {
+                            <option value="@m.name" selected="selected">@m.name</option>
+                        }
+                        else
+                        {
+                            <option value="@m.name">@m.name</option>
+                        }
+                    }
+                }
+            </select>
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="select_qisu" id="select_qisu" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    <ul class="title">
+        <li class="AA">序号</li>
+        <li class="II">期号</li>
+        <li class="CC">会员</li>
+        <li class="DD">注数</li>
+        <li class="EE">下注总额</li>
+        <li class="FF">会员占成</li>
+        <li class="GG">公司占成</li>
+    </ul>
+    @{
+        var id = 1;
+        var ms = from q in Model
+                 group q by new { q.pname, q.pid, q.qisu } into g
+                 select new
+                 {
+                     pname = g.Key.pname,
+                     pid = g.Key.pid,
+                     qisu = g.Key.qisu,
+                     zs = g.Count(a => a.xid == a.xid),
+                     money = g.Sum(a => a.money),
+                     moneye = g.Sum(a => a.moneye)
+                 };
+        foreach (var m in ms)
+        {
+            <ul class="mb" onclick="select(this,'@m.pname.Trim()')">
+                <li class="AA">@id</li>
+                <li class="II">
+                    <span>@m.qisu</span>
+                    <input type="hidden" name="qisu" value="@m.qisu" />
+                </li>
+                <li class="CC">@m.pname.Trim()<span style="color:#988100">@@@x9web.Api.WebClass.f_user_gd((int)m.pid)</span></li>
+                <li class="DD">@m.zs</li>
+                <li class="EE">@m.money</li>
+                <li class="FF">@x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money)</li>
+                <li class="GG">@x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money)</li>
+            </ul>
+            id++;
+        }
+    }
+</div>

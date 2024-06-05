@@ -1,0 +1,244 @@
+﻿@model  IEnumerable<x9web.Models.xusers>
+
+@{
+    var xzmodel = ((List<x9web.Models.xxiazu>)ViewData["mxiazu"]).ToList();
+    var tsmodel = ((List<x9web.Models.xtuisui>)ViewData["mtuisui"]).ToList();
+    var select_type = ViewData["type"];
+    var select_val = ViewData["val"];
+}
+<ul class="ABCD">
+    <li class="ABC">下家结记表</li>
+</ul>
+<ul class="title">
+    <li class="AA">会员帐号</li>
+    @*<li class="BB">姓名</li>*@
+    @*<li class="HH">联系电话</li>*@
+    <li class="CC">下级数量</li>
+    <li class="DD">下级注数</li>
+    <li class="EE">下级下注金额</li>
+    <li class="FF">佣金总额</li>
+    <li class="GG">盈亏总额</li>
+    <li class="KK">收付款</li>
+    <li class="II">帐户占成</li>
+    <li class="JJ">公司占成</li>
+    <li class="HH">股份</li>
+</ul>
+@{
+    int zs_xjsl = 0;
+    int zs_xjxz = 0;
+    decimal zs_xjmoney = 0;
+    decimal zs_xjmoneye = 0;
+    decimal zs_xyongjin = 0;
+    decimal zs_sfmoney = 0;
+    decimal zs_grgf = 0;
+    decimal zs_gsgf = 0;
+
+    int pid = int.Parse(Session["tsid"].ToString());
+    int theID = 0;
+    var ms = Model.Where(a => a.pid == pid).OrderByDescending(a => a.id).ToList();
+
+    int zz_gf = 0;
+    int zz_zs = 0;
+    decimal zz_money = 0;
+    decimal zz_yongjin = 0;
+    decimal zz_yink = 0;
+    decimal zz_sfmoney = 0;
+    decimal zz_grgf = 0;
+    decimal zz_gsgf = 0;
+
+    bool zz_gf_state = false;
+
+    if (pid != 0)
+    {
+        theID = int.Parse(Session["id"].ToString());
+        var temM = Model.Where(a => a.id == theID).First();
+        zz_gf = (int)((decimal)temM.gf * 100);
+        zz_gf_state = (bool)temM.gf_state;
+        ms.Add(temM);
+    }
+
+    foreach (var m in ms)
+    {
+        var xjsl = Model.Where(a => a.pid2 != null && a.pid2.IndexOf("," + m.id.ToString() + ",") > -1).ToList();
+        var style = "";
+        if (xjsl.Count() > 0)
+        {
+            style = " style='background:#ffd7d7;'";
+        }
+        var xjslsstr = xjsl.Count() > 0 ? "<span style='color:#ff0000; font-weight:bold'>" + xjsl.Count().ToString() + "</span>" : "×";
+
+        var theuM = xjsl.ToList();
+        theuM.Add(m);
+        int zss = x9web.Api.WebClass.userts_zs(theuM, xzmodel);
+        decimal moneys = x9web.Api.WebClass.userts_money(theuM, xzmodel);
+        decimal moneyes = x9web.Api.WebClass.userts_moneye(theuM, xzmodel);
+        decimal gf = (decimal)m.gf * 100;
+        //gf = gf == 0 ? 0 : gf;
+        var thetsM = tsmodel.Where(a => a.pid == m.id).ToList();
+        if (thetsM.Count < 1)
+        {
+            thetsM = tsmodel.Where(a => a.pid == 0).ToList();
+        }
+        decimal yongjin = x9web.Api.WebClass.userts_tsmoney(theuM, xzmodel, thetsM);
+        decimal sfmoney = moneyes + yongjin;
+        sfmoney = -sfmoney;
+
+        var gf2 = gf / 100;
+        decimal grgf = sfmoney * gf2;
+        decimal gsgf = sfmoney - grgf;
+
+        var xjxzstr = zss > 0 ? "<span style='color:#ff0000; font-weight:bold'>" + zss.ToString() + "</span>" : "×";
+        var xjmoneystr = moneys > 0 ? "<span style='color:#ff0000; font-weight:bold'>" + moneys.ToString("#.00") + "</span>" : "×";
+        var xjmoneyestr = "<span style='color:#ff0000; font-weight:bold'>" + moneyes.ToString("#.00") + "</span>";
+        var xjyongjin = "<span style='color:#028328; font-weight:bold'>" + yongjin.ToString("#.00") + "</span>";
+        var xsfmoney = "<span style='color:#19007d; font-weight:bold'>" + sfmoney.ToString("#.00") + "</span>";
+
+        string xgrgf = "", xgsgf = "", xjgf = "";
+
+        if (pid != 0)
+        {
+            xgrgf = "×";
+            xgsgf = "×";
+            xjgf = "×";
+        }
+        else
+        {
+            xgrgf = "<span style='color:#ff0000; font-weight:bold'>" + grgf.ToString("#.00") + "</span>";
+            xgsgf = "<span style='color:#ff0000; font-weight:bold'>" + gsgf.ToString("#.00") + "</span>";
+            xjgf = "<span style='color:#028328; font-weight:bold'>" + gf.ToString("0") + "%</span>";
+            zs_grgf += grgf;
+            zs_gsgf += gsgf;
+        }
+
+        if (pid != 0 && m.id == theID)
+        {
+            //zz_zs = zs_xjxz;
+            //zz_money = zs_xjmoney;
+            //zz_yongjin = zs_xyongjin;
+            //zz_yink = zs_xjmoneye;
+            //zz_sfmoney = zs_sfmoney;
+            //zz_grgf = zs_grgf;
+            //zz_gsgf = zs_gsgf;
+
+            zz_zs = zss;
+            zz_money = moneys;
+            zz_yongjin = yongjin;
+            zz_yink = moneyes;
+            zz_sfmoney = sfmoney;
+            zz_grgf = grgf;
+            zz_gsgf = gsgf;
+            continue;
+        }
+
+        zs_xjxz += zss;
+        zs_xjmoney += moneys;
+        zs_xjmoneye += moneyes;
+        zs_xyongjin += yongjin;
+        zs_sfmoney += sfmoney;
+
+        <ul class="m" @Html.Raw(style) onclick="javascript:theList('@m.id')">
+            <li class="AA">@m.name.Trim()</li>
+            @*<li class="BB">@m.xinmin.Trim()</li>*@
+            @*<li class="HH">@m.tel</li>*@
+            <li class="CC">@Html.Raw(xjslsstr)</li>
+            <li class="DD">@Html.Raw(xjxzstr)</li>
+            <li class="EE">@Html.Raw(xjmoneystr)</li>
+            <li class="FF">@Html.Raw(xjyongjin)</li>
+            <li class="GG">@Html.Raw(xjmoneyestr)</li>
+            <li class="KK">@Html.Raw(xsfmoney)</li>
+            <li class="II">@Html.Raw(xgrgf)</li>
+            <li class="JJ">@Html.Raw(xgsgf)</li>
+            <li class="HH">@Html.Raw(xjgf)</li>
+        </ul>
+    }
+    <ul class="m" style="background:#964102; color:#fff;">
+        <li class="AA">&nbsp;</li>
+        @*<li class="BB">&nbsp;</li>*@
+        <li class="CC">@zs_xjsl</li>
+        <li class="DD">@zs_xjxz</li>
+        <li class="EE">@zs_xjmoney.ToString("#.00")</li>
+        <li class="FF">@zs_xyongjin.ToString("#.00")</li>
+        <li class="GG">@zs_xjmoneye.ToString("#.00")</li>
+        <li class="KK">@zs_sfmoney.ToString("#.00")</li>
+        <li class="II">@zs_grgf.ToString("#.00")</li>
+        <li class="JJ">@zs_gsgf.ToString("#.00")</li>
+        <li class="HH">&nbsp;</li>
+        <li style="display:none">
+            <input type="hidden" name="select_type" value="@select_type" />
+            <input type="hidden" name="select_val" value="@select_val" />
+        </li>
+    </ul>
+
+    if (pid != 0)
+    {
+        //zz_zs = zs_xjxz;
+        //zz_money = zs_xjmoney;
+        //zz_yongjin = zs_xyongjin;
+        //zz_yink = zs_xjmoneye;
+        //zz_sfmoney = zs_sfmoney;
+        //zz_grgf = zs_grgf;
+        //zz_gsgf = zs_gsgf;
+        zz_sfmoney = -zz_sfmoney;
+        zz_grgf = -zz_grgf;
+        //zz_gsgf = -zz_gsgf;
+
+        var myid = int.Parse(Session["id"].ToString());
+        var mymodel = xzmodel.Where(a => a.pid == myid).ToList();
+        int myzs = 0;
+        decimal mymoney = 0, myyongjin = 0, myyingku = 0;
+        decimal mysyk = 0;
+        foreach (var mym in mymodel)
+        {
+            decimal mmmoney = mym.money == null ? 0 : (decimal)mym.money;
+            decimal mmmyj = mym.yongjine == null ? 0 : (decimal)mym.yongjine;
+            decimal mmmyk = mym.moneye == null ? 0 : (decimal)mym.moneye;
+            myzs++;
+            mymoney += mmmoney;
+            myyongjin += mmmyj;
+            myyingku += mmmyk;
+
+        }
+        mysyk = myyingku + myyongjin;
+        
+        <ul class="ABCD" style="margin-top:20px;">
+            <li class="ABC">我的盈亏表</li>
+        </ul>
+        <ul class="zz myz">
+            <li class="AAAA">注数</li>
+            <li class="BBBB">金额</li>
+            <li class="CCCC">佣金</li>
+            <li class="DDDD">盈亏</li>
+            <li class="EEEE">我的盈亏</li>
+        </ul>
+        <ul class="m myz" style="border-bottom:1px solid #808080">
+            <li class="AAAA">@myzs</li>
+            <li class="BBBB">@mymoney.ToString("#.00")</li>
+            <li class="CCCC">@myyongjin.ToString("#.00")</li>
+            <li class="DDDD">@myyingku.ToString("#.00")</li>
+            <li class="EEEE">@mysyk.ToString("#.00")</li>
+        </ul>
+        <ul class="ABCD" style="margin-top:20px;">
+            <li class="ABC">上家结记表</li>
+        </ul>
+        <ul class="zz">
+            <li class="AAA">总注数</li>
+            <li class="BBB">总金额</li>
+            <li class="CCC">总佣金</li>
+            <li class="DDD">总盈亏</li>
+            <li class="EEE">收付结记</li>
+            <li class="HHH">股份</li>
+            <li class="FFF">帐户占成</li>
+            <li class="GGG">公司收付</li>
+        </ul>
+        <ul class="m">
+            <li class="AAA">@zz_zs</li>
+            <li class="BBB">@zz_money.ToString("#.00")</li>
+            <li class="CCC">@zz_yongjin.ToString("#.00")</li>
+            <li class="DDD">@zz_yink.ToString("#.00")</li>
+            <li class="EEE">@zz_sfmoney.ToString("#.00")</li>
+            <li class="HHH">@zz_gf%</li>
+            <li class="FFF">@zz_grgf.ToString("#.00")</li>
+            <li class="GGG">@zz_gsgf.ToString("#.00")</li>
+        </ul>
+    }
+}

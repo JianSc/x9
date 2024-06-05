@@ -1,0 +1,29 @@
+﻿.ballR {
+    background: url("/Content/image/ball.png") no-repeat center 0;
+    margin: 1px;
+}
+
+.ballG {
+    background: url("/Content/image/ball.png") no-repeat center -29px;
+    margin: 1px;
+}
+
+.ballB {
+    background: url("/Content/image/ball.png") no-repeat center -58px;
+    margin: 1px;
+}
+
+.ballR, .ballG, .ballB {
+    width: 29px;
+    min-width: 29px;
+    height: 29px;
+    min-height: 29px;
+    text-align: center;
+    line-height: 29px;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.ball-plus {
+    padding: 5px;
+}

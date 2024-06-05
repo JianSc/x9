@@ -1,0 +1,224 @@
+﻿@model IEnumerable<x9web.Models.xmarquee>
+
+@{
+    ViewBag.Title = "公告设置";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .newbox {
+            margin-bottom: 10px;
+        }
+
+            .newbox,
+            .newbox ul {
+                overflow: hidden;
+            }
+
+                .newbox li {
+                    float: left;
+                }
+
+                .newbox .sx {
+                    padding: 10px;
+                    background: #ddd;
+                    border: 1px solid #808080;
+                    border-right: 0;
+                }
+
+                .newbox .form-control {
+                    border-radius: 0;
+                }
+
+                .newbox .s {
+                    padding: 3px;
+                    border: 1px solid #808080;
+                    border-left: 0;
+                }
+
+                .newbox .btn {
+                    border-radius: 0;
+                    padding: 6px 20px;
+                }
+
+        .box li {
+            float: left;
+        }
+
+        .title li {
+            background: #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .A {
+            width: 80%;
+            border-right: 1px solid #808080;
+        }
+
+        .B {
+            width: 20%;
+            border-left: 0;
+        }
+
+        .m .A {
+            padding: 8px 5px;
+            border-top:0;
+        }
+        .col-r-b .title,
+        .col-r-b .m{
+            overflow:hidden;
+            border:1px solid #808080;
+            border-top:0;
+        }
+        .col-r-b .title{
+            border-top:1px solid #808080;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("#set").click(function () {
+                var text = $(".newbox input[name='text']").val();
+                if (text == "") {
+                    layer.alert("请输入公告内容！");
+                    return;
+                }
+                $.ajax({
+                    url: "/handle/save_add_marquee",
+                    type: "POST",
+                    async: false,
+                    data: { text: text },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.alert(data.msg);
+                                return;
+                            case "suc":
+                                alert(data.msg);
+                                window.location.reload();
+                                return;
+                        }
+                    }
+                })
+            })
+
+            $(".box input[name='state']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var dom = $(this);
+                    var id = 6009;
+                    var xid = $(this).val();
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: xid },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+        function delnew(obj, e) {
+            layer.confirm("是否确认删除这条公告信息？",
+                {btn:['确定','取消']},
+                function (index) {
+                    var dom = $(obj).parent().parent().parent().parent();
+                    $.ajax({
+                        url: "/handle/del_news",
+                        type: "POST",
+                        async: false,
+                        data: { id: e },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    return;
+                                case "suc":
+                                    layer.alert(data.msg);
+                                    $(dom).remove();
+                                    return;
+                            }
+                        }
+                    })
+                },
+                function(index){
+                    layer.close(index);
+                })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>公告设置</li>
+    </ol>
+</div>
+<div class="newbox">
+    <ul>
+        <li class="sx" style="width:10%">站内公告:</li>
+        <li class="s" style="width:80%">
+            <input type="text" name="text" class="form-control" />
+        </li>
+        <li class="s" style="width:10%;text-align:right">
+            <button class="btn btn-success" type="button" name="set" id="set">添加公告</button>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    <ul class="title">
+        <li class="A">公告</li>
+        <li class="B">操作</li>
+    </ul>
+    @{
+        foreach (var m in Model)
+        {
+            <ul class="m">
+                <li class="A">@m.text</li>
+                <li class="B">
+                    <ul>
+                        <li style="margin:5px 10px">
+                            @{
+            var check = "";
+            if ((bool)m.state)
+            {
+                check = "checked";
+            }
+                            }
+                            <input type="checkbox" name="state" @check value="@m.id"/>
+                        </li>
+                        <li style="margin:6px 20px">
+                            <a style="cursor:pointer;text-decoration:none" onclick="delnew(this,'@m.id')"><i class="fa fa-trash-o"></i> 删除</a>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        }
+    }
+</div>

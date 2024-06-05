@@ -1,0 +1,529 @@
+﻿@{
+    ViewBag.Title = "统计报表";
+    Layout = "~/Views/Pages/Manage.cshtml";
+    //var user_model = new List<x9web.Models.xusers>(ViewBag.user_model);
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select li {
+                float: left;
+            }
+
+        .alert {
+            margin-bottom: 10px;
+        }
+
+        .box {
+            margin-top: 10px;
+        }
+
+            .box,
+            .box ul {
+                overflow: hidden;
+            }
+
+                .box .title {
+                    border: 1px solid #808080;
+                    border-bottom: 0;
+                    border-right: 0;
+                    background: #ddd;
+                }
+
+                .box .m {
+                    font-size: 12px;
+                    border-left: 1px solid #808080;
+                }
+
+                .box li {
+                    padding: 6px;
+                    float: left;
+                    border: 1px solid #808080;
+                    border-top: 0;
+                    border-left: 0;
+                    text-align: center;
+                    /*white-space:nowrap;
+                overflow:hidden;*/
+                }
+
+                .box .title li {
+                    text-align: center;
+                }
+
+        .A {
+            width: 40px;
+            text-align: center;
+        }
+
+        .B {
+            width: 160px;
+            text-align: center;
+        }
+
+        .C {
+            width: 70px;
+            text-align: center;
+        }
+
+        .D {
+            width: 120px;
+            text-align: center;
+        }
+
+        .E {
+            width: 100px;
+            text-align: center;
+        }
+
+        .F {
+            width: 60px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .K {
+            width: 60px;
+            text-align: center;
+        }
+
+        .G {
+            width: 130px;
+            text-align: center;
+        }
+
+        .H {
+            width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .I {
+            width: 100px;
+            text-align: center;
+        }
+
+        .J {
+            width: 160px;
+            text-align: center;
+        }
+
+        .pagination {
+            margin: 0 0 10px 0;
+        }
+
+        .box .form-control {
+            height: 26px;
+            padding: 3px 5px;
+        }
+
+        .I li {
+            border: 0;
+            margin: 0 8px;
+            padding: 0;
+        }
+
+            .I li > a {
+                cursor: pointer;
+                text-decoration: none;
+                display: block;
+            }
+
+                .I li > a:hover,
+                .I li > a:host {
+                    background: #d4edff;
+                }
+
+        .AA {
+            width: 5%;
+        }
+
+        .CC {
+            width: 12%;
+        }
+
+        .DD {
+            width: 9%;
+        }
+
+        .EE {
+            width: 12%;
+        }
+
+        .FF {
+            width: 12%;
+        }
+
+        .GG {
+            width: 12%;
+        }
+
+        .II {
+            width: 8%;
+        }
+
+        .HH {
+            width: 22%;
+        }
+
+        .BB {
+            width: 8%;
+        }
+
+        .box .mb {
+            cursor: pointer;
+            border-left: 1px solid #808080;
+            font-size: 12px;
+        }
+
+            .box .mb:host,
+            .box .mb:hover {
+                background: #fff8d4;
+            }
+
+        .select_qisu li {
+            margin: 0 3px;
+        }
+
+        .box .r {
+            background: #ffa2a2;
+        }
+
+        .tongji {
+            margin-bottom: 10px;
+        }
+
+            .tongji,
+            .tongji .m {
+                overflow: hidden;
+            }
+
+                .tongji .m {
+                    background: #ddd;
+                    border-left: 1px solid #808080;
+                    font-size: 12px;
+                }
+
+                .tongji li {
+                    padding: 6px;
+                    float: left;
+                    border: 1px solid #808080;
+                    border-top: 0;
+                    border-left: 0;
+                    text-align: center;
+                    color: #0471c1;
+                    /*white-space:nowrap;
+                overflow:hidden;*/
+                }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/apps/laydate.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $(".select #reload").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.reload();
+            })
+            $(".select #day_form").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.href = "/manage/manage_day_form";
+            })
+            $(".select #zhudan2").click(function () {
+                layer.load(1, { shade: [0.3] });
+                window.location.href = "/manage/zhudan2";
+            })
+            $(".select #tuisui").click(function () {
+                layer.load(1, { shade: [0.3] });
+                var qisu = $(".select select[name='select_qisu']").val();
+                window.location.href = "/manage/user_tuisui/" + qisu;
+            })
+            laydate.render({
+                elem: ".select_time input[name='select_time']",
+                range: ">>>"
+            })
+            $(".select_qisu button").click(function () {
+                var index = layer.load(1, { shade: [0.3] });
+                var qisu = $(this).val();
+                $.ajax({
+                    url: "/partial/manage_zhudan_user_ajax",
+                    type: "POST",
+                    data: { qisu: qisu },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".box").html(data);
+                    }
+                })
+            })
+            $("#select_qisu").click(function () {
+                var qisu = $(".select select[name='select_qisu']").val();
+                if (qisu == "") {
+                    layer.alert("请输入要查询的期号！");
+                    return;
+                }
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/partial/manage_zhudan_user_ajax",
+                    type: "POST",
+                    data: { qisu: qisu },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".box").html(data);
+                    }
+                })
+            })
+            $("#select_time").click(function () {
+                var arrtime = $(".select input[name='select_time']").val();
+                if (arrtime == "") {
+                    layer.alert("请选择要查询的时间段！");
+                    return;
+                }
+                var index = layer.load(1, { shade: [0.3] });
+                $.ajax({
+                    url: "/partial/manage_zhudan_user_ajax2",
+                    type: "POST",
+                    data: { arrtime: arrtime },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".box").html(data);
+                    }
+                })
+            })
+        })
+        function select(obj, e) {
+            var index = layer.load(1, { shade: [0.3] });
+            var qisu = $(obj).find("input[name='qisu']").val();
+            var xid = $(obj).find("input[name='xid']").val();
+            $.ajax({
+                url: "/partial/manage_zhudan_ajax",
+                type: "POST",
+                data: { xid: xid, qisu: qisu },
+                success: function (data) {
+                    layer.close(index);
+                    $(".tongji").remove();
+                    $(".box").html(data);
+                }
+            })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>统计报表</li>
+        <li class="active">当前：<span style="color:#ff0000">@x9web.Api.WebClass.xconfig_qisu</span> 期</li>
+    </ol>
+</div>
+<div class="select">
+    <ul>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-danger" name="reload" id="reload" type="button">返回</button>
+        </li>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-primary" name="zhudan2" id="zhudan2" type="button">注单管理</button>
+        </li>
+        <li style="margin-left:5px">
+            <button style="padding:6px 30px" class="btn btn-success" name="day_form" id="day_form" type="button">期报表</button>
+        </li>
+        <li style="margin-left:5px">
+            <ul class="select_qisu">
+                @{
+                    var m_qisu = new List<x9web.Models.xqisu>(ViewBag.qisu_model);
+                    @*var bi = 1;
+                        foreach (var m in m_qisu)
+                        {
+                            if (bi > 2)
+                            {
+                                break;
+                            }
+                            if (bi > 1)
+                            {
+                                <li>
+                                    <button class="btn btn-warning" type="button" value="@m.name">@m.name</button>
+                                </li>
+                            }
+
+                            bi++;
+                        }*@
+                }
+                <li>
+                    <button class="btn btn-warning" type="button" name="tuisui" id="tuisui">会员返佣</button>
+                </li>
+
+            </ul>
+        </li>
+        <li style="margin-left:30px; padding:6px 0">
+            期号：
+        </li>
+        <li style="width:130px">
+            <select name="select_qisu" class="form-control">
+                @{
+                    foreach (var m in m_qisu)
+                    {
+                        if (m.name == ViewBag.qisu)
+                        {
+                            <option value="@m.name" selected="selected">@m.name</option>
+                        }
+                        else
+                        {
+                            <option value="@m.name">@m.name</option>
+                        }
+                    }
+                }
+            </select>
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="select_qisu" id="select_qisu" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+        <li style="margin-left:10px;">
+            <ul class="select_time">
+                <li style="padding:6px 0">时间段：</li>
+                <li style="width:230px">
+                    <input type="text" name="select_time" class="form-control" value="" />
+                </li>
+                <li style="margin-left:10px">
+                    <button type="button" name="select_time" id="select_time" class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    @*<ul class="title">
+        <li class="AA">序号</li>
+        <li class="II">期号</li>
+        <li class="CC">会员</li>
+        <li class="DD">注数</li>
+        <li class="EE">下注总额</li>
+        <li class="FF">会员占成</li>
+        <li class="GG">公司占成</li>
+        <li class="BB">佣金</li>
+        <li class="HH">总盈亏统计</li>
+    </ul>
+    @{
+        var id = 1;
+        var ms = from q in Model
+                 group q by new { q.pname, q.pid, q.qisu } into g
+                 select new
+                 {
+                     pname = g.Key.pname,
+                     pid = g.Key.pid,
+                     qisu = g.Key.qisu,
+                     zs = g.Count(a => a.xid == a.xid),
+                     money = g.Sum(a => a.money),
+                     moneye = g.Sum(a => a.moneye),
+                     yongjine = g.Sum(a => a.yongjine)
+                 };
+        foreach (var m in ms)
+        {
+            <ul class="mb" onclick="select(this,'@m.pname.Trim()')">
+                <li class="AA">@id</li>
+                <li class="II">
+                    <span>@m.qisu</span>
+                    <input type="hidden" name="qisu" value="@m.qisu" />
+                </li>
+                <li class="CC">
+                    @{
+            var um = user_model.Where(a => a.id == m.pid).First();
+            if (um.pid == 0)
+            {
+                <i style="color:#0471c1;margin-right:3px" class="fa fa-user"></i>
+            }
+                    }
+
+                    @m.pname.Trim()<span style="color:#988100">@@@x9web.Api.WebClass.f_user_gd((int)m.pid)</span>
+                    @{
+            if (um.pid != 0)
+            {
+                var umm = user_model.Where(a => a.id == um.pid).First();
+                <span style="color:#ff0000">[@umm.name.Trim()]</span>
+            }
+                    }
+                </li>
+                <li class="DD">@m.zs</li>
+                <li class="EE">@m.money</li>
+                <li class="FF">@x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money)</li>
+                <li class="GG">@x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money)</li>
+                <li class="BB">
+                    <span>@m.yongjine</span>
+                </li>
+                <li class="HH">
+                    <span>@m.moneye</span>
+                    @{
+            var xid = "";
+            var ml = from q in Model
+                     where (q.pname == m.pname)
+                     select q;
+            foreach (var m1 in ml.ToList())
+            {
+                xid += m1.id;
+                xid += ",";
+            }
+            xid = xid.Substring(0, xid.Length - 1);
+                    }
+                    <input type="hidden" name="xid" value="@xid" />
+                </li>
+            </ul>
+            id++;
+        }
+    }
+</div>
+<div class="tongji">
+    <ul class="m">
+        <li class="AA">&nbsp;</li>
+        <li class="II">&nbsp;</li>
+        <li class="CC"><span style="font-weight:bold;color:#0067b1">合计：</span></li>
+        <li class="DD">@ms.Sum(a => a.zs)</li>
+        <li class="EE">@ms.Sum(a => a.money)</li>
+        <li class="FF">&nbsp;</li>
+        <li class="GG">&nbsp;</li>
+        <li class="BB">@ms.Sum(a => a.yongjine)</li>
+        <li class="HH">
+            @{
+                decimal moneye = (decimal)ms.Sum(a => a.moneye);
+
+                var h = "";
+                if (moneye < 0)
+                {
+                    h = "盈:";
+                }
+                else
+                {
+                    h = "亏:";
+                }
+    //moneye = -moneye;
+            }
+            @moneye
+        </li>
+    </ul>*@
+    @Html.Action("manage_zhudan_user_ajax", "partial");
+</div>

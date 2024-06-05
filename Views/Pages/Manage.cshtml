@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+        }
+
+        #col-l {
+            float: left;
+            width: 100px;
+            overflow: hidden;
+            background: #0b2532;
+        }
+
+        #col-r {
+            overflow: hidden;
+        }
+
+        .usercol {
+            color: #53788b;
+        }
+
+            .usercol .s {
+                padding: 15px 30px 5px 30px;
+            }
+
+                .usercol .s .h4 {
+                    margin-top: 0;
+                }
+
+            .usercol .m {
+                padding: 10px;
+                color: #fff;
+                background: url("/Content/image/home-col-l-bg.png");
+            }
+
+        .col-l-menu {
+            padding: 0 10px 15px 10px;
+        }
+
+            .col-l-menu li {
+                list-style: none;
+            }
+
+            .col-l-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .col-l-menu li > a {
+                display: block;
+                padding: 5px 10px 5px 5px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                .col-l-menu li > a:hover,
+                .col-l-menu li > a:focus {
+                    background: #00a5d3;
+                    color: #fff;
+                    border-radius: 5px;
+                }
+
+            .col-l-menu .active,
+            .col-l-menu .active > a,
+            .col-l-menu .active > a:hover,
+            .col-l-menu .active > a:focus {
+                background: #00a5d3;
+                color: #fff;
+                border-radius: 5px;
+            }
+
+        .col-r-b {
+            padding: 5px;
+            overflow: hidden;
+        }
+    </style>
+
+    @RenderSection("styles", required: false)
+}
+@section scripts{
+    <script>
+        function autoH() {
+            var h = $(document).height();
+            if (h > $("#col-l").height()) {
+                $("#col-l").height(h);
+            }
+        }
+
+        $(function () {
+            autoH();
+            $(".pwdedit").click(function () {
+                layer.open({
+                    type: 2,
+                    title: "<i class='fa fa-edit'></i> 修改密码",
+                    area: ["300px", "300px"],
+                    resize: false,
+                    content: ['/manage/mpwd_edit', 'no']
+                })
+            })
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+}
+
+<div class="container-fluid">
+    <div id="col-l">
+        <div class="usercol">
+            <div class="m">
+                <span class="h3">@x9web.Api.WebClass.web_name</span>
+            </div>
+            <div class="col-l-menu">
+                <ul>
+                    <li><a href="/manage/main">盘口设定</a></li>
+                    <li><a href="/manage/man_look_sum/?type=dx">开奖统计</a></li>
+                    <li><a href="/manage/manage_caplook">彩盘监控</a></li>
+                    <li><a href="/manage/yujin">开奖预警</a></li>
+                    <li><a href="/manage/user_tuisui">报表结算</a></li>
+                    <li><a href="/manage/xconfig">系统设置</a></li>
+                    <li><a href="/manage/marquee">公告设置</a></li>
+                    <li><a href="/manage/member">会员管理</a></li>
+                    <li><a href="/manage/beilu">赔率设置</a></li>
+                    <li><a href="/manage/beilu_default">默认赔率</a></li>
+                    <li><a href="/manage/auto_beilu">自动降赔</a></li>
+                    <li><a href="/manage/tuisui">默认退水</a></li>
+                    <li><a href="/manage/zhudan">统计报表</a></li>
+                    <li><a class="pwdedit" id="pwdedit">更改密碼</a></li>
+                    <li><a href="/manage/index">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="col-r">
+        <div class="col-r-b">
+            @RenderBody()
+        </div>
+    </div>
+</div>

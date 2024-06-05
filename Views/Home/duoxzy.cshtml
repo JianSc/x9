@@ -1,0 +1,775 @@
+﻿@model IEnumerable<x9web.Models.xball>
+@{
+    ViewBag.Title = "香港六合彩";
+    Layout = "~/Views/Pages/Home.cshtml";
+    var script_id = ViewBag.script_id;
+    var script_count = ViewBag.script_count;
+    var page_name = ViewBag.page_name;
+    var page_menu_active = ViewBag.page_menu_active;
+    var page_menu = ViewBag.page_menu;
+    var page_menu_url = ViewBag.page_menu_url;
+    var btn_kuaisu = ViewBag.btn_kuaisu;
+    //var page_menu_active2 = ViewBag.page_menu_active2;
+    //var page_menu2 = ViewBag.page_menu2;
+    //var page_menu2_url = ViewBag.page_menu2_url;
+    List<x9web.Models.xball> xball = x9web.Api.WebClass.auto_beilu(page_name, Model.ToList());
+}
+@section styles{
+    <style>
+        .tma-box {
+            overflow: hidden;
+            float: left;
+            margin-bottom: 10px;
+            border: #31708F;
+            border-style: none solid none none;
+            border-width: 1px;
+        }
+
+            .tma-box ul {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                border: #31708F;
+                border-style: none none solid none;
+                border-width: 1px;
+            }
+
+            .tma-box .title {
+                background: #31708F;
+                color: #FFF;
+            }
+
+                .tma-box .title li {
+                    text-align: center;
+                }
+
+            .tma-box .tA {
+                width: 30px;
+            }
+
+            .tma-box .tB {
+                width: 110px;
+                text-align: center;
+            }
+
+            .tma-box .tC {
+                width: 30px;
+            }
+
+            .tma-box .box .tC {
+                height: 29px;
+            }
+
+            .tma-box li {
+                float: left;
+                list-style: none;
+                margin: 5px;
+            }
+
+            .tma-box .box {
+                cursor: pointer;
+            }
+
+                .tma-box .box .tB {
+                    padding: 4px 0 0 0;
+                    margin-left: 7px;
+                }
+
+                .tma-box .box:hover {
+                    background: #94d2ff;
+                }
+
+        .tma-menu {
+            overflow: hidden;
+            margin: 5px 0 10px 0;
+        }
+
+            .tma-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu li {
+                list-style: none;
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu a {
+                display: block;
+                padding: 5px 5px;
+                text-decoration: none;
+            }
+
+                .tma-menu a:hover,
+                .tma-menu a:focus {
+                    background: #a3d2e9;
+                }
+
+            .tma-menu .active {
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+            }
+
+                .tma-menu .active a,
+                .tma-menu .active a:hover,
+                .tma-menu .active a:focus {
+                    background: #31708F;
+                    color: #fff;
+                }
+
+        .box input {
+            width: 55px;
+            margin: 0;
+            margin-left: 5px;
+        }
+
+        .tma-menu-r {
+            float: right;
+        }
+
+            .tma-menu-r li {
+                padding: 5px 10px;
+                border: #3c763d;
+                color: #3c763d;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                margin: 0;
+                margin-left: 5px;
+            }
+
+        .tma-but {
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            padding-right: 5px;
+        }
+
+            .tma-but .btn {
+                margin: 5px 10px 5px 0;
+                width: 100px;
+                border-radius: 0;
+            }
+
+        .tma-box .check .tC {
+            background: url(/Content/image/check.png) no-repeat center;
+        }
+
+        .tma-box .tb-mAA .tC {
+            background: url(/Content/image/check2.png) no-repeat center;
+        }
+
+        .tma-box-che ul {
+            border-top: 1px solid #31708F;
+            width: 198px;
+            overflow: hidden;
+        }
+
+        .tma-box-che li > a {
+            display: block;
+            text-decoration: none;
+            padding: 5px;
+            color: #000;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .tma-box-che li {
+            border: 1px solid #9c9c9c;
+            margin: 3px;
+            width: 43px;
+            text-align: center;
+        }
+
+            .tma-box-che li > a:hover,
+            .tma-box-che li > a:focus {
+                background: #94d2ff;
+                color: #000;
+            }
+
+        .tma-box-che .rbg {
+            background: #94d2ff;
+        }
+
+        .tma-but ul {
+            margin: 0;
+            margin-left: 260px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .tma-but li {
+            list-style: none;
+            float: left;
+        }
+
+        .input-group-addon {
+            font-size: 12px;
+            color: #fff;
+            background-color: #31708F;
+            border: 1px solid #133f55;
+            /*border-radius: 0;*/
+        }
+
+        .form-control {
+            /*border-radius: 0;*/
+            color: #000;
+            border: 1px solid #133f55;
+        }
+
+        #form2 {
+            margin: 0;
+            padding: 0;
+        }
+        .tma-menu2 {
+            overflow: hidden;
+            border-bottom: 1px solid #3c763d;
+            margin-bottom: 10px;
+        }
+
+            .tma-menu2 ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu2 li {
+                list-style: none;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu2 .active a,
+            .tma-menu2 .active a:hover,
+            .tma-menu2 .active a:focus {
+                color: #fff;
+                background: #3c763d;
+                border-radius: 5px 5px 0 0;
+            }
+
+            .tma-menu2 li > a {
+                padding: 5px 10px;
+                color: #3c763d;
+                display: block;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                .tma-menu2 li > a:hover,
+                .tma-menu2 li > a:focus {
+                    background: #c7f3c8;
+                }
+                .xcontent{
+                    border:1px solid #31708F;
+                    background:#c8edff;
+                    border-left:0;
+                    border-right:0;
+                    margin-bottom:10px;
+                    overflow:hidden;
+                    display:none;
+                    height:30px;
+                }
+                .xcontent .m{
+                    overflow:hidden;
+                    padding:5px;
+                }
+                .xcontent li{
+                    margin: 0 5px;
+                    float:left;
+                }
+                .xinput{
+                    overflow:hidden;
+                }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".tma-box .box").click(function () {
+                var type = $(".tma-menu2 .ftbox").html();
+                if(type=="复式"){
+                    if ($(this).hasClass("check")) {
+                        $(this).removeClass("check");
+                    } else {
+                        var l = $("#form1 .check").length;
+                        var count = @script_count;
+                        var c = count + 5;
+                        if(l>=c){
+                            layer.alert("不能勾选真如过"+c+"颗球号！");
+                            return;
+                        }else{
+                            $(this).addClass("check");
+                        }
+                    }
+                }
+                if(type=="多组"){
+                    var count = @script_count;
+                    if($(this).hasClass("check")){
+                        $(this).removeClass("check");
+                    }else{
+                        $(this).addClass("check");
+                    }
+                    var ct = $("#form1 .check").length;
+                    if(ct >= count){
+                        var xball = "";
+                        var xbeilu = "";
+                        $("#form1 .check").each(function(){
+                            var ball = $(this).find("input[name='ball']").val();
+                            var beilu = $(this).find("input[name='beilu']").val();
+                            xball += ball;
+                            xball += ",";
+                            xbeilu = beilu;
+                            $(this).removeClass("check");
+                        })
+                        xball = xball.substring(0,xball.length-1);
+                        var c1 = $("<input type='hidden' name='ball' value='"+xball+"' />");
+                        var c2 = $("<input type='hidden' name='beilu' value='"+xbeilu+"' />");
+                        $(".xinput").append($(c1)).append($(c2));
+                        $(".xcontent .m").append("<li>["+xball+"]</li>");
+                    }
+                }
+            })
+
+            $(".tma-menu2 a").click(function(){
+                var name = $(this).html();
+                if(name=="复式"){
+                    $(".xcontent").css("display","none");
+                    $(".xcontent .m").html('');
+                    $(".xinput").html('');
+                }
+                if(name=="多组"){
+                    $(".xcontent").css("display","block");
+                }
+                $(".tma-menu2 .ftbox").html(name);
+                $(".tma-menu2 li").each(function(){
+                    $(this).removeClass("active");
+                })
+                $("#form1 .check").each(function(){
+                    $(this).removeClass("check");
+                })
+                $("#form1 .check2").each(function(){
+                    $(this).removeClass("check2");
+                })
+                $(this).parent().addClass("active");
+            })
+
+            $(".tma-but #reset").click(function(){
+                $("#form2").html('');
+                $("#form1 .check").each(function(){
+                    $(this).removeClass("check");
+                })
+                $(".xcontent .m").html('');
+                $(".xinput").html('');
+            })
+
+            $(".tma-but #submit").click(function(){
+                var count = @script_count;
+                var dom = $("#form1 .check");
+                var money = $("#form1 input[name='moneys']").val();
+                var f = $("#form2");
+                if(money == '' || money==null){
+                    layer.alert("请输入下注金额！");
+                    return;
+                }
+                money = parseInt(money);
+                if(isNaN(money)){
+                    layer.alert("金额只能为数字！");
+                    return;
+                }
+                var type = $(".tma-menu2 .ftbox").html();
+                if(type=="复式"){
+                    if(dom.length < count){
+                        layer.alert("请至少勾选"+count+"颗下注球号！");
+                        return;
+                    }
+                    var ball = '';
+                    var beilu = '';
+                    var index = layer.load(1, {shade:[0.3]});
+
+                    switch(count){
+                        case 5:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                var ball = $(dom[i]).find("input[name='ball']").val();
+                                                var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                $(f).append($(c1)).append($(c2)).append($(c3));
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 6:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                for(var e=b+1;e<dom.length;e++){
+                                                    var ball = $(dom[i]).find("input[name='ball']").val();
+                                                    var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                    ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                    ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                    ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                    ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                    ball += "," + $(dom[e]).find("input[name='ball']").val();
+                                                    beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                    beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                    beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                    beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                    beilu += "," + $(dom[e]).find("input[name='beilu']").val();
+                                                    var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                    var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                    var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                    $(f).append($(c1)).append($(c2)).append($(c3));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 7:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                for(var e=b+1;e<dom.length;e++){
+                                                    for(var ff=e+1;ff<dom.length;ff++){
+                                                        var ball = $(dom[i]).find("input[name='ball']").val();
+                                                        var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                        ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                        ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                        ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                        ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                        ball += "," + $(dom[e]).find("input[name='ball']").val();
+                                                        ball += "," + $(dom[ff]).find("input[name='ball']").val();
+                                                        beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                        beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                        beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                        beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                        beilu += "," + $(dom[e]).find("input[name='beilu']").val();
+                                                        beilu += "," + $(dom[ff]).find("input[name='beilu']").val();
+                                                        var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                        var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                        var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                        $(f).append($(c1)).append($(c2)).append($(c3));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 8:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                for(var e=b+1;e<dom.length;e++){
+                                                    for(var ff=e+1;ff<dom.length;ff++){
+                                                        for(var d=ff+1;d<dom.length;d++){
+                                                            var ball = $(dom[i]).find("input[name='ball']").val();
+                                                            var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                            ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[e]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[ff]).find("input[name='ball']").val();
+                                                            ball += "," + $(dom[d]).find("input[name='ball']").val();
+                                                            beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[e]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[ff]).find("input[name='beilu']").val();
+                                                            beilu += "," + $(dom[d]).find("input[name='beilu']").val();
+
+                                                            var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                            var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                            var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                            $(f).append($(c1)).append($(c2)).append($(c3));
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 9:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                for(var e=b+1;e<dom.length;e++){
+                                                    for(var ff=e+1;ff<dom.length;ff++){
+                                                        for(var d=ff+1;d<dom.length;d++){
+                                                            for (var g=d+1;g<dom.length; g++) {
+                                                                var ball = $(dom[i]).find("input[name='ball']").val();
+                                                                var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                                ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[e]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[ff]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[d]).find("input[name='ball']").val();
+                                                                ball += "," + $(dom[g]).find("input[name='ball']").val();
+                                                                beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[e]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[ff]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[d]).find("input[name='beilu']").val();
+                                                                beilu += "," + $(dom[g]).find("input[name='beilu']").val();
+
+                                                                var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                                var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                                var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                                $(f).append($(c1)).append($(c2)).append($(c3));
+                                                            }
+
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 10:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                for(var e=b+1;e<dom.length;e++){
+                                                    for(var ff=e+1;ff<dom.length;ff++){
+                                                        for(var d=ff+1;d<dom.length;d++){
+                                                            for (var g=d+1;g<dom.length; g++) {
+                                                                for(var h=g+1;h<dom.length;h++){
+                                                                    var ball = $(dom[i]).find("input[name='ball']").val();
+                                                                    var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                                    ball += "," + $(dom[j]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[u]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[a]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[b]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[e]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[ff]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[d]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[g]).find("input[name='ball']").val();
+                                                                    ball += "," + $(dom[h]).find("input[name='ball']").val();
+                                                                    beilu += "," + $(dom[j]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[u]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[a]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[b]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[e]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[ff]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[d]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[g]).find("input[name='beilu']").val();
+                                                                    beilu += "," + $(dom[h]).find("input[name='beilu']").val();
+
+                                                                    var c1 = $("<input name='ball' type='hidden' value='"+ball+"' />");
+                                                                    var c2 = $("<input name='beilu' type='hidden' value='"+beilu+"' />");
+                                                                    var c3 = $("<input name='money' type='hidden' value='"+money+"' />");
+                                                                    $(f).append($(c1)).append($(c2)).append($(c3));
+                                                                }
+
+                                                            }
+
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+                if(type=="多组"){
+                    var index = layer.load(1, {shade:[0.3]});
+                    var i=1;
+                    $(".xinput input").each(function(){
+                        var cc = $(this).clone();
+                        if(i%2==0){
+                            var ca = $("<input type='hidden' name='money' value='"+money+"' />");
+                            $(f).append($(cc)).append($(ca));
+                        }else{
+                            $(f).append($(cc));
+                        }
+                        i++;
+                    })
+                }
+
+                f.ajaxSubmit({
+                    url:"/handle/xiazu_view2/@script_id",
+                    type:"POST",
+                    success: function (data) {
+                        layer.closeAll();
+                        layer.open({
+                            type: 1,
+                            title: "<i class='fa fa-sign-in'></i> 下注池",
+                            resize: false,
+                            area: ["600px", "400px"],
+                            content: data
+                        })
+                        $(f).html('');
+                    }
+                })
+
+            })
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-inline", name = "form1", id = "form1" }))
+{
+    <div class="tma-menu2">
+        <ul>
+            <li style="display:none" class="ftbox">复式</li>
+            <li class="active"><a>复式</a></li>
+            <li><a>多组</a></li>
+        </ul>
+    </div>
+    <div class="tma-menu">
+        <ul style="overflow:hidden;float:left">
+            @{
+    var page_menu_arr = page_menu.Split(',');
+    var page_menu_url_arr = page_menu_url.Split(',');
+    for (int j = 0; j < page_menu_arr.Length; j++)
+    {
+        if (page_menu_arr[j] == page_menu_active)
+        {
+            <li class="active"><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+        else
+        {
+            <li><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+    }
+            }
+        </ul>
+        @{
+    var tea = from q in x9web.Api.WebClass.u_tuisui
+              where q.name.Trim() == page_name
+              select q;
+        }
+        <ul class="tma-menu-r">
+            <li>
+                <span>
+                    @page_name:@tea.First().min_e/@tea.First().danzu_e/@tea.First().max_e
+                </span>
+            </li>
+        </ul>
+        <ul class="tma-menu-r">
+            <li style="margin-left:10px">
+                <span style="color:#ff0000">佣金:</span>
+                <span>
+                    @page_name:@decimal.Parse(tea.First().yongjin.ToString()).ToString("0.###")
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="xcontent">
+        <ul class="m"></ul>
+    </div>
+    <div class="xinput"></div>
+    <div class="tma-box" style="border-left:1px solid #31708F">
+        <ul class="title">
+            <li class="tA">號碼</li>
+            <li class="tB">倍率</li>
+            <li class="tC">勾选</li>
+        </ul>
+        @{
+    var i = 1;
+    foreach (var mm in xball)
+    {
+        if (mm.color == null)
+        {
+            continue;
+        }
+        var colorname = "ball" + mm.color;
+        <ul class="box">
+            <li class="@colorname.Trim() tA">
+                <span>@mm.name.Trim()</span>
+                <input name="ball" value="@mm.name.Trim()" type="hidden" />
+            </li>
+            <li class="tB">
+                <span>@decimal.Parse(mm.tma.ToString()).ToString("0.###")</span>
+                <input name="beilu" value="@decimal.Parse(mm.tma.ToString()).ToString("0.###")" type="hidden" />
+            </li>
+            <li class="tC"></li>
+        </ul>
+        if (i % 10 == 0)
+        {
+            @Html.Raw("</div>");
+            @Html.Raw("<div class=\"tma-box\">")
+            <ul class="title">
+                <li class="tA">號碼</li>
+                <li class="tB">倍率</li>
+                <li class="tC">勾选</li>
+            </ul>
+        }
+        i++;
+    }
+        }
+    </div>
+    <div class="tma-but">
+        <ul>
+            <li style="padding-top:5px;padding-right:10px">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">下注金额</span>
+                        <input style="width:80px" class="form-control" type="text" name="moneys" onkeyup="value=this.value.replace(/\D+/g,'')" />
+                    </div>
+
+                </div>
+            </li>
+            <li>
+                <input type="text" style="display:none" />
+                <button class="btn btn-primary" type="button" name="submit" id="submit">提交</button>
+            </li>
+            <li>
+                <button class="btn btn-primary" type="button" name="reset" id="reset">清除</button>
+            </li>
+        </ul>
+    </div>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form2", name = "form2" }))
+{
+
+}

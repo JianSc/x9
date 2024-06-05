@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="x9" Class="Sqlconnect" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.;Initial Catalog=x9;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="x9ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.xauto_beilu" Member="xauto_beilu">
+    <Type Name="xauto_beilu">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="max_money" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="auto_beilu" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="state" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="[on]" Member="on" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xball" Member="xball">
+    <Type Name="xball">
+      <Column Name="name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="color" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="shenxiao" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="tma" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="tmb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zma" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zmb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt1" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2qz" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2zt" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="stc" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3qz" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3z2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="tiex" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="babo" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="yix" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="yixb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="liux" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="liuxb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="ws" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="wsb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db7" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db8" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db9" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db10" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x2b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x3b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x4b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x5b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w2b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w3b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w4b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz7" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz8" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz9" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz10" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz1" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2zt2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3z22" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w5b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db12" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db15" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="n5xin" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="nsxl" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="nwsl" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="wuxin" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xball_copy" Member="xball_copy">
+    <Type Name="xball_copy">
+      <Column Name="name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="color" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="shenxiao" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="tma" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="tmb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zma" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zmb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt1" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="zt6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2qz" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2zt" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="stc" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3qz" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3z2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="tiex" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="babo" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="yix" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="yixb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="liux" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="liuxb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="ws" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="wsb" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db7" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db8" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db9" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db10" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x2b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x3b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x4b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="x5b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w2b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w3b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w4b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz6" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz7" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz8" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz9" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="dz10" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz1" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz3" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz4" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="rz5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s2zt2" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="s3z22" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w5" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="w5b" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db12" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="db15" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="n5xin" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="nsxl" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="nwsl" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xconfig" Member="xconfig">
+    <Type Name="xconfig">
+      <Column Name="s12sx" Type="System.String" DbType="NChar(33) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="webname" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="web_switch" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xliubie" Member="xliubie">
+    <Type Name="xliubie">
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="t1" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="t2" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="sid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xmarquee" Member="xmarquee">
+    <Type Name="xmarquee">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="text" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="state" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xmenus" Member="xmenus">
+    <Type Name="xmenus">
+      <Column Name="name" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="url" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xqisu" Member="xqisu">
+    <Type Name="xqisu">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ball" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="shengxiao" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="zema_bankou" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="tema_bankou" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="jiang" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="k_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="z_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="t_time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="strat" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="bankou" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="del" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="jiesuan" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="z_auto" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="t_auto" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="color" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="wuxin" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xtuisui" Member="xtuisui">
+    <Type Name="xtuisui">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="pid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="yongjin" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="min_e" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="danzu_e" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="max_e" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="xx" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xusers" Member="xusers">
+    <Type Name="xusers">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="pwd" Type="System.String" DbType="Char(32)" CanBeNull="true" />
+      <Column Name="xb" Type="System.Char" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="tel" Type="System.String" DbType="Char(20)" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="m1" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="xinmin" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="LV" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="manage" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="state" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="gf" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="gf_state" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="pid2" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.xxiazu" Member="xxiazu">
+    <Type Name="xxiazu">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="timer" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="t1" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="t2" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="beilu" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Column Name="yongjin" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="money" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="yongjine" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="moneye" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="pid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="qisu" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ball" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Column Name="xid" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Column Name="pname" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="z" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="other" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="yongjine2" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

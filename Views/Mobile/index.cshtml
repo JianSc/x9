@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "欢迎光临！";
+    Layout = "~/Views/Shared/_LayoutMobile.cshtml";
+}
+@section styles{
+    <style>
+        body {
+            background: url("/Content/image/logo_mobile.jpg") no-repeat top center white;
+            background-attachment: fixed;
+        }
+
+        .container {
+            margin-top: 10px;
+        }
+
+        #form {
+            max-width: 280px;
+            margin: 10% auto 0 auto;
+            padding: 30px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid #9c9c9c;
+            border-radius: 3px;
+            overflow: hidden;
+            color:#fff;
+        }
+
+            #form input {
+                margin-bottom: 15px;
+                border-radius: 0;
+            }
+
+        .xcode img {
+            margin-left: 10px;
+        }
+
+        .xcode div {
+            float: left;
+        }
+
+        .xtitle {
+            margin: 0 0 10px 0;
+            border-bottom: 1px solid #9c9c9c;
+            padding-bottom: 5px;
+        }
+
+        .xbtn button {
+            width: 100%;
+            border-radius: 3px;
+        }
+
+        #codetu {
+            margin-top: 3px;
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        function newcode(fr) {
+            $(fr).attr("src", "/content/code.aspx?" + Math.random());
+        }
+
+        $(function () {
+            var btn = $("#submit");
+            var name = $("#name");
+            var pwd = $("#pwd");
+            var code = $("#code");
+            var codetu = $("#codetu");
+
+            $(btn).click(function (e) {
+                if ($(btn).hasClass("disabled")) {
+                    return;
+                }
+
+                var url = "/content/code.aspx?" + Math.random();
+                var nameval = $(name).val();
+                var pwdval = $(pwd).val();
+                var codeval = $(code).val();
+
+                if (nameval == '') {
+                    layer.msg("請輸入您的用戶名稱");
+                    return;
+                }
+                if (pwdval == '') {
+                    layer.msg("請輸入您的密碼");
+                    return;
+                }
+                if (codeval == '') {
+                    layer.msg("請輸入驗證碼");
+                    return;
+                }
+
+                $(btn).addClass("disabled");
+                $(btn).prepend("<i class=\"fa fa-circle-o-notch fa-spin\"></i>");
+
+                $.ajax({
+                    url: "/",
+                    type: "POST",
+                    async: false,
+                    data: { name: nameval, pwd: pwdval, xcode: codeval },
+                    success: function (data) {
+                        switch (data.type) {
+                            case "err":
+                                layer.msg(data.msg);
+                                $(name).val('');
+                                $(pwd).val('');
+                                $(code).val('');
+                                $(codetu).attr("src", url);
+                                $(btn).removeClass("disabled");
+                                $(btn).find("i").remove();
+                                return;
+                            case "suc":
+                                window.location.href = "/mobile/Agreement";
+                                break;
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+}
+<div class="container-fluid">
+    <div class="container">
+        <div id="form">
+            <div class="xtitle h4">會員登陆</div>
+            <div>
+                <label>登陆名稱:</label>
+                @Html.TextBox("name", null, new { @class = "form-control", placeholder = "請輸入登陸名" })
+            </div>
+            <div>
+                <label>登陆密碼:</label>
+                @Html.TextBox("pwd", null, new { @class = "form-control", type = "password", placeholder = "請輸入密碼" })
+            </div>
+
+            <div class="xcode">
+                <div style ="width:80px">
+                    @Html.TextBox("code", null, new { @class = "form-control", placeholder = "驗證碼" })
+                </div>
+
+                <div><img id="codetu" src="/Content/code.aspx" onclick="newcode(this)" /></div>
+            </div>
+            <div class="xbtn">
+                <button class="btn btn-danger" id="submit" type="button">立即登陆</button>
+            </div>
+        </div>
+    </div>
+</div>

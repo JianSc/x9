@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="code.aspx.cs" Inherits="x9web.Content.code" %>

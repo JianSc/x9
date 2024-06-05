@@ -1,0 +1,196 @@
+﻿@model IEnumerable<x9web.Models.xxiazu>
+
+@{
+    ViewBag.Title = "历史报表";
+    Layout = "~/Views/Pages/Home.cshtml";
+}
+
+@section styles{
+    <style>
+        .select .m {
+            overflow: hidden;
+        }
+
+        .select {
+            background: #5099bb;
+            border: 1px solid #0d7eb4;
+            padding: 5px;
+        }
+
+            .select li {
+                float: left;
+                padding: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            .select .s {
+                padding: 0;
+            }
+
+            .select .form-control {
+                border-radius: 0;
+            }
+
+        .box li {
+            float: left;
+            padding: 5px;
+            border-right: 1px solid #808080;
+            border-bottom: 1px solid #808080;
+            text-align: center;
+        }
+
+        .box,
+        .box ul {
+            overflow: hidden;
+        }
+
+        .box {
+            border-top: 1px solid #808080;
+            border-left: 1px solid #808080;
+            font-size: 12px;
+        }
+
+            .box .title {
+                background: #ddd;
+            }
+
+            .box .A {
+                width: 50px;
+            }
+
+            .box .B {
+                width: 150px;
+            }
+
+            .box .C {
+                width: 120px;
+            }
+
+            .box .D {
+                width: 150px;
+            }
+
+            .box .E {
+                width: 150px;
+            }
+
+            .box .F {
+                width: 150px;
+            }
+
+            .box .G {
+                width: 100px;
+            }
+
+            .box .H {
+                float: none;
+                overflow: hidden;
+            }
+
+            .box .list {
+                cursor: pointer;
+            }
+
+                .box .list:hover,
+                .box .list:hover {
+                    background: #e9ffb3;
+                }
+    </style>
+}
+@section scripts{
+    <script>
+        function xopen(qisu) {
+            layer.load(1, { shade: [0.3] });
+            window.location.href = "/home/ur_touzu_list/" + qisu + "/1";
+        }
+    </script>
+}
+@*<div class="select">
+        <ul class="m">
+            <li style="color:#fff;margin-right:20px;">
+                <span>当前:</span>
+                <span style="color:#e5d05b">第 @ViewBag.qisu 期</span>
+            </li>
+            <li style="color:#fff">期号:</li>
+            <li class="s">
+                <select class="form-control" name="qisu">
+                    @{
+                        var qm = from q in Model
+                                 group q by new { q.qisu } into g
+                                 select new
+                                 {
+                                     qisu = g.Key.qisu
+                                 };
+                        foreach (var m in qm.Take(5))
+                        {
+                            var check = "";
+                            if (m.qisu == ViewBag.qisu)
+                            {
+                                check = "selected='selected'";
+                            }
+                            <option @check>@m.qisu</option>
+                        }
+                    }
+                </select>
+            </li>
+            <li class="s">
+                <button name="btn_qisu" id="btn_qisu" class="btn btn-danger" type="button"><i class="fa fa-search"></i></button>
+            </li>
+        </ul>
+    </div>*@
+<div class="box">
+    <ul class="title">
+        <li class="A">序号</li>
+        <li class="B">期号</li>
+        <li class="C">注数</li>
+        <li class="D">下注总额</li>
+        <li class="E">占成</li>
+        <li class="F">公司占成</li>
+        <li class="G">佣金</li>
+        <li class="H">总盈亏统计</li>
+    </ul>
+    @{
+        var xh = 1;
+        decimal gdmoney = 0;
+        decimal gsmoney = 0;
+        var ms = (from q in Model
+                  group q by new { q.qisu, q.pid } into g
+                  select new
+                  {
+                      qisu = g.Key.qisu,
+                      zs = g.Count(a => a.id == a.id),
+                      money = g.Sum(a => a.money),
+                      yonge = g.Sum(a => a.yongjine),
+                      moneye = g.Sum(a => a.moneye),
+                      pid = g.Key.pid
+                  }).OrderByDescending(a => a.qisu).Take(3).ToList();
+        foreach (var m in ms.OrderBy(a => a.qisu))
+        {
+            <ul class="m list" onclick="xopen('@m.qisu')">
+                <li class="A">@xh</li>
+                <li class="B">@m.qisu</li>
+                <li class="C">@m.zs</li>
+                <li class="D">@decimal.Parse(m.money.ToString()).ToString("0.##")</li>
+                <li class="E">@x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money).ToString("0.##")</li>
+                <li class="F">@x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money).ToString("0.##")</li>
+                <li class="G">@decimal.Parse(m.yonge.ToString()).ToString("0.##")</li>
+                <li class="H">@decimal.Parse(m.moneye.ToString()).ToString("0.##")</li>
+            </ul>
+            gdmoney += x9web.Api.WebClass.f_money_gdzc((int)m.pid, (decimal)m.money);
+            gsmoney += x9web.Api.WebClass.f_money_gszc((int)m.pid, (decimal)m.money);
+            xh++;
+        }
+        <ul class="m" style="font-weight:bold;background:#ddd;color:#0228de">
+            <li class="A">&nbsp;</li>
+            <li class="B">&nbsp;</li>
+            <li class="C">@decimal.Parse(ms.Sum(a => a.zs).ToString()).ToString("0.##")</li>
+            <li class="D">@decimal.Parse(ms.Sum(a => a.money).ToString()).ToString("0.##")</li>
+            <li class="E">@gdmoney.ToString("0.##")</li>
+            <li class="F">@gsmoney.ToString("0.##")</li>
+            <li class="G">@decimal.Parse(ms.Sum(a => a.yonge).ToString()).ToString("0.##")</li>
+            <li class="H">@decimal.Parse(ms.Sum(a => a.moneye).ToString()).ToString("0.##")</li>
+        </ul>
+    }
+
+</div>

@@ -1,0 +1,741 @@
+﻿@model IEnumerable<x9web.Models.xball>
+@{
+    ViewBag.Title = "香港六合彩";
+    Layout = "~/Views/Pages/Home.cshtml";
+    var script_id = ViewBag.script_id;
+    var script_count = ViewBag.script_count;
+    var page_name = ViewBag.page_name;
+    var page_menu_active = ViewBag.page_menu_active;
+    var page_menu = ViewBag.page_menu;
+    var page_menu_url = ViewBag.page_menu_url;
+    var btn_kuaisu = ViewBag.btn_kuaisu;
+    List<x9web.Models.xball> xball = x9web.Api.WebClass.auto_beilu(page_name, Model.ToList());
+}
+@section styles{
+    <style>
+        .tma-menu {
+            overflow: hidden;
+            margin: 5px 0 10px 0;
+        }
+
+            .tma-menu ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu li {
+                list-style: none;
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu a {
+                display: block;
+                padding: 5px 5px;
+                text-decoration: none;
+            }
+
+                .tma-menu a:hover,
+                .tma-menu a:focus {
+                    background: #a3d2e9;
+                }
+
+            .tma-menu .active {
+                border: #31708F;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+            }
+
+                .tma-menu .active a,
+                .tma-menu .active a:hover,
+                .tma-menu .active a:focus {
+                    background: #31708F;
+                    color: #fff;
+                }
+
+        .tb-m input {
+            width: 55px;
+            margin: 0;
+            margin-left: 5px;
+        }
+
+        .tma-menu-r {
+            float: right;
+        }
+
+            .tma-menu-r li {
+                padding: 5px 10px;
+                border: #3c763d;
+                color: #3c763d;
+                border-style: solid solid solid solid;
+                border-width: 1px;
+                margin: 0;
+                margin-left: 5px;
+            }
+
+        .tma-but {
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            padding-right: 5px;
+        }
+
+            .tma-but .btn {
+                margin: 5px 10px 5px 0;
+                width: 100px;
+                border-radius: 0;
+            }
+
+        .tma-box .tb-mA {
+            background: url(/Content/image/check.png) no-repeat center;
+        }
+
+        .tma-box .tb-mAA {
+            background: url(/Content/image/check2.png) no-repeat center;
+        }
+
+
+        .tma-but ul {
+            margin: 0;
+            margin-left: 260px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .tma-but li {
+            list-style: none;
+            float: left;
+        }
+
+        .input-group-addon {
+            font-size: 12px;
+            color: #fff;
+            background-color: #31708F;
+            border: 1px solid #133f55;
+            /*border-radius: 0;*/
+        }
+
+        .form-control {
+            /*border-radius: 0;*/
+            color: #000;
+            border: 1px solid #133f55;
+        }
+
+        #form2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tma-box {
+            overflow: hidden;
+            float: left;
+            margin-bottom: 10px;
+            border: #31708F;
+            border-style: solid solid solid solid;
+            border-width: 1px;
+            width: 100%;
+        }
+
+            .tma-box ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-box li {
+                list-style: none;
+            }
+
+            .tma-box .title {
+                overflow: hidden;
+                width: 100%;
+                background: #8bcaf7;
+            }
+
+            .tma-box .s1,
+            .tma-box .s2 {
+                width: 50%;
+                float: left;
+            }
+
+            .tma-box .s1 {
+                border: #31708F;
+                border-style: none solid none none;
+                border-width: 1px;
+            }
+
+            .tma-box .title li {
+                list-style: none;
+                padding: 5px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .tma-box .m {
+                text-align: center;
+                font-weight: bold;
+                width: 20%;
+                float: left;
+                padding: 5px 5px;
+                background: #b9dcf5;
+                border-right: #8bcaf7 1px solid;
+            }
+
+            .tma-box .s {
+                text-align: center;
+                font-weight: bold;
+                width: 70%;
+                float: left;
+                padding: 5px 5px;
+            }
+
+            .tma-box .c {
+                text-align: center;
+                width: 10%;
+                float: left;
+                padding: 5px 5px;
+                color: #ff0000;
+                background: #fecaca;
+                border-left: #8bcaf7 1px solid;
+            }
+
+            .tma-box .box {
+                border: #8bcaf7;
+                border-style: solid none none none;
+                border-width: 1px;
+                overflow: hidden;
+                cursor: pointer;
+            }
+
+            .tma-box .check .s {
+                background: url(/Content/image/check.png) no-repeat right;
+            }
+
+            .tma-box .check2 .s {
+                background: url(/Content/image/check2.png) no-repeat right;
+            }
+
+        .tma-menu2 {
+            overflow: hidden;
+            border-bottom: 1px solid #3c763d;
+            margin-bottom: 10px;
+        }
+
+            .tma-menu2 ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .tma-menu2 li {
+                list-style: none;
+                float: left;
+                margin-right: 5px;
+            }
+
+            .tma-menu2 .active a,
+            .tma-menu2 .active a:hover,
+            .tma-menu2 .active a:focus {
+                color: #fff;
+                background: #3c763d;
+                border-radius: 5px 5px 0 0;
+            }
+
+            .tma-menu2 li > a {
+                padding: 5px 10px;
+                color: #3c763d;
+                display: block;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+                .tma-menu2 li > a:hover,
+                .tma-menu2 li > a:focus {
+                    background: #c7f3c8;
+                }
+
+        .xcontent {
+            border: 1px solid #31708F;
+            background: #c8edff;
+            border-left: 0;
+            border-right: 0;
+            margin-bottom: 10px;
+            overflow: hidden;
+            display: none;
+            height: 30px;
+        }
+
+            .xcontent .m {
+                overflow: hidden;
+                padding: 5px;
+            }
+
+            .xcontent li {
+                margin: 0 5px;
+                float: left;
+            }
+
+        .xinput {
+            overflow: hidden;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $(".tma-box .box").click(function () {
+                var type = $(".tma-menu2 .ftbox").html();
+                if(type=="复式"){
+                    if ($(this).hasClass("check")) {
+                        $(this).removeClass("check");
+                    } else {
+                        var l = $("#form1 .check").length;
+                        var count = @script_count;
+                        var c = count + 8;
+                        if(l>=c){
+                            layer.alert("不能勾选真如过"+c+"颗球号！");
+                            return;
+                        }else{
+                            $(this).addClass("check");
+                        }
+                    }
+                }
+                if(type=="拖头"){
+                    var count = @script_count;
+                    var check2leng = $("#form1 .check2").length;
+                    var checkleng = $("#form1 .check").length;
+                    if($(this).hasClass("check2")){
+                        if(checkleng<1){
+                            $(this).removeClass("check2");
+                            return;
+                        }
+                    }
+                    if($(this).hasClass("check")){
+                        $(this).removeClass("check");
+                        return;
+                    }
+                    if(check2leng < count-1){
+                        $(this).addClass("check2");
+                        return;
+                    }
+                    $(this).addClass("check");
+
+                }
+                if(type=="多组"){
+                    var count = @script_count;
+                    if($(this).hasClass("check")){
+                        $(this).removeClass("check");
+                    }else{
+                        $(this).addClass("check");
+                    }
+                    var ct = $("#form1 .check").length;
+                    if(ct >= count){
+                        var xball = "";
+                        var xbeilu = "";
+                        $("#form1 .check").each(function(){
+                            var ball = $(this).find("input[name='ball']").val();
+                            var beilu = $(this).find("input[name='beilu']").val();
+                            xball += ball;
+                            xball += ",";
+                            xbeilu = beilu;
+                            $(this).removeClass("check");
+                        })
+                        xball = xball.substring(0,xball.length-1);
+                        var c1 = $("<input type='hidden' name='ball' value='"+xball+"' />");
+                        var c2 = $("<input type='hidden' name='beilu' value='"+xbeilu+"' />");
+                        $(".xinput").append($(c1)).append($(c2));
+                        $(".xcontent .m").append("<li>["+xball+"]</li>");
+                    }
+                }
+            })
+            $(".tma-menu2 a").click(function(){
+                var name = $(this).html();
+                if(name=="复式"){
+                    $(".xcontent").css("display","none");
+                    $(".xcontent .m").html('');
+                    $(".xinput").html('');
+                }
+                if(name=="多组"){
+                    $(".xcontent").css("display","block");
+                }
+                if(name=="拖头"){
+                    $(".xcontent").css("display","none");
+                    $(".xcontent .m").html('');
+                    $(".xinput").html('');
+                }
+                $(".tma-menu2 .ftbox").html(name);
+                $(".tma-menu2 li").each(function(){
+                    $(this).removeClass("active");
+                })
+                $("#form1 .check").each(function(){
+                    $(this).removeClass("check");
+                })
+                $("#form1 .check2").each(function(){
+                    $(this).removeClass("check2");
+                })
+                $(this).parent().addClass("active");
+            })
+            $(".tma-but #reset").click(function () {
+                $("#form1 .check").each(function () {
+                    $(this).removeClass("check");
+                })
+                $("#form2").html('');
+                $(".xcontent .m").html('');
+                $(".xinput").html('');
+            })
+            $(".tma-but #submit").click(function () {
+                var dom = $("#form1 .check");
+                var count = @script_count;
+                var money = $("#form1 input[name='moneys']").val();
+                var f = $("#form2");
+                if(money==''||money==null){
+                    layer.alert("请输入下注金额！");
+                    return;
+                }
+                money=parseInt(money);
+                if(isNaN(money)){
+                    layer.alert("金额只能输入数字！");
+                    return;
+                }
+                var type = $(".tma-menu2 .ftbox").html();
+                if(type=="复式"){
+                    if(dom.length<count){
+                        layer.alert("请至少勾选"+count+"组球号！");
+                        return;
+                    }
+                    var index = layer.load(1,{shade:[0.3]});
+                    switch(count){
+                        case 2:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    var ball = $(dom[i]).find("input[name='ball']").val();
+                                    var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                    ball+=","+$(dom[j]).find("input[name='ball']").val();
+                                    beilu+=","+$(dom[j]).find("input[name='beilu']").val();
+                                    var c1 = "<input name='ball' type='hidden' value='"+ball+"' />";
+                                    var c2 = "<input name='beilu' type='hidden' value='"+beilu+"' />";
+                                    var c3 = "<input name='money' type='hidden' value='"+money+"' />";
+                                    $(f).append($(c1)).append($(c2)).append($(c3));
+                                }
+                            }
+                            break;
+                        case 3:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        var ball = $(dom[i]).find("input[name='ball']").val();
+                                        var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                        ball+=","+$(dom[j]).find("input[name='ball']").val();
+                                        ball+=","+$(dom[u]).find("input[name='ball']").val();
+                                        beilu+=","+$(dom[j]).find("input[name='beilu']").val();
+                                        beilu+=","+$(dom[u]).find("input[name='beilu']").val();
+                                        var c1 = "<input name='ball' type='hidden' value='"+ball+"' />";
+                                        var c2 = "<input name='beilu' type='hidden' value='"+beilu+"' />";
+                                        var c3 = "<input name='money' type='hidden' value='"+money+"' />";
+                                        $(f).append($(c1)).append($(c2)).append($(c3));
+                                    }
+                                }
+                            }
+                            break;
+                        case 4:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            var ball = $(dom[i]).find("input[name='ball']").val();
+                                            var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                            ball+=","+$(dom[j]).find("input[name='ball']").val();
+                                            ball+=","+$(dom[u]).find("input[name='ball']").val();
+                                            ball+=","+$(dom[a]).find("input[name='ball']").val();
+                                            beilu+=","+$(dom[j]).find("input[name='beilu']").val();
+                                            beilu+=","+$(dom[u]).find("input[name='beilu']").val();
+                                            beilu+=","+$(dom[a]).find("input[name='beilu']").val();
+                                            var c1 = "<input name='ball' type='hidden' value='"+ball+"' />";
+                                            var c2 = "<input name='beilu' type='hidden' value='"+beilu+"' />";
+                                            var c3 = "<input name='money' type='hidden' value='"+money+"' />";
+                                            $(f).append($(c1)).append($(c2)).append($(c3));
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 5:
+                            for(var i=0;i<dom.length;i++){
+                                for(var j=i+1;j<dom.length;j++){
+                                    for(var u=j+1;u<dom.length;u++){
+                                        for(var a=u+1;a<dom.length;a++){
+                                            for(var b=a+1;b<dom.length;b++){
+                                                var ball = $(dom[i]).find("input[name='ball']").val();
+                                                var beilu = $(dom[i]).find("input[name='beilu']").val();
+                                                ball+=","+$(dom[j]).find("input[name='ball']").val();
+                                                ball+=","+$(dom[u]).find("input[name='ball']").val();
+                                                ball+=","+$(dom[a]).find("input[name='ball']").val();
+                                                ball+=","+$(dom[b]).find("input[name='ball']").val();
+                                                beilu+=","+$(dom[j]).find("input[name='beilu']").val();
+                                                beilu+=","+$(dom[u]).find("input[name='beilu']").val();
+                                                beilu+=","+$(dom[a]).find("input[name='beilu']").val();
+                                                beilu+=","+$(dom[b]).find("input[name='beilu']").val();
+                                                var c1 = "<input name='ball' type='hidden' value='"+ball+"' />";
+                                                var c2 = "<input name='beilu' type='hidden' value='"+beilu+"' />";
+                                                var c3 = "<input name='money' type='hidden' value='"+money+"' />";
+                                                $(f).append($(c1)).append($(c2)).append($(c3));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+                if(type=="多组"){
+                    var index = layer.load(1, {shade:[0.3]});
+                    var i=1;
+                    $(".xinput input").each(function(){
+                        var cc = $(this).clone();
+                        if(i%2==0){
+                            var ca = $("<input type='hidden' name='money' value='"+money+"' />");
+                            $(f).append($(cc)).append($(ca));
+                        }else{
+                            $(f).append($(cc));
+                        }
+                        i++;
+                    })
+                }
+                if(type=="拖头"){
+                    var check2leng = $("#form1 .check2").length;
+                    var checkleng = $("#form1 .check").length;
+                    if(check2leng<1){
+                        layer.alert("请勾选下注的球号！");
+                        return;
+                    }
+                    if(checkleng<1){
+                        layer.alert("请勾选下注的球号！");
+                        return;
+                    }
+                    var ball = "";
+                    var beilu = "";
+                    var dom = $("#form1 .check");
+                    var index = layer.load(1, {shade:[0.3]});
+                    $("#form1 .check2").each(function(){
+                        ball += $(this).find("input[name='ball']").val();
+                        ball += ",";
+                        beilu += $(this).find("input[name='beilu']").val();
+                        beilu += ",";
+                    })
+
+                    $("#form1 .check").each(function(){
+                        var xball = ball + $(this).find("input[name='ball']").val();
+                        var xbeilu = beilu + $(this).find("input[name='beilu']").val();
+                        var c1 = $("<input type='hidden' name='ball' value='"+xball+"' />");
+                        var c2 = $("<input type='hidden' name='beilu' value='"+xbeilu+"' />");
+                        var c3 = $("<input type='hidden' name='money' value='"+money+"' />");
+                        $(f).append($(c1)).append($(c2)).append($(c3));
+                    })
+                }
+
+                f.ajaxSubmit({
+                    url: "/handle/xiazu_view2/@script_id",
+                    type: "POST",
+                    success: function (data) {
+                        layer.closeAll();
+                        layer.open({
+                            type: 1,
+                            title: "<i class='fa fa-sign-in'></i> 下注池",
+                            resize: false,
+                            area: ["600px", "400px"],
+                            content: data
+                        })
+                        $(f).html('');
+                    }
+                })
+            })
+        })
+    </script>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-inline", name = "form1", id = "form1" }))
+{
+    <div class="tma-menu2">
+        <ul>
+            <li style="display:none" class="ftbox">复式</li>
+            <li class="active"><a>复式</a></li>
+            <li><a>拖头</a></li>
+            <li><a>多组</a></li>
+        </ul>
+    </div>
+    <div class="tma-menu">
+        <ul style="overflow:hidden;float:left">
+            @{
+    var page_menu_arr = page_menu.Split(',');
+    var page_menu_url_arr = page_menu_url.Split(',');
+    for (int j = 0; j < page_menu_arr.Length; j++)
+    {
+        if (page_menu_arr[j] == page_menu_active)
+        {
+            <li class="active"><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+        else
+        {
+            <li><a href="@page_menu_url_arr[j]">@page_menu_arr[j]</a></li>
+        }
+    }
+            }
+        </ul>
+        @{
+    var tea = from q in x9web.Api.WebClass.u_tuisui
+              where q.name.Trim() == "尾数连"
+              select q;
+        }
+        <ul class="tma-menu-r">
+            <li>
+                <span>
+                    @page_name:@tea.First().min_e/@tea.First().danzu_e/@tea.First().max_e
+                </span>
+            </li>
+        </ul>
+        <ul class="tma-menu-r">
+            <li style="margin-left:10px">
+                <span style="color:#ff0000">佣金:</span>
+                <span>
+                    @page_name:@decimal.Parse(tea.First().yongjin.ToString()).ToString("0.###")
+                </span>
+            </li>
+        </ul>
+    </div>
+    {
+        var names = string.Empty;
+        var m1 = from q in xball
+                 where (q.type != null)
+                 select q;
+        var s111 = string.Empty;
+        var s222 = string.Empty;
+        string[] balls = null;
+        string[] beilus = null;
+        foreach (var m in m1)
+        {
+            s111 += m.name.Trim();
+            s111 += ",";
+            s222 += decimal.Parse(m.tma.ToString()).ToString("0.###");
+            s222 += ",";
+        }
+        if (s111.Length > 0)
+        {
+            s111 = s111.Substring(0, s111.Length - 1);
+            s222 = s222.Substring(0, s222.Length - 1);
+        }
+        balls = s111.Split(',');
+        beilus = s222.Split(',');
+
+        <div class="xcontent">
+            <ul class="m"></ul>
+        </div>
+        <div class="xinput"></div>
+        <div class="tma-box" style="border-left:1px solid #31708F">
+            <div class="s1">
+                <ul class="title">
+                    <li style="width:90%;float:left">号码</li>
+                    <li style="width:10%;float:left">倍率</li>
+                </ul>
+                @{
+        for (int i = 0; i < 5; i++)
+        {
+            var ball = string.Empty;
+            var m2 = from q in xball
+                     where (q.type == null)
+                     select q;
+            foreach (var m in m2)
+            {
+                if (m.name.Trim().Substring(1, 1) == balls[i])
+                {
+                    ball += m.name.Trim();
+                    ball += ",";
+                }
+            }
+            if (ball.Length > 0)
+            {
+                ball = ball.Substring(0, ball.Length - 1);
+            }
+            <ul class="box">
+                <li class="m">
+                    <span>@balls[i]</span>
+                    <span>尾</span>
+                </li>
+                <li class="s">@ball</li>
+                <li class="c">
+                    <span>@beilus[i]</span>
+                    <input name="ball" type="hidden" value="@balls[i]" />
+                    <input name="beilu" type="hidden" value="@beilus[i]" />
+                </li>
+            </ul>
+        }
+                }
+            </div>
+            <div class="s2">
+                <ul class="title">
+                    <li style="width:90%;float:left">号码</li>
+                    <li style="width:10%;float:left">倍率</li>
+                </ul>
+                @{
+        for (int i = 5; i < 10; i++)
+        {
+            var ball = string.Empty;
+            var m2 = from q in xball
+                     where (q.type == null)
+                     select q;
+            foreach (var m in m2)
+            {
+                if (m.name.Trim().Substring(1, 1) == balls[i])
+                {
+                    ball += m.name.Trim();
+                    ball += ",";
+                }
+            }
+            if (ball.Length > 0)
+            {
+                ball = ball.Substring(0, ball.Length - 1);
+            }
+            <ul class="box">
+                <li class="m">
+                    <span>@balls[i]</span>
+                    <span>尾</span>
+                </li>
+                <li class="s">@ball</li>
+                <li class="c">
+                    <span>@beilus[i]</span>
+                    <input name="ball" type="hidden" value="@balls[i]" />
+                    <input name="beilu" type="hidden" value="@beilus[i]" />
+                </li>
+            </ul>
+        }
+                }
+            </div>
+        </div>
+    }
+    <div class="tma-but">
+        <ul>
+            <li style="padding-top:5px;padding-right:10px">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">下注金额</span>
+                        <input style="width:80px" class="form-control" type="text" name="moneys" onkeyup="value=this.value.replace(/\D+/g,'')" />
+                    </div>
+
+                </div>
+            </li>
+            <li>
+                <input type="text" style="display:none" />
+                <button class="btn btn-primary" type="button" name="submit" id="submit">提交</button>
+            </li>
+            <li>
+                <button class="btn btn-primary" type="button" name="reset" id="reset">清除</button>
+            </li>
+        </ul>
+    </div>
+}
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "form2", name = "form2" }))
+{
+
+}

@@ -1,0 +1,307 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model Webdiyer.WebControls.Mvc.PagedList<x9web.Models.xusers>
+
+@{
+    ViewBag.Title = "会员管理";
+    Layout = "~/Views/Pages/Manage.cshtml";
+}
+@section styles{
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn {
+            border-radius: 0;
+        }
+
+        .select {
+            background: #d4edff;
+            border: 1px solid #0094ff;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .select li {
+                float: left;
+            }
+
+        .breadcrumb {
+            margin-bottom: 10px;
+        }
+
+        .box {
+            border: 1px solid #0094ff;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+            .box .m li {
+                padding: 5px;
+                float: left;
+            }
+
+            .box .title {
+                background: #e5f4ff;
+                border-bottom: 1px solid #c1e5ff;
+            }
+
+            .box .m {
+                border-top: 1px solid #c1e5ff;
+            }
+
+            .box li {
+                text-align: center;
+            }
+
+            .box .A {
+                width: 100px;
+            }
+
+            .box .B {
+                width: 120px;
+            }
+
+            .box .C {
+                width: 40px;
+            }
+
+            .box .D {
+                width: 180px;
+            }
+
+            .box .E {
+                width: 100px;
+            }
+
+            .box .F {
+                width: 120px;
+            }
+
+            .box .G {
+                width: 140px;
+            }
+
+            .box .H {
+                width: 70px;
+            }
+
+            .box .I {
+                float: none !important;
+                overflow: hidden !important;
+            }
+
+            .box .J {
+                width: 130px;
+                padding: 3px 0 !important;
+            }
+
+        .II li {
+            float: left;
+            padding: 0 5px !important;
+        }
+
+            .II li > a {
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+        .useradd {
+            background: none;
+            border: 0;
+            margin-bottom: 10px;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("input[name='state_switch']").bootstrapSwitch({
+                onText: "ON",
+                offText: "OFF",
+                onColor: "success",
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    var xbool = $(this).is(":checked");
+                    var id = 6007;
+                    var dom = $(this);
+                    var xid = $(this).val();
+                    $.ajax({
+                        url: "/handle/manage_pankou",
+                        type: "POST",
+                        async: false,
+                        data: { id: id, xbool: xbool, qisu: xid },
+                        success: function (data) {
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    $(dom).bootstrapSwitch('state', false);
+                                    return;
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#xuser_qb").click(function(){
+                window.location.href = "/manage/member/1";
+            })
+            $("#xuser_fc").click(function () {
+                window.location.href = "/manage/member_d/1";
+            })
+            $("#addnew").click(function () {
+                window.location.href = "/manage/addnew_xuser";
+            })
+            $("#btn_user").click(function () {
+                var name = $(".select input[name='select_user']").val();
+                if (name == '') {
+                    layer.alert("请输入要搜索的关键字：帐号、姓名");
+                    return;
+                }
+
+                var index = layer.load(1, {shade:[0.3]});
+
+                $.ajax({
+                    url: "/partial/manage_member_min2",
+                    type: "POST",
+                    data: { name: name },
+                    success: function (data) {
+                        layer.close(index);
+                        $(".box").html(data);
+                        $(".pagelist").html('');
+                    }
+                })
+            })
+        })
+        function edit_user(obj, id) {
+            window.location.href = "/manage/edit_xuser2/" + id;
+        }
+        function del_user(obj, id, name) {
+            var dom = $(obj).parent().parent().parent().parent();
+            layer.confirm('确定要删除 <span style=\'color:#ff0000\'>' + name + '</span> 这个会员帐号吗？<br />此帐户关联的退水资料会一并删除；<br />下注资料不会删除。', { btn: ['确定', '取消'] },
+                function (index) {
+                    var indexx = layer.load(1, {shade:[0.3]});
+                    $.ajax({
+                        url: "/handle/del_user",
+                        type: "POST",
+                        data: { id: id },
+                        success: function (data) {
+                            layer.close(indexx);
+                            switch (data.type) {
+                                case "err":
+                                    layer.alert(data.msg);
+                                    return;
+                                case "suc":
+                                    layer.alert(data.msg);
+                                    $(dom).remove();
+                                    return;
+                            }
+                        }
+                    })
+                },
+                function (index) {
+                    layer.close(index);
+                })
+        }
+    </script>
+}
+<div>
+    <ol class="breadcrumb">
+        <li>会员管理</li>
+        <li class="active">占股会员</li>
+    </ol>
+</div>
+<div class="select">
+    <ul>
+        <li style="margin-left:10px; padding:6px 0">
+            搜索会员（支持模糊查找）：
+        </li>
+        <li>
+            <input type="text" name="select_user" class="form-control" />
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="btn_user" id="btn_user" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </li>
+        <li style="margin-left:10px">
+            <button type="button" name="addnew" id="addnew" class="btn btn-warning">添加会员</button>
+            <button type="button" name="xuser_qb" id="xuser_qb" class="btn btn-success">显示普通会员</button>
+            <button type="button" name="xuser_fc" id="xuser_fc" class="btn btn-danger">显示占股会员</button>
+        </li>
+    </ul>
+</div>
+<div class="box">
+    <ul class="m title">
+        <li class="A">帐号</li>
+        <li class="B">姓名</li>
+        <li class="D">联系电话</li>
+        <li class="E">信用额度</li>
+        <li class="F">加入时间</li>
+        <li class="G">股份</li>
+        <li class="J">状态</li>
+        <li class="I">操作</li>
+    </ul>
+    @{
+        foreach (var m in Model)
+        {
+            <ul class="m">
+                <li class="A">@m.name</li>
+                <li class="B">@m.xinmin</li>
+                <li class="D">@m.tel</li>
+                <li class="E">@m.m1</li>
+                <li class="F">@DateTime.Parse(m.date.ToString()).ToString("yyyy/MM/dd")</li>
+                <li class="G">
+                    @{
+            decimal gf = (decimal)m.gf * 100;
+                    }
+                    @gf%
+                </li>
+                <li class="J">
+                    @{
+            var check = "";
+            if ((bool)m.state)
+            {
+                check = "checked";
+            }
+                    }
+                    <input type="checkbox" name="state_switch" value="@m.id" @check />
+                </li>
+                <li class="I">
+                    <ul class="II">
+                        <li><a style="display:block" onclick="edit_user(this,'@m.id')"><i class="fa fa-edit"></i> 资料修改</a></li>
+                        <li><a style="display:block" onclick="del_user(this,'@m.id','@m.name')"><i class="fa fa-trash-o"></i> 删除会员</a></li>
+                    </ul>
+                </li>
+            </ul>
+        }
+    }
+</div>
+<div class="pagelist">
+    @Html.Pager(Model, new PagerOptions
+{
+    PageIndexParameterName = "id",
+    ContainerTagName = "ul",
+    CssClass = "pagination",
+    PrevPageText = "上页",
+    NextPageText = "下页",
+    FirstPageText = "首页",
+    LastPageText = "尾页",
+    ShowPrevNext = false,
+    AutoHide = false,
+    CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+    PagerItemTemplate = "<li>{0}</li>",
+    Id = "bootstrappager"
+})
+</div>
